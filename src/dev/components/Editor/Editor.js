@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import brace from 'brace';
 import AceEditor from 'react-ace';
 
-import LanguageSelector from ''
-
 import 'brace/mode/java';
 import 'brace/theme/github';
 
