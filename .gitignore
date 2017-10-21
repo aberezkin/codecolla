@@ -1,3 +1,2 @@
 .idea
-src/app
-src/node_modules
+node_modules
