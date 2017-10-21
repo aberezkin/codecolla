@@ -2,8 +2,8 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-let BUILD_DIR = path.resolve(__dirname, 'app');
-let APP_DIR = path.resolve(__dirname, 'dev');
+let BUILD_DIR = path.resolve(__dirname, 'docs');
+let APP_DIR = path.resolve(__dirname, 'src/dev');
 
 let config = {
     context: BUILD_DIR,
@@ -51,7 +51,7 @@ let config = {
         new webpack.NoEmitOnErrorsPlugin(),
         new HtmlWebpackPlugin({
             title: 'Custom template',
-            template: "../dev/index.ejs",
+            template: "../src/dev/index.ejs",
         })
     ]
 };
