@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "create-react-app": "create-react-app",
-    "build": "webpack"
+    "build": "webpack",
+    "build:watch": "webpack --watch"
   },
   "author": "",
   "license": "ISC",
