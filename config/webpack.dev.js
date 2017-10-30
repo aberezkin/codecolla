@@ -8,6 +8,9 @@ const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 
 module.exports = config => webpackMerge(commonConfig({env: ENV}), {
     devtool: 'cheap-module-eval-source-map',
+    output: {
+        filename: 'bundle-dev.js'
+    },
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Codecolla',
