@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "create-react-app": "create-react-app",
     "build": "webpack",
+    "build:prod": "NODE_ENV=production webpack -p",
     "build:watch": "webpack --watch"
   },
   "author": "",
@@ -29,6 +30,7 @@
     "svg-sprite-loader": "^3.2.6"
   },
   "devDependencies": {
-    "webpack": "^3.7.1"
+    "webpack": "^3.7.1",
+    "webpack-merge": "^4.1.0"
   }
 }
