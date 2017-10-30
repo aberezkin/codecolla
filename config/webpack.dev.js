@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 
 module.exports = config => webpackMerge(commonConfig({env: ENV}), {
+    devtool: 'cheap-module-eval-source-map',
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Codecolla',
