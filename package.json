@@ -30,6 +30,7 @@
     "svg-sprite-loader": "^3.2.6"
   },
   "devDependencies": {
+    "optimize-js-plugin": "0.0.4",
     "webpack": "^3.7.1",
     "webpack-merge": "^4.1.0"
   }
