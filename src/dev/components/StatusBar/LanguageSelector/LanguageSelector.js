@@ -1,21 +1,32 @@
 import React, { Component } from 'react';
-import './StatusBar.styl';
+import './LanguageSelector.styl';
+import ListSelector from '../../ListSelector/ListSelector'
+import modes from '../../../HighLightLanguages'
 
 class LanguageSelector extends Component {
-    name = 'LanguageSelector';
-    isOpen = false;
-    viewElements(e) {
-        e.preventDefault();
-        let button = document.getElementsByClassName(this.name)[0];
-        this.isOpen != this.isOpen;
-        if (this.isOpen) {}
+    constructor(props) {
+        super(props);
+        this.name = 'LanguageSelector';
+        this.options = modes;
+        this.selectedOption = modes.findIndex((elem) => {return elem === "Text";});
     }
     render() {
         return (
-            <div className={this.name}></div>,
-            <div className="List of elements"></div>
+            <ListSelector
+                className={this.name}
+                options={this.options}
+                active={this.selectedOption}
+                onChange={this.props.onChange}
+                MarkSelected={true}
+            />
         )
     }
 }
+
+LanguageSelector.defaultProps = {
+    onChange: (event, key, value) => {
+        console.log(this.name, event, key, value);
+    },
+};
 
 export default LanguageSelector;
