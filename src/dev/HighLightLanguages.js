@@ -1,4 +1,4 @@
-export default Set(
+export default [
     "ABAP",
     "ABC",
     "ActionScript",
@@ -119,4 +119,4 @@ export default Set(
     "XML",
     "XQuery",
     "YAML",
-);
+];
