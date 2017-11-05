@@ -25,12 +25,18 @@ function getPageHeight () {
     return result;
 }
 
+const defaultValue =
+`function hello() {
+    console.log('Hello, World!');
+}`;
+
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            value: defaultValue,
             theme: 'monokai',
-            mode: 'java',
+            mode: 'javascript',
         };
         this.style = {
             statusBar : {
@@ -44,6 +50,7 @@ class App extends Component {
         };
         this.onChangeMode = this.onChangeMode.bind(this);
         this.onChangeTheme = this.onChangeTheme.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
     static name() {
         return 'App';
@@ -65,6 +72,12 @@ class App extends Component {
             theme: value
         });
     }
+    onChange(newValue) {
+        console.log('change:\n', newValue);
+        this.setState({
+            value: newValue
+        });
+    }
     render() {
         return (
             <div className={App.name()}>
@@ -72,6 +85,8 @@ class App extends Component {
                     <Editor
                         mode={this.state.mode}
                         theme={this.state.theme}
+                        value={this.state.value}
+                        onChange={this.onChange}
                     />
                 </div>
                 <StatusBar
