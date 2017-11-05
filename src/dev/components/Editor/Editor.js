@@ -6,10 +6,6 @@ import './Editor.styl';
 import 'brace/mode/java';
 import 'brace/theme/github';
 
-function onChange(value) {
-    console.log('change:\n', value);
-}
-
 class Editor extends Component {
     constructor(props) {
         super(props);
@@ -22,7 +18,8 @@ class Editor extends Component {
             theme={this.props.theme}
             width={'100%'}
             height={'100%'}
-            onChange={onChange}
+            value={this.props.value}
+            onChange={this.props.onChange}
             name="UNIQUE_ID_OF_DIV"
             editorProps={{$blockScrolling: 'Infinity'}}
             />
@@ -33,6 +30,10 @@ class Editor extends Component {
 Editor.defaultProps = {
     mode : 'text',
     theme: 'github',
+    onChange: (value) => {
+        console.log('change:\n', value);
+    },
+    value: '//code is new god',
 };
 
 export default Editor;
