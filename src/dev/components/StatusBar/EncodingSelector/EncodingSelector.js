@@ -8,7 +8,7 @@ class EncodingSelector extends Component {
         super(props);
         this.name = 'EncodingSelector';
         this.options = ['UTF-8', 'CP-866', 'CP-1255'];
-        this.selectedOption = 0;
+        this.selectedOption = this.options.findIndex((elem) => {return elem === props.selectedOption;});
     }
     render() {
         return (
@@ -24,6 +24,7 @@ class EncodingSelector extends Component {
 }
 
 EncodingSelector.defaultProps = {
+    selectedOption : 'UTF-8',
     onChange: (event, key, value) => {
         console.log('EncodingSelector', event, key, value);
     },

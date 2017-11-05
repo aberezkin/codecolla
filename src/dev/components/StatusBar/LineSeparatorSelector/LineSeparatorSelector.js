@@ -8,7 +8,7 @@ class LineSeparatorSelector extends Component {
         super(props);
         this.name = 'LineSeparatorSelector';
         this.options = ['CRLF', 'LF', 'CR'];
-        this.selectedOption = 1;
+        this.selectedOption = this.options.findIndex((elem) => {return elem === props.selectedOption;});
     }
     render() {
         return (
@@ -24,6 +24,7 @@ class LineSeparatorSelector extends Component {
 }
 
 LineSeparatorSelector.defaultProps = {
+    selectedOption : 'LF',
     onChange: (event, key, value) => {
         console.log('LineSeparatorSelector', event, key, value);
     },

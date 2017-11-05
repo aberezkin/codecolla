@@ -8,7 +8,7 @@ class ColorSchemeSelector extends Component {
         super(props);
         this.name = 'ColorSchemeSelector';
         this.options = schemes;
-        this.selectedOption = schemes.findIndex((elem) => {return elem === "github";});;
+        this.selectedOption = this.options.findIndex((elem) => {return elem === props.selectedOption;});
     }
     render() {
         return (
@@ -24,6 +24,7 @@ class ColorSchemeSelector extends Component {
 }
 
 ColorSchemeSelector.defaultProps = {
+    selectedOption : 'github',
     onChange: (event, key, value) => {
         console.log(this.name, event, key, value);
     },

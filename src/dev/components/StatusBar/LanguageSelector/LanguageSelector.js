@@ -8,7 +8,7 @@ class LanguageSelector extends Component {
         super(props);
         this.name = 'LanguageSelector';
         this.options = modes;
-        this.selectedOption = modes.findIndex((elem) => {return elem === "Text";});
+        this.selectedOption = this.options.findIndex((elem) => {return elem === props.selectedOption;});
     }
     render() {
         return (
@@ -24,6 +24,7 @@ class LanguageSelector extends Component {
 }
 
 LanguageSelector.defaultProps = {
+    selectedOption: 'text',
     onChange: (event, key, value) => {
         console.log(this.name, event, key, value);
     },
