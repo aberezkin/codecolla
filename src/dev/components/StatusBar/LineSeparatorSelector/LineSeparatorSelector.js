@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import './LanguageSelector.styl';
+import './LineSeparatorSelector.styl';
 import ListSelector from '../../ListSelector/ListSelector'
-import modes from '../../../HighLightLanguages'
 
-class LanguageSelector extends Component {
+
+class LineSeparatorSelector extends Component {
     constructor(props) {
         super(props);
-        this.name = 'LanguageSelector';
-        this.options = modes;
+        this.name = 'LineSeparatorSelector';
+        this.options = ['CRLF', 'LF', 'CR'];
         this.selectedOption = this.options.findIndex((elem) => {return elem === props.selectedOption;});
     }
     render() {
@@ -25,13 +25,13 @@ class LanguageSelector extends Component {
     }
 }
 
-LanguageSelector.defaultProps = {
-    selectedOption: 'text',
+LineSeparatorSelector.defaultProps = {
+    selectedOption : 'LF',
     onChange: (event, key, value) => {
-        console.log(this.name, event, key, value);
+        console.log('LineSeparatorSelector', event, key, value);
     },
     textColor: 'black',
     backgroundColor: 'white',
 };
 
-export default LanguageSelector;
+export default LineSeparatorSelector;
