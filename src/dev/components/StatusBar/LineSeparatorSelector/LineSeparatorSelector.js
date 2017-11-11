@@ -18,6 +18,8 @@ class LineSeparatorSelector extends Component {
                 active={this.selectedOption}
                 onChange={this.props.onChange}
                 MarkSelected={true}
+                textColor={this.props.textColor}
+                backgroundColor={this.props.backgroundColor}
             />
         )
     }
@@ -28,6 +30,8 @@ LineSeparatorSelector.defaultProps = {
     onChange: (event, key, value) => {
         console.log('LineSeparatorSelector', event, key, value);
     },
+    textColor: 'black',
+    backgroundColor: 'white',
 };
 
 export default LineSeparatorSelector;

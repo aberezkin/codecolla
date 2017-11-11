@@ -7,7 +7,6 @@ import languages from '../../HighLightLanguages';
 import themes from '../../ColorSchemes';
 
 languages.forEach((lang) => {
-    lang = lang.toLowerCase();
     require(`brace/mode/${lang}`);
     require(`brace/snippets/${lang}`);
 });
@@ -91,10 +90,14 @@ class App extends Component {
                 </div>
                 <StatusBar
                     style={this.style.statusBar}
-                    valueTheme={this.state.theme}
-                    valueLanguage={this.state.mode}
-                    onChangeTheme={this.onChangeTheme}
-                    onChangeLanguage={this.onChangeMode}
+                    theme={{
+                        value: this.state.theme,
+                        onChange: this.onChangeTheme,
+                    }}
+                    language={{
+                        value: this.state.mode,
+                        onChange: this.onChangeMode,
+                    }}
                 />
             </div>
         )

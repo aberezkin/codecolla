@@ -33,7 +33,7 @@ Editor.defaultProps = {
     onChange: (value) => {
         console.log('change:\n', value);
     },
-    value: '//code is new god',
+    value: '//code is a new God',
 };
 
 export default Editor;

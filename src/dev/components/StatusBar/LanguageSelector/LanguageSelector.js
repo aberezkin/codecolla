@@ -18,6 +18,8 @@ class LanguageSelector extends Component {
                 active={this.selectedOption}
                 onChange={this.props.onChange}
                 MarkSelected={true}
+                textColor={this.props.textColor}
+                backgroundColor={this.props.backgroundColor}
             />
         )
     }
@@ -28,6 +30,8 @@ LanguageSelector.defaultProps = {
     onChange: (event, key, value) => {
         console.log(this.name, event, key, value);
     },
+    textColor: 'black',
+    backgroundColor: 'white',
 };
 
 export default LanguageSelector;
