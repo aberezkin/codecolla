@@ -5,11 +5,6 @@ import LanguageSelector from './LanguageSelector/LanguageSelector';
 import EncodingSelector from './EncodingSelector/EncodingSelector';
 import ColorSchemeSelector from './ColorSchemeSelector/ColorSchemeSelector';
 
-//onChange(event, key, value)
-window.addEventListener('load', ()=> {
-    // document.body.appendChild(styleDiv);
-}, true);
-
 class StatusBar extends Component {
     constructor(props) {
         super(props);
