@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import './LanguageSelector.styl';
+import './EncodingSelector.styl';
 import ListSelector from '../../ListSelector/ListSelector'
-import modes from '../../../HighLightLanguages'
 
-class LanguageSelector extends Component {
+
+class EncodingSelector extends Component {
     constructor(props) {
         super(props);
-        this.name = 'LanguageSelector';
-        this.options = modes;
+        this.name = 'EncodingSelector';
+        this.options = ['UTF-8', 'CP-866', 'CP-1255'];
         this.selectedOption = this.options.findIndex((elem) => {return elem === props.selectedOption;});
     }
     render() {
@@ -25,13 +25,13 @@ class LanguageSelector extends Component {
     }
 }
 
-LanguageSelector.defaultProps = {
-    selectedOption: 'text',
+EncodingSelector.defaultProps = {
+    selectedOption : 'UTF-8',
     onChange: (event, key, value) => {
-        console.log(this.name, event, key, value);
+        console.log('EncodingSelector', event, key, value);
     },
     textColor: 'black',
     backgroundColor: 'white',
 };
 
-export default LanguageSelector;
+export default EncodingSelector;

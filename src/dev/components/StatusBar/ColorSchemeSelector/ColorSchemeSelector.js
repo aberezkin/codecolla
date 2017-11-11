@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import './LanguageSelector.styl';
-import ListSelector from '../../ListSelector/ListSelector'
-import modes from '../../../HighLightLanguages'
+import './ColorSchemeSelector.styl';
+import ListSelector from '../../ListSelector/ListSelector';
+import schemes from '../../../ColorSchemes';
 
-class LanguageSelector extends Component {
+class ColorSchemeSelector extends Component {
     constructor(props) {
         super(props);
-        this.name = 'LanguageSelector';
-        this.options = modes;
+        this.name = 'ColorSchemeSelector';
+        this.options = schemes;
         this.selectedOption = this.options.findIndex((elem) => {return elem === props.selectedOption;});
     }
     render() {
@@ -25,8 +25,8 @@ class LanguageSelector extends Component {
     }
 }
 
-LanguageSelector.defaultProps = {
-    selectedOption: 'text',
+ColorSchemeSelector.defaultProps = {
+    selectedOption : 'github',
     onChange: (event, key, value) => {
         console.log(this.name, event, key, value);
     },
@@ -34,4 +34,4 @@ LanguageSelector.defaultProps = {
     backgroundColor: 'white',
 };
 
-export default LanguageSelector;
+export default ColorSchemeSelector;
