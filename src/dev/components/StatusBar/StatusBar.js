@@ -5,7 +5,7 @@ import LanguageSelector from './LanguageSelector/LanguageSelector';
 import EncodingSelector from './EncodingSelector/EncodingSelector';
 import ColorSchemeSelector from './ColorSchemeSelector/ColorSchemeSelector';
 
-import Connector from '../Input/Connector';
+import Connector from '../Connector/Connector';
 
 class StatusBar extends Component {
     constructor(props) {
