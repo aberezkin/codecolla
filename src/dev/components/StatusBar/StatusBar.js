@@ -5,6 +5,8 @@ import LanguageSelector from './LanguageSelector/LanguageSelector';
 import EncodingSelector from './EncodingSelector/EncodingSelector';
 import ColorSchemeSelector from './ColorSchemeSelector/ColorSchemeSelector';
 
+import Connector from '../Input/Connector';
+
 class StatusBar extends Component {
     constructor(props) {
         super(props);
@@ -54,6 +56,7 @@ class StatusBar extends Component {
         return (
             <div className={StatusBar.name() + ' ace-'+this.state.theme} style={this.props.style}>
                 <div className="Left">
+                    <Connector/>
                 </div>
                 <div className="Right">
                     <LineSeparatorSelector

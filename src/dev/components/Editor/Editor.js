@@ -5,7 +5,6 @@ import PeerControl from '../Peers/Peer.js';
 import ChangeEvent from './ChangeEvent';
 import './Editor.styl';
 
-
 window.peer = new PeerControl();
 window.boolForOnChange = true;
 
