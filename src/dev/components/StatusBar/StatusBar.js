@@ -5,6 +5,8 @@ import LanguageSelector from './LanguageSelector/LanguageSelector';
 import EncodingSelector from './EncodingSelector/EncodingSelector';
 import ColorSchemeSelector from './ColorSchemeSelector/ColorSchemeSelector';
 
+import Connector from '../Connector/Connector';
+
 class StatusBar extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +18,6 @@ class StatusBar extends Component {
         styleDiv.setAttribute('class', props.theme.value);
 
         let style = getComputedStyle(styleDiv);
-        console.log(style);
 
         this.state = {
             theme : props.theme.value,
@@ -38,13 +39,10 @@ class StatusBar extends Component {
 
         let styleDiv = document.getElementById(StatusBar.styleId());
         styleDiv.setAttribute('class', 'ace-'+value);
-
-        console.log('status bar theme: .ace-' + value);
         this.setState({
             theme : value
         });
         let style = getComputedStyle(styleDiv);
-        console.log(style);
         this.setState({
             textColor: style.color,
             backgroundColor: style.backgroundColor
@@ -54,6 +52,7 @@ class StatusBar extends Component {
         return (
             <div className={StatusBar.name() + ' ace-'+this.state.theme} style={this.props.style}>
                 <div className="Left">
+                    <Connector/>
                 </div>
                 <div className="Right">
                     <LineSeparatorSelector
