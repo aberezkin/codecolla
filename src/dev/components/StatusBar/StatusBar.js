@@ -18,7 +18,6 @@ class StatusBar extends Component {
         styleDiv.setAttribute('class', props.theme.value);
 
         let style = getComputedStyle(styleDiv);
-        console.log(style);
 
         this.state = {
             theme : props.theme.value,
@@ -40,13 +39,10 @@ class StatusBar extends Component {
 
         let styleDiv = document.getElementById(StatusBar.styleId());
         styleDiv.setAttribute('class', 'ace-'+value);
-
-        console.log('status bar theme: .ace-' + value);
         this.setState({
             theme : value
         });
         let style = getComputedStyle(styleDiv);
-        console.log(style);
         this.setState({
             textColor: style.color,
             backgroundColor: style.backgroundColor
