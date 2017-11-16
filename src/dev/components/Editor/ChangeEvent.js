@@ -7,22 +7,24 @@ class ChangeEvent {
     }
 
     packEventMoveCursor() {
-        var e = {
+        let sendPack = [];
+        sendPack.push(JSON.stringify({
             action: 'move',
             row: this.event.row,
             col: this.event.col
-        };
+        }));
 
-        return JSON.stringify(e); 
+        return sendPack; 
     }
 
     packEventChatMsg() {
-        var e = {
+        let sendPack = [];
+        sendPack.push(JSON.stringify({
             action: 'chat',
             text: this.event
-        };
+        }));
 
-        return JSON.stringify(e); 
+        return sendPack; 
     }
 
     packEventOnChange() {
@@ -41,6 +43,16 @@ class ChangeEvent {
     unpackEvent() {
         console.log('estr: ', this.event);
         return JSON.parse(this.event);  
+    }
+    
+    unpackEventArray() {
+        console.log('estr: ', this.event);
+        let res = [];
+        for (var i = 0; i < this.event.length; ++i) {
+            console.log('estr: ', this.event[i]);
+            res.push(JSON.parse(this.event[i]));
+        }
+        return res;  
     }
 }
 

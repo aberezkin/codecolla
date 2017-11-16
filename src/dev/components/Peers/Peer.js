@@ -28,33 +28,14 @@ class PeerControl {
                     console.log("Connected with peer: ");
                     conn.on('data', function(data) {
                         event = new ChangeEvent(data);
-                        var e = event.unpackEvent();
-                        //console.log("e: " + e.text);
-                        if (e.action == 'insert') {
-                            //console.log('mouse', window.editor.getCursorPosition());
-                            console.log('mouse', e.text[0]);
-                            for (var i = 0; i < e.text.length; i++) {
-                                var prnt = '';
-                                if (e.text.length > 1 && i < e.text.length) {
-                                    prnt = e.text[i] == '\r' ? '\n' : e.text[i] +'\n';
-                                } else {
-                                    prnt = e.text[i] == '\r' ? '\n' : e.text[i];
-                                }
-                                window.boolForOnChange = false;
-                                window.editor.session.insert({row: e.startRow, 
-                                    column: e.startCol}, prnt);
-                            }
-                        }
-                        if (e.action == 'remove') {
-                            var rng = {start: {row: e.startRow, column: e.startCol}, end: {row: e.endRow, column: e.endCol}};
-                            console.log(rng);
-                            window.editor.session.remove(rng);
-                                            }
-                        if (e.action == 'chat') {
+                        var e = event.unpackEventArray();
+                        if (e[0].action == 'chat') {
                             console.log(conn.peer + ": " + e.text);
                         }
-                        if (e.action == 'move') {
+                        if (e[0].action == 'move') {
         
+                        } else {
+                            window.crdt.insertEvent(e);
                         }
                     });
                     conn.on('error',function(){
@@ -77,33 +58,14 @@ class PeerControl {
             console.log("Connected with peer: ");
             conn.on('data', function(data) {
                 event = new ChangeEvent(data);
-                var e = event.unpackEvent();
-                //console.log("e: " + e.text);
-                if (e.action == 'insert') {
-                    //console.log('mouse', window.editor.getCursorPosition());
-                    console.log('mouse', e.text[0]);
-                    for (var i = 0; i < e.text.length; i++) {
-                        var prnt = '';
-                        if (e.text.length > 1 && i < e.text.length) {
-                            prnt = e.text[i] == '\r' ? '\n' : e.text[i] +'\n';
-                        } else {
-                            prnt = e.text[i] == '\r' ? '\n' : e.text[i];
-                        }
-                        window.boolForOnChange = false;
-                        window.editor.session.insert({row: e.startRow, 
-                            column: e.startCol}, prnt);
-                    }
-                }
-                if (e.action == 'remove') {
-                    var rng = {start: {row: e.startRow, column: e.startCol}, end: {row: e.endRow, column: e.endCol}};
-                    console.log(rng);
-                    window.editor.session.remove(rng);
-                                    }
-                if (e.action == 'chat') {
+                var e = event.unpackEventArray();
+                if (e[0].action == 'chat') {
                     console.log(conn.peer + ": " + e.text);
                 }
-                if (e.action == 'move') {
+                if (e[0].action == 'move') {
 
+                } else {
+                    window.crdt.insertEvent(e);
                 }
             });
             conn.on('error',function(){
@@ -128,7 +90,7 @@ class PeerControl {
 			connections[i].send(msg);
 		}
 		
-		console.log("send: "+msg);
+		//console.log("send: "+msg);
     }
     
     
