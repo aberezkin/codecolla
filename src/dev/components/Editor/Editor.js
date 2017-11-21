@@ -3,11 +3,12 @@ import brace from 'brace';
 import AceEditor from 'react-ace';
 import PeerControl from '../Peers/Peer.js';
 import ChangeEvent from './ChangeEvent';
+import CRDTControl from '../CRDT/CRDTControl.js';
 import './Editor.styl';
 
 window.peer = new PeerControl();
 window.boolForOnChange = true;
-
+window.crdt = new CRDTControl();
 
 function onCursorChange(selection, event) {
     console.log("E:", event);
@@ -27,15 +28,27 @@ class Editor extends Component {
 		if (window.boolForOnChange) {
 			let event = new ChangeEvent(newEvent);
 			var eventStr = event.packEventOnChange();
-			console.log('event', eventStr);
+			//console.log('event', eventStr);
+            event = new ChangeEvent(eventStr);
+            var e = event.unpackEvent();
+            let msg = [];
+            if (newEvent.action == 'insert') {
+                msg = window.crdt.insert(e);
+            }
+            if (newEvent.action == 'remove') {
+                msg = window.crdt.remove(e);
+            }
 
-			window.peer.broadcastMessage(eventStr);
+			window.peer.broadcastMessage(msg);
 		} else {
-			window.boolForOnChange = true;
+			//window.boolForOnChange = true;
 		}
 		this.props.onChange(newValue, newEvent);
-		//const range = this.selection.getRange();
-		//this.session.replace(range, text);
+
+        console.log('__________________________');
+        for (var [key, value] of window.crdt.atoms) {
+            console.log(key+' '+value.y+' : '+value.text+'\n');
+        }
 	}
 	
     render() {
@@ -47,6 +60,12 @@ class Editor extends Component {
             onLoad={(ed) => {
                 window.editor = ed;
                 window.editor.session.setNewLineMode("unix");
+
+                window.crdt.init();
+                console.log('__________________________');
+                for (var [key, value] of window.crdt.atoms) {
+                    console.log(key+' '+value.y+' : '+value.text+'\n');
+                }
                 //var cursorPosition = editor.getCursorPosition();
                 //var cursorPosition = {row: 5, column: 5};
                 //console.log('mouse', editor.session);
