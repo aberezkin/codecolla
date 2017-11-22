@@ -4,18 +4,16 @@ import AceEditor from 'react-ace';
 import PeerControl from '../Peers/Peer.js';
 import ChangeEvent from './ChangeEvent';
 import CRDTControl from '../CRDT/CRDTControl.js';
+import CursorManager from '../Peers/CursorManager';
 import './Editor.styl';
+
+const { Range } = ace.acequire('ace/range');
 
 window.peer = new PeerControl();
 window.boolForOnChange = true;
+window.checkbox = false;
 window.crdt = new CRDTControl();
-
-function onCursorChange(selection, event) {
-    console.log("E:", event);
-    console.log("S:", selection);
-    console.log('mouse', window.editor.editor.getCursorPosition());
-}
-
+window.cursors = new CursorManager();
 
 class Editor extends Component {
     constructor(props) {
@@ -24,7 +22,6 @@ class Editor extends Component {
 	}
     
 	onChange(newValue, newEvent) {
-		//console.log('!!!! ', newEvent);
 		if (window.boolForOnChange) {
 			let event = new ChangeEvent(newEvent);
 			var eventStr = event.packEventOnChange();
@@ -45,18 +42,15 @@ class Editor extends Component {
 		}
 		this.props.onChange(newValue, newEvent);
 
-        console.log('__________________________');
-        for (var [key, value] of window.crdt.atoms) {
-            console.log(key+' '+value.y+' : '+value.text+'\n');
-        }
+        //console.log('__________________________');
+        //for (var [key, value] of window.crdt.atoms) {
+        //    console.log(key+' '+value.y+' : '+value.text+'\n');
+        //}
 	}
 	
     render() {
-        //getMethods(this.aew);
-        //console.log('mouse', this.refs.ace.editor);
         return (
             <AceEditor
-            onCursorChange={onCursorChange}
             onLoad={(ed) => {
                 window.editor = ed;
                 window.editor.session.setNewLineMode("unix");
@@ -66,6 +60,21 @@ class Editor extends Component {
                 for (var [key, value] of window.crdt.atoms) {
                     console.log(key+' '+value.y+' : '+value.text+'\n');
                 }
+                
+                //OnCursorChange
+                window.editor.selection.on('changeCursor', function() {
+                    let pos = window.editor.getCursorPosition();
+                    console.log('mouse', window.peer.ID);
+
+                    let e = {
+                        pos: pos,
+                        peer: window.peer.ID
+                    }
+                    let event = new ChangeEvent(e);
+                    var eventStr = event.packEventMoveCursor();
+                    window.peer.broadcastMessage(eventStr);
+                });
+
                 //var cursorPosition = editor.getCursorPosition();
                 //var cursorPosition = {row: 5, column: 5};
                 //console.log('mouse', editor.session);

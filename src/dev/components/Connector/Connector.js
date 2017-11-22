@@ -23,6 +23,12 @@ class Connector extends Component {
         this.msg = evt.target.value;
         console.log("msg "+this.msg);
     }
+
+    handleCheckboxChange(evt) {
+        window.checkbox = evt.target.checked;
+        console.log('________ '+window.checkbox +' ' + evt.target.checked);
+    }
+
     static name() {
         return 'Connector';
     }
@@ -32,9 +38,13 @@ class Connector extends Component {
                <input type="text" id="rid"
                     placeholder="Someone else's id"
                     onChange={this.handleChange}/>
-               <button onClick={ () => this.peer.getConnect(this.addPeer)}>
-                   CONNECT
+               <button onClick={ () => {
+                        this.peer.getConnect(this.addPeer)
+                    }}>
+                    CONNECT
                </button>
+               <input type="checkbox" id="cb" name="admin"
+                    onChange={this.handleCheckboxChange} />
                {/*<input type="text" id="msg" */}
                     {/*placeholder="Text"*/}
                     {/*onChange={this.handleChangeMsg}/>*/}

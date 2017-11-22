@@ -10,8 +10,8 @@ class ChangeEvent {
         let sendPack = [];
         sendPack.push(JSON.stringify({
             action: 'move',
-            row: this.event.row,
-            col: this.event.col
+            peer: this.event.peer,
+            pos: this.event.pos
         }));
 
         return sendPack; 
@@ -22,6 +22,16 @@ class ChangeEvent {
         sendPack.push(JSON.stringify({
             action: 'chat',
             text: this.event
+        }));
+
+        return sendPack; 
+    }
+
+    packEventNewPeer() {
+        let sendPack = [];
+        sendPack.push(JSON.stringify({
+            action: 'addpeer',
+            data: this.event
         }));
 
         return sendPack; 
