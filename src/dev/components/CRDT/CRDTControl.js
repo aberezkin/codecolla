@@ -1,0 +1,251 @@
+import AceEditor from 'react-ace';
+
+class CRDTControl {
+    constructor() {
+        this.max = 65536; // max ID
+        this.min = 0;     // min ID
+    }
+
+    init() {
+        var text =  window.editor.getSession().getValue();
+        var textToStrings = text.split('\n');
+        
+        this.atoms = new Map();
+        /*this.atoms.set(this.min, {
+            id: this.min,
+            y: -1,
+            text: '', 
+            time: 0
+        });
+        this.atoms.set(this.max, {
+            id: this.max,
+            y: -2,
+            text: '', 
+            time: 0
+        });*/
+
+        for(var i = 0; i < textToStrings.length; ++i) {
+            let ID = '';
+            //ASCII 33 - 126
+            for (let i = 0; i < 15; ++i) {
+                ID += String.fromCharCode(Math.floor(Math.random() * (127 - 33)+33));
+            }
+            var e = {
+                id: ID,
+                y: i,
+                text: textToStrings[i], 
+                time: 1
+            };
+            this.atoms.set(ID, e);
+        }
+
+    }
+    
+    getAtomData(a) {
+        var e = {
+            id: a.id,
+            y: a.y,
+            text: a.text,
+            time: a.time
+        };
+        return e;
+    }
+//e.endCol < window.editor.session.getLine(e.endRow-(e.endRow - e.startRow)).length && 
+    insert(e) {
+        let sendPack = [];
+        if (e.startCol == 0 && e.startRow != e.endRow) {
+            
+            let endID = 0;
+            for (var [key, value] of this.atoms) {
+                if (value.y == e.startRow) {
+                    endID = key;
+                }
+            }
+            var a = this.atoms.get(endID);
+            a.y += (e.endRow - e.startRow);
+            a.text = window.editor.session.getLine(a.y);
+            this.atoms.set(a.id, a);
+            sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(a)}));
+
+            //console.log(startID+' '+endID+'\n');
+            for (let [key, value] of this.atoms) {
+                if (value.y > e.endRow && value.y > 0) {
+                    var a = this.atoms.get(key);
+                    a.y += (e.endRow - e.startRow);
+                    this.atoms.set(key, a);
+                }
+            }
+            for (let i = 0; i < e.text.length-1; ++i) {
+                let ID = '';
+                //ASCII 33 - 126
+                for (let i = 0; i < 15; ++i) {
+                    ID += String.fromCharCode(Math.floor(Math.random() * (127 - 33)+33));
+                }
+                this.atoms.set(ID, {
+                    id: ID,
+                    y: e.startRow+i,
+                    text: window.editor.session.getLine(e.startRow+i), 
+                    time: 1
+                });
+                sendPack.push(JSON.stringify({action : 'insert', data : this.getAtomData(this.atoms.get(ID))}));
+            }
+        } else {//change first
+            let startID = 0;
+            for (var [key, value] of this.atoms) {
+                if (value.y == e.startRow) {
+                    startID = key;
+                }
+            }
+            var a = this.atoms.get(startID);
+            a.text = window.editor.session.getLine(a.y);
+            this.atoms.set(a.id, a);
+            sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(a)}));
+
+            for (var [key, value] of this.atoms) {
+                if (value.y > e.startRow) {
+                    var a = this.atoms.get(key);
+                    a.y += (e.endRow - e.startRow);
+                    this.atoms.set(key, a);
+                }
+            }
+            for (var i = 1; i < e.text.length; ++i) {
+                var ID = '';
+                //ASCII 33 - 126
+                for (let i = 0; i < 15; ++i) {
+                    ID += String.fromCharCode(Math.floor(Math.random() * (127 - 33)+33));
+                }
+                this.atoms.set(ID, {
+                    id: ID,
+                    y: e.startRow+i,
+                    text: window.editor.session.getLine(e.startRow+i), 
+                    time: 1
+                });
+                sendPack.push(JSON.stringify({action : 'insert', data : this.getAtomData(this.atoms.get(ID))}));
+                startID = ID;
+            }
+        }
+        //console.log(sendPack);
+        return sendPack;
+    }
+
+    remove(e) {
+        let sendPack = [];
+        if (e.startCol == 0 && 
+            e.endCol != window.editor.session.getLine(e.endRow-(e.endRow - e.startRow)).length) {
+                let endID = 0;
+                for (var [key, value] of this.atoms) {
+                    if (value.y == e.endRow) {
+                        endID = key;
+                    }
+                }
+                var a = this.atoms.get(endID);
+                a.y -= (e.endRow - e.startRow);
+                a.text = window.editor.session.getLine(a.y);
+                this.atoms.set(a.id, a);
+                sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(a)}));
+
+                for (var [key, value] of this.atoms) {
+                    if (value.y >= e.startRow && value.y < e.endRow && key != a.id) {
+                        sendPack.push(JSON.stringify({action : 'remove', data : this.getAtomData(this.atoms.get(key))}));
+                        this.atoms.delete(key);
+                    }
+                }
+                for (var [key, value] of this.atoms) {
+                    if (value.y > e.endRow) {
+                        var a = this.atoms.get(key);
+                        a.y -= (e.endRow - e.startRow);
+                        this.atoms.set(key, a);
+                    }
+                }
+        } else {
+            let startID = 0;
+            for (var [key, value] of this.atoms) {
+                if (value.y == e.startRow) {
+                    startID = key;
+                }
+            }
+            var a = this.atoms.get(startID);
+            a.text = window.editor.session.getLine(a.y);
+            this.atoms.set(a.id, a);
+            sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(a)}));
+            
+            for (var [key, value] of this.atoms) {
+                if (value.y > e.startRow && value.y <= e.endRow && key != a.id) {
+                    sendPack.push(JSON.stringify({action : 'remove', data : this.getAtomData(this.atoms.get(key))}));
+                    this.atoms.delete(key);
+                }
+            }
+            for (var [key, value] of this.atoms) {
+                if (value.y > e.endRow) {
+                    var a = this.atoms.get(key);
+                    a.y -= (e.endRow - e.startRow);
+                    this.atoms.set(key, a);
+                }
+            }
+        }
+        return sendPack;
+    }
+
+    insertEvent(e) {
+        e.sort(function(a, b) {
+            return a.data.y - b.data.y;
+        });
+        console.log("SORTED>> "+e[0].data.y + " " + e[e.length-1].data.y);
+
+        window.boolForOnChange = false;
+        for (var i = 0; i < e.length; ++i) {
+            if (e[i].action == 'insert') {
+                this.atoms.set(e[i].data.id, e[i].data);
+                for (var [key, value] of this.atoms) {
+                    if (value.y > e[i].data.y) {
+                        var a = this.atoms.get(key);
+                        a.y ++;
+                        this.atoms.set(key, a);
+                    }
+                }
+                let cursorPosition = editor.getCursorPosition();
+
+                window.editor.session.insert({row:e[i].data.y, column:0}, e[i].data.text + 
+                    ((i < e.length-1) ? '\n' : ''));
+                editor.selection.moveTo(cursorPosition.row++, cursorPosition.col);
+            }
+            if (e[i].action == 'remove') {
+                this.atoms.delete(e[i].data.id);
+                for (var [key, value] of this.atoms) {
+                    if (value.y > e[i].data.y) {
+                        var a = this.atoms.get(key);
+                        a.y--;
+                        this.atoms.set(key, a);
+                    }
+                }
+                let cursorPosition = editor.getCursorPosition();
+                
+                let rng = {start: {row: (e[i].data.y>0)?e[i].data.y-1:e[i].data.y, column: (e[i].data.y>0)?Number.MAX_VALUE:0}, 
+                    end: {row: e[i].data.y, column: Number.MAX_VALUE}};
+                //console.log('------>> '+ window.boolForOnChange);
+                window.editor.session.remove(rng);
+                //console.log('------>> '+ window.boolForOnChange);
+                editor.selection.moveTo(cursorPosition.row--, cursorPosition.col);
+            }
+            if (e[i].action == 'replace') {
+                this.atoms.set(e[i].data.id, e[i].data);
+
+                let cursorPosition = editor.getCursorPosition();
+
+                var rng = {start: {row: e[i].data.y, column: 0}, 
+                    end: {row: e[i].data.y, column: Number.MAX_VALUE}};
+                //console.log('------>> '+ window.boolForOnChange);
+                if ((i > 0 && e[i-1].action == 'remove') || (i < e.length-1 && e.length > 1 && e[i+1].action == 'remove')) {
+                    window.editor.session.replace(rng, e[i].data.text);
+                } else {
+                    window.editor.session.replace(rng, e[i].data.text + ((i < e.length-1 && e.length > 1) ? '\n' : ''));
+                }
+                //console.log('------>> '+ window.boolForOnChange);
+                editor.selection.moveTo(cursorPosition.row, cursorPosition.col-e[i].data.text.length);
+            }
+        }
+        window.boolForOnChange = true;
+    }
+}
+
+export default CRDTControl;
