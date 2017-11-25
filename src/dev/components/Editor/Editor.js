@@ -2,87 +2,174 @@ import React, {Component} from 'react';
 import brace from 'brace';
 import AceEditor from 'react-ace';
 import PeerControl from '../Peers/Peer.js';
+import {ADD_CURSOR, DELETE_CURSOR, MOVE_CURSOR} from '../Peers/Peer.js';
 import ChangeEvent from './ChangeEvent';
 import CRDTControl from '../CRDT/CRDTControl.js';
-import CursorManager from '../Peers/CursorManager';
 import './Editor.styl';
+
 
 const { Range } = ace.acequire('ace/range');
 
-window.peer = new PeerControl();
-window.boolForOnChange = true;
-window.checkbox = false;
-window.crdt = new CRDTControl();
-window.cursors = new CursorManager();
+//window.peer = new PeerControl();
+//window.boolForOnChange = true;
+//window.checkbox = false;
+//window.crdt = new CRDTControl();
+//window.cursors = new CursorManager();
 
 class Editor extends Component {
     constructor(props) {
         super(props);
-		this.onChange = this.onChange.bind(this);
-	}
+
+        this.cursors= new Map();
+
+        this.onChange = this.onChange.bind(this);
+        this.onLoad = this.onLoad.bind(this);
+        this.onCursorChange = this.onCursorChange.bind(this);
+
+        this.addCursor = this.addCursor.bind(this);
+        this.delCursor = this.delCursor.bind(this);
+        this.moveCursor = this.moveCursor.bind(this);
+
+        this.crdt = new CRDTControl();
+        this.crdt.setIsPermissionToTransferFunc(this.props.setIsPermissionToTransfer);
+
+        this.isCursorTransfer = true;
+    }
     
 	onChange(newValue, newEvent) {
-		if (window.boolForOnChange) {
-			let event = new ChangeEvent(newEvent);
+        //console.log(this.props.getIsPermissionToTransfer.call());
+		if (this.props.getIsPermissionToTransfer.call()) {
+			console.log('ONCHANGE: ',this.props.getOnChangeStatus);
+            let event = new ChangeEvent(newEvent);
 			var eventStr = event.packEventOnChange();
-			//console.log('event', eventStr);
             event = new ChangeEvent(eventStr);
             var e = event.unpackEvent();
             let msg = [];
             if (newEvent.action == 'insert') {
-                msg = window.crdt.insert(e);
+                msg = this.crdt.insert(e);
+				console.log(msg);
+                this.props.peerControl.broadcastMessage(msg);
+                //msg = window.crdt.insert(e);
             }
             if (newEvent.action == 'remove') {
-                msg = window.crdt.remove(e);
+                msg = this.crdt.remove(e);
+                this.props.peerControl.broadcastMessage(msg);
+                //msg = window.crdt.remove(e);
             }
 
-			window.peer.broadcastMessage(msg);
-		} else {
-			//window.boolForOnChange = true;
+			//window.peer.broadcastMessage(msg);
 		}
 		this.props.onChange(newValue, newEvent);
+    }
+    
+    onCursorChange() {
+        let pos = this.editor.getCursorPosition();
+        let e = {
+            pos: pos,
+            peer: this.props.peerControl.ID
+        }
+        let event = new ChangeEvent(e);
+        var eventStr = event.packEventMoveCursor();
+        this.props.peerControl.broadcastMessage(eventStr);
+    }
+    
+    onLoad(ed) {
+        this.editor = ed;
+		this.crdt.setEditor(ed);
 
-        //console.log('__________________________');
-        //for (var [key, value] of window.crdt.atoms) {
-        //    console.log(key+' '+value.y+' : '+value.text+'\n');
-        //}
+        
+        //window.editor = ed;
+        this.editor.session.setNewLineMode("unix");
+        console.log('!!!!',this.editor.getSession().getValue());
+        this.crdt.init();
+        
+        //OnCursorChange
+        this.editor.selection.on('changeCursor', this.onCursorChange);
+    }
+
+    addCursor(peer, pos) {
+        var marker = {}
+        marker.cursors = [pos]
+        marker.update = function(html, markerLayer, session, config) {
+            var start = config.firstRow, end = config.lastRow;
+            //var cursors = this.cursors
+            for (let i = 0; i < this.cursors.length; i++) {
+                let pos = this.cursors[i];
+                console.log(this.cursors);
+                if (pos.row < start) {
+                    continue
+                } else if (pos.row > end) {
+                    break
+                } else {
+                    // compute cursor position on screen
+                    // this code is based on ace/layer/marker.js
+                    var screenPos = session.documentToScreenPosition(pos)
+        
+                    var height = config.lineHeight;
+                    var width = config.characterWidth;
+                    var top = markerLayer.$getTop(screenPos.row, config);
+                    var left = markerLayer.$padding + screenPos.column * width;
+                    // can add any html here
+                    html.push(
+                        "<div style='",
+                        "position: absolute;",
+                        "border-left: 2px solid gold;",
+                        "height:", height, "px;",
+                        "top:", top, "px;",
+                        "left:", left, "px; width:", width, "px'></div>"
+                    );
+                }
+            }
+        }
+        marker.redraw = function() {
+           this.session._signal("changeFrontMarker");
+        }
+        marker.addCursor = function() {
+            marker.redraw();
+        }
+        marker.session = this.editor.session;
+        marker.session.addDynamicMarker(marker, true);
+        console.log('Cursor: '+peer + ' ' + marker.id);
+        this.cursors.set(peer, marker.id);
+    }
+
+    delCursor(peer) {
+        console.log('__cursor: '+peer + ' ' + this.cursors.get(peer));
+        this.editor.session.removeMarker(this.cursors.get(peer));
+        this.cursors.delete(peer);
+    }
+
+    moveCursor(peer, pos) {
+        console.log('cursor change!',this.isCursorTransfer);
+        this.delCursor(peer);
+        this.addCursor(peer, pos);
+    }
+	
+	handleEvent(e) {
+		console.log("Handling event: ", e);
+		this.crdt.insertEvent(e);
 	}
 	
+	handleCursorEvent(e) {
+		console.log(e);
+		switch (e.type) {
+			case "ADD_CURSOR":
+                this.addCursor(e.peerId, e.position);
+                break;
+			case "DELETE_CURSOR":
+                this.delCursor(e.peerId);
+                break;
+			case "MOVE_CURSOR":
+                this.moveCursor(e.peerId, e.position);
+                break;
+			default: return;
+		}
+	}
+
     render() {
         return (
             <AceEditor
-            onLoad={(ed) => {
-                window.editor = ed;
-                window.editor.session.setNewLineMode("unix");
-
-                window.crdt.init();
-                console.log('__________________________');
-                for (var [key, value] of window.crdt.atoms) {
-                    console.log(key+' '+value.y+' : '+value.text+'\n');
-                }
-                
-                //OnCursorChange
-                window.editor.selection.on('changeCursor', function() {
-                    let pos = window.editor.getCursorPosition();
-                    console.log('mouse', window.peer.ID);
-
-                    let e = {
-                        pos: pos,
-                        peer: window.peer.ID
-                    }
-                    let event = new ChangeEvent(e);
-                    var eventStr = event.packEventMoveCursor();
-                    window.peer.broadcastMessage(eventStr);
-                });
-
-                //var cursorPosition = editor.getCursorPosition();
-                //var cursorPosition = {row: 5, column: 5};
-                //console.log('mouse', editor.session);
-                
-                //cursorPosition = editor.getCursorPosition();
-                //window.editor.session.insert({row: 0, column: 0},"a");
-                //editor.selection.moveTo(0, 0);
-            }}
+            onLoad={this.onLoad}
             mode={this.props.mode}
             theme={this.props.theme}
             width={'100%'}

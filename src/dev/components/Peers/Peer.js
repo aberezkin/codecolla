@@ -2,11 +2,14 @@ import AceEditor from 'react-ace';
 import './peerjs.js';
 
 import ChangeEvent from '../Editor/ChangeEvent';
-import CursorManager from './CursorManager';
 
 var remotePeerIds = [];
 
 var connections = [];
+
+export const ADD_CURSOR = "ADD_CURSOR";
+export const DELETE_CURSOR = "DELETE_CURSOR";
+export const MOVE_CURSOR = "MOVE_CURSOR";
 
 class PeerControl {
 
@@ -18,74 +21,86 @@ class PeerControl {
         this.getConnect = this.getConnect.bind(this);
         this.broadcastMessage = this.broadcastMessage.bind(this);
         
-        this.peer.on('open', function(id) {
-            window.peer.ID = id;
+        this.peer.on('open', (id) => {
+            this.ID = id;
             console.log('pid', id);
         });  
           
-        this.peer.on('connection', function(conn) {
-            remotePeerIds.push(conn.peer);
-            
-                conn.on('open', function() {
-                    console.log("Connected with peer: "+conn.peer);
-                    if (window.checkbox) {
-                        let evnt = new ChangeEvent(conn.peer);
-                        let strEvnt = evnt.packEventNewPeer();
-                        window.peer.broadcastMessage(strEvnt);
-                    }
-                    conn.on('data', function(data) {
-                        event = new ChangeEvent(data);
-                        var e = event.unpackEventArray();
-                        if (e[0].action == 'chat') {
-                            console.log(conn.peer + ": " + e.text);
-                        } else if (e[0].action == 'move') {
-                            window.cursors.move(e[0].peer, e[0].pos);
-                        } else if (e[0].action == 'addpeer') {
-                            this.getConnect(e[0].data);
-                        } else {
-                            window.crdt.insertEvent(e);
-                        }
-                    });
-                    conn.on('error',function(){
-                        alert(conn.peer + ' : ERROR.');
-                        window.cursors.del(conn.peer); 
-                    });
-        
-                    conn.on('close', function(err){ 
-                        alert(conn.peer + ' has left the chat.');
-                        window.cursors.del(conn.peer);
-                    });
-                    
-                    connections.push(conn);
-                });
+        this.peer.on('connection', (conn) => {
+            this.handleConnection(conn);
         });
     }
 
+	setEventHandler(eventHandler) {
+		this.eventHandler = eventHandler;
+	}
+	
+	setCursorEventHandler(cursorEventHandler) {
+		this.cursorEventHandler = cursorEventHandler;
+    }
+    
+    setCheckboxStatusHandler(checkboxStatusHandler) {
+		this.getCheckboxStatus = checkboxStatusHandler;
+	}
+
     handleConnection(conn) {
         remotePeerIds.push(conn.peer);
-        conn.on('open', function() {
-            console.log("_Connected with peer: ");
-            conn.on('data', function(data) {
+        conn.on('open', () => {
+            console.log("Connected with peer: ",this.getCheckboxStatus);
+            //if (window.checkbox) {
+            console.log('CHECKBOX status',this.getCheckboxStatus());
+            if (this.getCheckboxStatus.call()) {
+                let evnt = new ChangeEvent(conn.peer);
+                let strEvnt = evnt.packEventNewPeer();
+                this.broadcastMessage(strEvnt);
+            }
+			
+            conn.on('data', (data) => {
                 event = new ChangeEvent(data);
                 var e = event.unpackEventArray();
                 if (e[0].action == 'chat') {
                     console.log(conn.peer + ": " + e.text);
                 } else if (e[0].action == 'move') {
-                    window.cursors.move(e[0].peer, e[0].pos);
+                    this.cursorEventHandler({
+						type: MOVE_CURSOR, 
+						peerId: e[0].peer, 
+						position: e[0].pos
+                        });
+                    console.log(e[0].pos);
                 } else if (e[0].action == 'addpeer') {
-                    window.peer.getConnect(e[0].data);
+                    this.getConnect(e[0].data);
                 } else {
-                    window.crdt.insertEvent(e);
+					console.log(this.eventHandler);
+                    this.eventHandler(e);
                 }
             });
-            conn.on('error',function(){
+			
+            conn.on('error', () => {
                 alert(conn.peer + ' : ERROR.');
-                window.cursors.del(conn.peer); 
+				this.cursorEventHandler({
+					type: DELETE_CURSOR, 
+					peerId: conn.peer
+                    });
+                for (let i = 0; i < connections.length; ++i) {
+                    if (connections[i].peer == conn.peer) {
+                        connections.splice(i, 1);
+                        break;
+                    }
+                }
             });
 
-            conn.on('close', function(err){ 
+            conn.on('close', (err) => { 
                 alert(conn.peer + ' has left the chat.');
-                window.cursors.del(conn.peer);
+                this.cursorEventHandler({
+					type: DELETE_CURSOR, 
+					peerId: conn.peer
+                    });
+                for (let i = 0; i < connections.length; ++i) {
+                    if (connections[i].peer == conn.peer) {
+                        connections.splice(i, 1);
+                        break;
+                    }
+                }
             });
             
             connections.push(conn);
@@ -95,16 +110,17 @@ class PeerControl {
     getConnect(id) {
         var conn = this.peer.connect(id);
         this.handleConnection(conn);
-
-        window.cursors.add(id, {row: 0, column: 0});
+		this.cursorEventHandler({
+					type: ADD_CURSOR,
+					peerId: conn.peer,
+					position: {row: 0, column: 0}
+					});
     }
 
     broadcastMessage(msg) {
-		for(var i=0;i<connections.length;i++){
+		for (var i=0;i<connections.length;i++) {
 			connections[i].send(msg);
 		}
-		
-		//console.log("send: "+msg);
     }
     
     

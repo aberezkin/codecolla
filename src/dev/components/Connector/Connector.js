@@ -4,14 +4,13 @@ import ChangeEvent from '../Editor/ChangeEvent';
 import './Connector.styl';
 
 class Connector extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.addPeed = '';
         this.msg = '';
-        this.peer = window.peer;
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeMsg = this.handleChangeMsg.bind(this);
-
+        this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     }
 
     handleChange(evt) {  
@@ -25,8 +24,8 @@ class Connector extends Component {
     }
 
     handleCheckboxChange(evt) {
-        window.checkbox = evt.target.checked;
-        console.log('________ '+window.checkbox +' ' + evt.target.checked);
+        //console.log(this.props.setCheckboxStatus, evt.target.checked);
+        this.props.setCheckboxStatus(evt.target.checked);
     }
 
     static name() {
@@ -39,7 +38,8 @@ class Connector extends Component {
                     placeholder="Someone else's id"
                     onChange={this.handleChange}/>
                <button onClick={ () => {
-                        this.peer.getConnect(this.addPeer)
+						this.props.onConnect(this.addPeer);
+                        //this.peer.getConnect(this.addPeer)
                     }}>
                     CONNECT
                </button>

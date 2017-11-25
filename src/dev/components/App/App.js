@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import Editor from '../Editor/Editor';
 import StatusBar from '../StatusBar/StatusBar';
+import PeerControl from '../Peers/Peer.js';
+import CRDTControl from '../CRDT/CRDTControl.js';
 import './App.styl';
 
 import languages from '../../HighLightLanguages';
 import themes from '../../ColorSchemes';
+
+import { connect } from 'react-redux'
 
 languages.forEach((lang) => {
     require(`brace/mode/${lang}`);
@@ -50,7 +54,33 @@ class App extends Component {
         this.onChangeMode = this.onChangeMode.bind(this);
         this.onChangeTheme = this.onChangeTheme.bind(this);
         this.onChange = this.onChange.bind(this);
+
+        //this.crdt = new CRDTControl(this.props.onChange);
+		this.isPermissionToTransfer = true;
+        this.checkboxStatus = false;
+        this.peerControl = new PeerControl();
     }
+	
+	componentDidMount() {
+		this.peerControl.setEventHandler((e) => {
+			this.editorRef.handleEvent(e);
+		});
+		this.peerControl.setCursorEventHandler((e) => {
+			this.editorRef.handleCursorEvent(e);
+        });
+        this.peerControl.setCheckboxStatusHandler(() => {
+            return this.checkboxStatus;
+        })
+	}
+    
+    getIsPermissionToTransfer() {
+        return this.isPermissionToTransfer;
+    }
+
+    setIsPermissionToTransfer(e) {
+        this.isPermissionToTransfer = e;
+    }
+
     static name() {
         return 'App';
     }
@@ -77,18 +107,34 @@ class App extends Component {
             value: newValue
         });
     }
+	
+	onConnect() {
+		return (id) => {this.peerControl.getConnect(id)}
+	}
+	
     render() {
         return (
             <div className={App.name()}>
                 <div className={'wrapper'} style={this.style.wrapper}>
                     <Editor
+						ref={(editor) => { this.editorRef = editor; }}
                         mode={this.state.mode}
                         theme={this.state.theme}
                         value={this.state.value}
-                        onChange={this.onChange}
+                        peerControl={this.peerControl}
+                        getIsPermissionToTransfer={() => {
+                            return this.isPermissionToTransfer;
+                        }}
+                        setIsPermissionToTransfer={(e) => {
+                            this.isPermissionToTransfer = e;
+                        }}
                     />
                 </div>
                 <StatusBar
+                    setCheckboxStatus={(e) => {
+                        this.checkboxStatus = e;
+                    }}
+					onConnect={this.onConnect()}
                     style={this.style.statusBar}
                     theme={{
                         value: this.state.theme,
