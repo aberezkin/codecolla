@@ -68,13 +68,9 @@ class Editor extends Component {
         this.editor = ed;
 		this.crdt.setEditor(ed);
 
-        
-        //window.editor = ed;
         this.editor.session.setNewLineMode("unix");
-        console.log('!!!!',this.editor.getSession().getValue());
         this.crdt.init();
         
-        //OnCursorChange
         this.editor.selection.on('changeCursor', this.onCursorChange);
     }
 
