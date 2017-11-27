@@ -5,14 +5,7 @@ import ChangeEvent from '../../utilities/Peers/ChangeEvent';
 import CRDTControl from '../../utilities/CRDTControl.js';
 import './Editor.styl';
 
-
 const { Range } = ace.acequire('ace/range');
-
-//window.peer = new PeerControl();
-//window.boolForOnChange = true;
-//window.checkbox = false;
-//window.crdt = new CRDTControl();
-//window.cursors = new CursorManager();
 
 class Editor extends Component {
     constructor(props) {
@@ -35,24 +28,23 @@ class Editor extends Component {
     }
     
 	onChange(newValue, newEvent) {
-        //console.log(this.props.getIsPermissionToTransfer.call());
-		if (this.props.getIsPermissionToTransfer.call()) {
+        if (this.props.getIsPermissionToTransfer.call()) {
 			console.log('ONCHANGE: ',this.props.getOnChangeStatus);
             let event = new ChangeEvent(newEvent);
-			var eventStr = event.packEventOnChange();
+			let eventStr = event.packEventOnChange();
             event = new ChangeEvent(eventStr);
-            var e = event.unpackEvent();
+            let e = event.unpackEvent();
             let msg = [];
+
             if (newEvent.action == 'insert') {
                 msg = this.crdt.insert(e);
 				console.log(msg);
                 this.props.peerControl.broadcastMessage(msg);
-                //msg = window.crdt.insert(e);
             }
+
             if (newEvent.action == 'remove') {
                 msg = this.crdt.remove(e);
                 this.props.peerControl.broadcastMessage(msg);
-                //msg = window.crdt.remove(e);
             }
 
 			//window.peer.broadcastMessage(msg);
@@ -65,9 +57,10 @@ class Editor extends Component {
         let e = {
             pos: pos,
             peer: this.props.peerControl.ID
-        }
+        };
+
         let event = new ChangeEvent(e);
-        var eventStr = event.packEventMoveCursor();
+        let eventStr = event.packEventMoveCursor();
         this.props.peerControl.broadcastMessage(eventStr);
     }
     
@@ -86,14 +79,14 @@ class Editor extends Component {
     }
 
     addCursor(peer, pos) {
-        var marker = {}
-        marker.cursors = [pos]
+        let marker = {};
+        marker.cursors = [pos];
         marker.update = function(html, markerLayer, session, config) {
-            var start = config.firstRow, end = config.lastRow;
-            //var cursors = this.cursors
+            let start = config.firstRow, end = config.lastRow;
+
             for (let i = 0; i < this.cursors.length; i++) {
                 let pos = this.cursors[i];
-                console.log(this.cursors);
+
                 if (pos.row < start) {
                     continue
                 } else if (pos.row > end) {
@@ -101,33 +94,34 @@ class Editor extends Component {
                 } else {
                     // compute cursor position on screen
                     // this code is based on ace/layer/marker.js
-                    var screenPos = session.documentToScreenPosition(pos)
+                    let screenPos = session.documentToScreenPosition(pos);
         
-                    var height = config.lineHeight;
-                    var width = config.characterWidth;
-                    var top = markerLayer.$getTop(screenPos.row, config);
-                    var left = markerLayer.$padding + screenPos.column * width;
+                    let height = config.lineHeight;
+                    let width = config.characterWidth;
+                    let top = markerLayer.$getTop(screenPos.row, config);
+                    let left = markerLayer.$padding + screenPos.column * width;
                     // can add any html here
                     html.push(
-                        "<div style='",
-                        "position: absolute;",
-                        "border-left: 2px solid gold;",
-                        "height:", height, "px;",
-                        "top:", top, "px;",
-                        "left:", left, "px; width:", width, "px'></div>"
+                        `<div style='
+                            position: absolute;
+                            border-left: 2px solid gold;
+                            height: ${height}px;
+                            top: ${top}px;
+                            left: ${left}px; 
+                            width:${width}px'></div>`
                     );
                 }
             }
-        }
+        };
         marker.redraw = function() {
            this.session._signal("changeFrontMarker");
-        }
+        };
         marker.addCursor = function() {
             marker.redraw();
-        }
+        };
         marker.session = this.editor.session;
         marker.session.addDynamicMarker(marker, true);
-        console.log('Cursor: '+peer + ' ' + marker.id);
+        console.log('Cursor: ' + peer + ' ' + marker.id);
         this.cursors.set(peer, marker.id);
     }
 
@@ -167,15 +161,15 @@ class Editor extends Component {
     render() {
         return (
             <AceEditor
-            onLoad={this.onLoad}
-            mode={this.props.mode}
-            theme={this.props.theme}
-            width={'100%'}
-            height={'100%'}
-            value={this.props.value}
-            onChange={this.onChange}
-            name="UNIQUE_ID_OF_DIV"
-            editorProps={{$blockScrolling: 'Infinity'}}
+                onLoad={this.onLoad}
+                mode={this.props.mode}
+                theme={this.props.theme}
+                width={'100%'}
+                height={'100%'}
+                value={this.props.value}
+                onChange={this.onChange}
+                name="UNIQUE_ID_OF_DIV"
+                editorProps={{$blockScrolling: 'Infinity'}}
             />
         );
     }
