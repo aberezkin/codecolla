@@ -6,7 +6,6 @@ import PeerControl from '../../utilities/Peers/Peer.js';
 import '../../utilities/BraceConfigs';
 import './App.styl';
 
-
 const defaultValue =
 `function hello() {
     console.log('Hello, World!');
@@ -15,23 +14,26 @@ const defaultValue =
 class App extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             value: defaultValue,
             theme: 'monokai',
             mode: 'javascript',
         };
+
         this.style = {
             wrapper : {
                 width: '100%',
                 height : getPageHeight() - 20 + 'px',
             },
         };
+
         this.onChangeMode = this.onChangeMode.bind(this);
         this.onChangeTheme = this.onChangeTheme.bind(this);
         this.onChange = this.onChange.bind(this);
 
-		this.isPermissionToTransfer = true;
-        this.checkboxStatus = false;
+		this.isTransferAllowed = true;
+        this.isSeed = false;
         this.peerControl = new PeerControl();
     }
 	
@@ -43,17 +45,9 @@ class App extends Component {
 			this.editorRef.handleCursorEvent(e);
         });
         this.peerControl.setCheckboxStatusHandler(() => {
-            return this.checkboxStatus;
+            return this.isSeed;
         })
 	}
-    
-    getIsPermissionToTransfer() {
-        return this.isPermissionToTransfer;
-    }
-
-    setIsPermissionToTransfer(e) {
-        this.isPermissionToTransfer = e;
-    }
 
     static name() {
         return 'App';
@@ -66,21 +60,18 @@ class App extends Component {
     }
 
     onChangeMode(event, key, value) {
-        console.log(value);
         this.setState({
             mode : value
         });
     }
 
     onChangeTheme(event, key, value) {
-        console.log(value);
         this.setState({
             theme: value
         });
     }
 
     onChange(newValue) {
-        console.log('change:\n', newValue);
         this.setState({
             value: newValue
         });
@@ -101,16 +92,16 @@ class App extends Component {
                         value={this.state.value}
                         peerControl={this.peerControl}
                         getIsPermissionToTransfer={() => {
-                            return this.isPermissionToTransfer;
+                            return this.isTransferAllowed;
                         }}
                         setIsPermissionToTransfer={(e) => {
-                            this.isPermissionToTransfer = e;
+                            this.isTransferAllowed = e;
                         }}
                     />
                 </div>
                 <StatusBar
                     setCheckboxStatus={(e) => {
-                        this.checkboxStatus = e;
+                        this.isSeed = e;
                     }}
 					onConnect={this.onConnect()}
                     style={this.style.statusBar}

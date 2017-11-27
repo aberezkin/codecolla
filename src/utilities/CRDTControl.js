@@ -5,7 +5,7 @@ class CRDTControl {
     }
 
     setIsPermissionToTransferFunc(e) {
-        this.isPermissionToTransfer = e;
+        this.isTransferAllowed = e;
     }
 	
 	setEditor(e) {
@@ -13,18 +13,18 @@ class CRDTControl {
 	}
 
     init() {
-        var text =  this.editor.getSession().getValue();
-        var textToStrings = text.split('\n');
+        let text =  this.editor.getSession().getValue();
+        let textToStrings = text.split('\n');
         
         this.atoms = new Map();
 
-        for(var i = 0; i < textToStrings.length; ++i) {
+        for(let i = 0; i < textToStrings.length; ++i) {
             let ID = '';
             //ASCII 33 - 126
             for (let i = 0; i < 15; ++i) {
                 ID += String.fromCharCode(Math.floor(Math.random() * (127 - 33)+33));
             }
-            var e = {
+            let e = {
                 id: ID,
                 y: i,
                 text: textToStrings[i], 
@@ -35,33 +35,31 @@ class CRDTControl {
 
     }
     
-    getAtomData(a) {
-        var e = {
-            id: a.id,
-            y: a.y,
-            text: a.text,
-            time: a.time
+    getAtomData(atom) {
+        return {
+            id: atom.id,
+            y: atom.y,
+            text: atom.text,
+            time: atom.time
         };
-        return e;
     }
 
     insert(e) {
         let sendPack = [];
-        if (e.startCol == 0 && e.startRow != e.endRow) {
+        if (e.startCol === 0 && e.startRow !== e.endRow) {
             
             let endID = 0;
-            for (var [key, value] of this.atoms) {
-                if (value.y == e.startRow) {
+            for (let [key, value] of this.atoms) {
+                if (value.y === e.startRow) {
                     endID = key;
                 }
             }
-            var a = this.atoms.get(endID);
-            a.y += (e.endRow - e.startRow);
-            a.text = this.editor.session.getLine(a.y);
-            this.atoms.set(a.id, a);
-            sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(a)}));
+            let atom = this.atoms.get(endID);
+            atom.y += (e.endRow - e.startRow);
+            atom.text = this.editor.session.getLine(atom.y);
+            this.atoms.set(atom.id, atom);
+            sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(atom)}));
 
-            //console.log(startID+' '+endID+'\n');
             for (let [key, value] of this.atoms) {
                 if (value.y > e.endRow && value.y > 0) {
                     var a = this.atoms.get(key);
@@ -69,6 +67,7 @@ class CRDTControl {
                     this.atoms.set(key, a);
                 }
             }
+
             for (let i = 0; i < e.text.length-1; ++i) {
                 let ID = '';
                 //ASCII 33 - 126
@@ -85,35 +84,39 @@ class CRDTControl {
             }
         } else {//change first
             let startID = 0;
-            for (var [key, value] of this.atoms) {
-                if (value.y == e.startRow) {
+            for (let [key, value] of this.atoms) {
+                if (value.y === e.startRow) {
                     startID = key;
                 }
             }
-            var a = this.atoms.get(startID);
-            a.text = this.editor.session.getLine(a.y);
-            this.atoms.set(a.id, a);
-            sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(a)}));
+            
+            let atom = this.atoms.get(startID);
+            atom.text = this.editor.session.getLine(atom.y);
+            this.atoms.set(atom.id, atom);
+            sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(atom)}));
 
-            for (var [key, value] of this.atoms) {
+            for (let [key, value] of this.atoms) {
                 if (value.y > e.startRow) {
-                    var a = this.atoms.get(key);
-                    a.y += (e.endRow - e.startRow);
-                    this.atoms.set(key, a);
+                    let atom = this.atoms.get(key);
+                    atom.y += (e.endRow - e.startRow);
+                    this.atoms.set(key, atom);
                 }
             }
-            for (var i = 1; i < e.text.length; ++i) {
-                var ID = '';
+
+            for (let i = 1; i < e.text.length; ++i) {
+                let ID = '';
                 //ASCII 33 - 126
                 for (let i = 0; i < 15; ++i) {
                     ID += String.fromCharCode(Math.floor(Math.random() * (127 - 33)+33));
                 }
+
                 this.atoms.set(ID, {
                     id: ID,
                     y: e.startRow+i,
                     text: this.editor.session.getLine(e.startRow+i), 
                     time: 1
                 });
+
                 sendPack.push(JSON.stringify({action : 'insert', data : this.getAtomData(this.atoms.get(ID))}));
                 startID = ID;
             }
@@ -123,54 +126,56 @@ class CRDTControl {
 
     remove(e) {
         let sendPack = [];
-        if (e.startCol == 0 && 
-            e.endCol != this.editor.session.getLine(e.endRow-(e.endRow - e.startRow)).length) {
+        if (e.startCol === 0 &&
+            e.endCol !== this.editor.session.getLine(e.endRow-(e.endRow - e.startRow)).length) {
                 let endID = 0;
-                for (var [key, value] of this.atoms) {
-                    if (value.y == e.endRow) {
+                for (let [key, value] of this.atoms) {
+                    if (value.y === e.endRow) {
                         endID = key;
                     }
                 }
-                var a = this.atoms.get(endID);
-                a.y -= (e.endRow - e.startRow);
-                a.text = this.editor.session.getLine(a.y);
-                this.atoms.set(a.id, a);
-                sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(a)}));
 
-                for (var [key, value] of this.atoms) {
-                    if (value.y >= e.startRow && value.y < e.endRow && key != a.id) {
+                let atom = this.atoms.get(endID);
+                atom.y -= (e.endRow - e.startRow);
+                atom.text = this.editor.session.getLine(atom.y);
+                this.atoms.set(atom.id, atom);
+                sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(atom)}));
+
+                for (let [key, value] of this.atoms) {
+                    if (value.y >= e.startRow && value.y < e.endRow && key !== atom.id) {
                         sendPack.push(JSON.stringify({action : 'remove', data : this.getAtomData(this.atoms.get(key))}));
                         this.atoms.delete(key);
                     }
                 }
-                for (var [key, value] of this.atoms) {
+                for (let [key, value] of this.atoms) {
                     if (value.y > e.endRow) {
-                        var a = this.atoms.get(key);
+                        let a = this.atoms.get(key);
                         a.y -= (e.endRow - e.startRow);
                         this.atoms.set(key, a);
                     }
                 }
         } else {
             let startID = 0;
-            for (var [key, value] of this.atoms) {
-                if (value.y == e.startRow) {
+            for (let [key, value] of this.atoms) {
+                if (value.y === e.startRow) {
                     startID = key;
                 }
             }
-            var a = this.atoms.get(startID);
+
+            let atom = this.atoms.get(startID);
             a.text = this.getLine(a.y);
             this.atoms.set(a.id, a);
             sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(a)}));
             
-            for (var [key, value] of this.atoms) {
+            for (let [key, value] of this.atoms) {
                 if (value.y > e.startRow && value.y <= e.endRow && key != a.id) {
                     sendPack.push(JSON.stringify({action : 'remove', data : this.getAtomData(this.atoms.get(key))}));
                     this.atoms.delete(key);
                 }
             }
-            for (var [key, value] of this.atoms) {
+            for (let [key, value] of this.atoms) {
                 if (value.y > e.endRow) {
-                    var a = this.atoms.get(key);
+                    let a = this.atoms.get(key);
                     a.y -= (e.endRow - e.startRow);
                     this.atoms.set(key, a);
                 }
@@ -185,15 +190,13 @@ class CRDTControl {
         });
         console.log("SORTED>> " + e[0].data.y + " " + e[e.length-1].data.y);
 		
-        this.isPermissionToTransfer(false);
-        //this.onChangeDispatched(false);
-        //window.boolForOnChange = false;
-        for (var i = 0; i < e.length; ++i) {
-            if (e[i].action == 'insert') {
+        this.isTransferAllowed(false);
+        for (let i = 0; i < e.length; ++i) {
+            if (e[i].action === 'insert') {
                 this.atoms.set(e[i].data.id, e[i].data);
-                for (var [key, value] of this.atoms) {
+                for (let [key, value] of this.atoms) {
                     if (value.y > e[i].data.y) {
-                        var a = this.atoms.get(key);
+                        let a = this.atoms.get(key);
                         a.y ++;
                         this.atoms.set(key, a);
                     }
@@ -204,7 +207,8 @@ class CRDTControl {
                     ((i < e.length-1) ? '\n' : ''));
                     this.editor.selection.moveTo(cursorPosition.row++, cursorPosition.col);
             }
-            if (e[i].action == 'remove') {
+
+            if (e[i].action === 'remove') {
                 this.atoms.delete(e[i].data.id);
                 for (var [key, value] of this.atoms) {
                     if (value.y > e[i].data.y) {
@@ -217,31 +221,26 @@ class CRDTControl {
                 
                 let rng = {start: {row: (e[i].data.y>0)?e[i].data.y-1:e[i].data.y, column: (e[i].data.y>0)?Number.MAX_VALUE:0}, 
                     end: {row: e[i].data.y, column: Number.MAX_VALUE}};
-                //console.log('------>> '+ window.boolForOnChange);
                 this.editor.session.remove(rng);
-                //console.log('------>> '+ window.boolForOnChange);
                 this.moveTo(cursorPosition.row--, cursorPosition.col);
             }
-            if (e[i].action == 'replace') {
+
+            if (e[i].action === 'replace') {
                 this.atoms.set(e[i].data.id, e[i].data);
 
                 let cursorPosition = this.editor.getCursorPosition();
 
-                var rng = {start: {row: e[i].data.y, column: 0}, 
+                let rng = {start: {row: e[i].data.y, column: 0},
                     end: {row: e[i].data.y, column: Number.MAX_VALUE}};
-                //console.log('------>> '+ window.boolForOnChange);
-                if ((i > 0 && e[i-1].action == 'remove') || (i < e.length-1 && e.length > 1 && e[i+1].action == 'remove')) {
+                if ((i > 0 && e[i-1].action === 'remove') || (i < e.length-1 && e.length > 1 && e[i+1].action === 'remove')) {
                     this.editor.session.replace(rng, e[i].data.text);
                 } else {
                     this.editor.session.replace(rng, e[i].data.text + ((i < e.length-1 && e.length > 1) ? '\n' : ''));
                 }
-                //console.log('------>> '+ window.boolForOnChange);
                 this.editor.selection.moveTo(cursorPosition.row, cursorPosition.col-e[i].data.text.length);
             }
         }
-        this.isPermissionToTransfer(true);
-        //this.onChangeDispatched(true);
-        //window.boolForOnChange = true;
+        this.isTransferAllowed(true);
     }
 }
 
