@@ -1,30 +1,11 @@
 import React, { Component } from 'react';
+import {getPageHeight} from "../../utilities/Helpers";
 import Editor from '../Editor/Editor';
 import StatusBar from '../StatusBar/StatusBar';
 import PeerControl from '../../utilities/Peers/Peer.js';
+import '../../utilities/BraceConfigs';
 import './App.styl';
 
-import languages from '../../utilities/HighlightLanguages';
-import themes from '../../utilities/ColorSchemes';
-
-
-languages.forEach((lang) => {
-    require(`brace/mode/${lang}`);
-    require(`brace/snippets/${lang}`);
-});
-themes.forEach((theme) => {
-    require(`brace/theme/${theme}`);
-});
-
-function getPageHeight () {
-    let body = document.body,
-        html = document.documentElement;
-
-    let result = Math.max( body.scrollHeight, body.offsetHeight,
-        html.clientHeight, html.scrollHeight, html.offsetHeight );
-    console.log(result);
-    return result;
-}
 
 const defaultValue =
 `function hello() {
@@ -40,10 +21,6 @@ class App extends Component {
             mode: 'javascript',
         };
         this.style = {
-            statusBar : {
-                width: '100%',
-                height : '20px',
-            },
             wrapper : {
                 width: '100%',
                 height : getPageHeight() - 20 + 'px',
