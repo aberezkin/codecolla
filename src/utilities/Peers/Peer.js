@@ -1,18 +1,15 @@
-import AceEditor from 'react-ace';
 import './peerjs.js';
 
-import ChangeEvent from '../Editor/ChangeEvent';
+import ChangeEvent from './ChangeEvent';
 
-var remotePeerIds = [];
-
-var connections = [];
+let remotePeerIds = [];
+let connections = [];
 
 export const ADD_CURSOR = "ADD_CURSOR";
 export const DELETE_CURSOR = "DELETE_CURSOR";
 export const MOVE_CURSOR = "MOVE_CURSOR";
 
 class PeerControl {
-
     constructor() {
         this.ID = '';
         this.peer = new Peer({key: 'e0twf5gs81lzbyb9', debug: true});
@@ -108,7 +105,7 @@ class PeerControl {
     }
 
     getConnect(id) {
-        var conn = this.peer.connect(id);
+        let conn = this.peer.connect(id);
         this.handleConnection(conn);
 		this.cursorEventHandler({
 					type: ADD_CURSOR,
@@ -118,9 +115,7 @@ class PeerControl {
     }
 
     broadcastMessage(msg) {
-		for (var i=0;i<connections.length;i++) {
-			connections[i].send(msg);
-		}
+		connections.forEach(conn => conn.send(msg));
     }
     
     

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import PeerControl from '../Peers/Peer.js';
-import ChangeEvent from '../Editor/ChangeEvent';
+import PeerControl from '../../utilities/Peers/Peer.js';
+import ChangeEvent from '../../utilities/Peers/ChangeEvent';
 import './Connector.styl';
 
 class Connector extends Component {

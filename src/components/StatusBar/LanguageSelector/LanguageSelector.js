@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './LanguageSelector.styl';
 import ListSelector from '../../ListSelector/ListSelector'
-import modes from '../../../HighLightLanguages'
+import modes from '../../../utilities/HighLightLanguages'
 
 class LanguageSelector extends Component {
     constructor(props) {

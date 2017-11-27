@@ -1,15 +1,11 @@
-import {createStore, combineReducers} from 'redux'
-
-import PeerControl from '../Peers/Peer.js';
-import CRDTControl from '../CRDT/CRDTControl.js';
-
+import {combineReducers} from 'redux'
 
 const checkboxReducer = function(state = false, action) {
     if (state === 'CHECKBOX') {
         return action.data;
     }
     return state;
-}
+};
 
 const boolForOnChangeReducer = function(state = true, action) {
     if (state === 'ONCHANGE') {
@@ -17,14 +13,14 @@ const boolForOnChangeReducer = function(state = true, action) {
 		return action.data;
     }
     return state;
-}
+};
 
 const crdtEventReducer = function(state = [], action) {
     if (state === 'CRDT_INSERT') {
         return action.data;
     }
     return state;
-}
+};
 
 
 

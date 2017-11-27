@@ -1,5 +1,3 @@
-import AceEditor from 'react-ace';
-
 
 class ChangeEvent {
     constructor(newEvent) {
@@ -38,7 +36,7 @@ class ChangeEvent {
     }
 
     packEventOnChange() {
-        var e = {
+        const e = {
             action: this.event.action,
             startRow: this.event.start.row, 
             startCol: this.event.start.column, 
@@ -58,7 +56,7 @@ class ChangeEvent {
     unpackEventArray() {
         console.log('estr: ', this.event);
         let res = [];
-        for (var i = 0; i < this.event.length; ++i) {
+        for (let i = 0; i < this.event.length; ++i) {
             console.log('estr: ', this.event[i]);
             res.push(JSON.parse(this.event[i]));
         }

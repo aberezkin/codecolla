@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './ColorSchemeSelector.styl';
 import ListSelector from '../../ListSelector/ListSelector';
-import schemes from '../../../ColorSchemes';
+import schemes from '../../../utilities/ColorSchemes';
 
 class ColorSchemeSelector extends Component {
     constructor(props) {

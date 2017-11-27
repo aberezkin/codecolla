@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import Editor from '../Editor/Editor';
 import StatusBar from '../StatusBar/StatusBar';
-import PeerControl from '../Peers/Peer.js';
-import CRDTControl from '../CRDT/CRDTControl.js';
+import PeerControl from '../../utilities/Peers/Peer.js';
 import './App.styl';
 
-import languages from '../../HighLightLanguages';
-import themes from '../../ColorSchemes';
+import languages from '../../utilities/HighLightLanguages';
+import themes from '../../utilities/ColorSchemes';
 
-import { connect } from 'react-redux'
 
 languages.forEach((lang) => {
     require(`brace/mode/${lang}`);

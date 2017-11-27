@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-import brace from 'brace';
 import AceEditor from 'react-ace';
-import PeerControl from '../Peers/Peer.js';
-import {ADD_CURSOR, DELETE_CURSOR, MOVE_CURSOR} from '../Peers/Peer.js';
-import ChangeEvent from './ChangeEvent';
-import CRDTControl from '../CRDT/CRDTControl.js';
+import {ADD_CURSOR, DELETE_CURSOR, MOVE_CURSOR} from '../../utilities/Peers/Peer.js';
+import ChangeEvent from '../../utilities/Peers/ChangeEvent';
+import CRDTControl from '../../utilities/CRDTControl.js';
 import './Editor.styl';
 
 
