@@ -89,7 +89,7 @@ class CRDTControl {
                     startID = key;
                 }
             }
-            
+
             let atom = this.atoms.get(startID);
             atom.text = this.editor.session.getLine(atom.y);
             this.atoms.set(atom.id, atom);
