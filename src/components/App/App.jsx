@@ -4,7 +4,7 @@ import StatusBar from '../StatusBar/StatusBar';
 import PeerControl from '../../utilities/Peers/Peer.js';
 import './App.styl';
 
-import languages from '../../utilities/HighLightLanguages';
+import languages from '../../utilities/HighlightLanguages';
 import themes from '../../utilities/ColorSchemes';
 
 
@@ -53,7 +53,6 @@ class App extends Component {
         this.onChangeTheme = this.onChangeTheme.bind(this);
         this.onChange = this.onChange.bind(this);
 
-        //this.crdt = new CRDTControl(this.props.onChange);
 		this.isPermissionToTransfer = true;
         this.checkboxStatus = false;
         this.peerControl = new PeerControl();
@@ -82,23 +81,27 @@ class App extends Component {
     static name() {
         return 'App';
     }
+
     static resize() {
         let wrapper = document.querySelectorAll('.'+App.name()+' .wrapper')[0];
         let statusBar = document.querySelectorAll('.'+App.name()+' .'+StatusBar.name())[0];
         wrapper.style.height = getPageHeight() - statusBar.offsetHeight + 'px';
     }
+
     onChangeMode(event, key, value) {
         console.log(value);
         this.setState({
             mode : value
         });
     }
+
     onChangeTheme(event, key, value) {
         console.log(value);
         this.setState({
             theme: value
         });
     }
+
     onChange(newValue) {
         console.log('change:\n', newValue);
         this.setState({

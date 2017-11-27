@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-import reducers from './components/ReduxControl/ReduxControl.js';
+import reducers from './reducers/ReduxControl.js';
 import App from './components/App/App' ;
 import './index.styl';
 

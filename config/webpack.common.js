@@ -10,10 +10,13 @@ let APP_DIR = helpers.root('src');
 module.exports = config => {
     return {
         context: BUILD_DIR,
-        entry: APP_DIR + '/index.js',
+        entry: APP_DIR + '/index.jsx',
         output: {
             path: BUILD_DIR,
             filename: 'bundle.js'
+        },
+        resolve: {
+            extensions: ['.js', '.jsx']
         },
         module: {
             rules: [

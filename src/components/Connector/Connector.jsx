@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import PeerControl from '../../utilities/Peers/Peer.js';
-import ChangeEvent from '../../utilities/Peers/ChangeEvent';
 import './Connector.styl';
 
 class Connector extends Component {
@@ -31,6 +29,7 @@ class Connector extends Component {
     static name() {
         return 'Connector';
     }
+
     render() {
         return(
             <div className={Connector.name()}>
@@ -39,22 +38,11 @@ class Connector extends Component {
                     onChange={this.handleChange}/>
                <button onClick={ () => {
 						this.props.onConnect(this.addPeer);
-                        //this.peer.getConnect(this.addPeer)
                     }}>
                     CONNECT
                </button>
                <input type="checkbox" id="cb" name="admin"
                     onChange={this.handleCheckboxChange} />
-               {/*<input type="text" id="msg" */}
-                    {/*placeholder="Text"*/}
-                    {/*onChange={this.handleChangeMsg}/>*/}
-               {/*<button onClick={ () => {*/}
-                    {/*let event = new ChangeEvent(this.msg);*/}
-                    {/*var eventStr = event.packEventChatMsg();*/}
-                    {/*this.peer.broadcastMessage(eventStr);*/}
-                   {/*} }>*/}
-                   {/*SEND*/}
-               {/*</button>*/}
             </div>
         );
     }

@@ -1,4 +1,4 @@
-import './peerjs.js';
+import './Peerjs.js';
 
 import ChangeEvent from './ChangeEvent';
 
