@@ -4,6 +4,7 @@ import {ADD_CURSOR, DELETE_CURSOR, MOVE_CURSOR} from '../../utilities/Peers/Peer
 import ChangeEvent from '../../utilities/Peers/ChangeEvent';
 import CRDTControl from '../../utilities/CRDTControl.js';
 import './Editor.styl';
+import {generateCursorMarker} from "../../utilities/Helpers";
 
 const { Range } = ace.acequire('ace/range');
 
@@ -73,60 +74,15 @@ class Editor extends Component {
     }
 
     addCursor(peer, pos) {
-        let marker = {};
-        marker.cursors = [pos];
-        marker.update = function(html, markerLayer, session, config) {
-            let start = config.firstRow, end = config.lastRow;
-
-            for (let i = 0; i < this.cursors.length; i++) {
-                let pos = this.cursors[i];
-
-                if (pos.row < start) {
-                    continue
-                } else if (pos.row > end) {
-                    break
-                } else {
-                    // compute cursor position on screen
-                    // this code is based on ace/layer/marker.js
-                    let screenPos = session.documentToScreenPosition(pos);
-        
-                    let height = config.lineHeight;
-                    let width = config.characterWidth;
-                    let top = markerLayer.$getTop(screenPos.row, config);
-                    let left = markerLayer.$padding + screenPos.column * width;
-                    // can add any html here
-                    html.push(
-                        `<div style='
-                            position: absolute;
-                            border-left: 2px solid gold;
-                            height: ${height}px;
-                            top: ${top}px;
-                            left: ${left}px; 
-                            width:${width}px'></div>`
-                    );
-                }
-            }
-        };
-        marker.redraw = function() {
-           this.session._signal("changeFrontMarker");
-        };
-        marker.addCursor = function() {
-            marker.redraw();
-        };
-        marker.session = this.editor.session;
-        marker.session.addDynamicMarker(marker, true);
-        console.log('Cursor: ' + peer + ' ' + marker.id);
-        this.cursors.set(peer, marker.id);
+        this.cursors.set(peer, generateCursorMarker(this.editor.session, pos).id);
     }
 
     delCursor(peer) {
-        console.log('__cursor: '+ peer + ' ' + this.cursors.get(peer));
         this.editor.session.removeMarker(this.cursors.get(peer));
         this.cursors.delete(peer);
     }
 
     moveCursor(peer, pos) {
-        console.log('cursor change!',this.isCursorTransfer);
         this.delCursor(peer);
         this.addCursor(peer, pos);
     }

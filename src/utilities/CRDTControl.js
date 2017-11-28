@@ -1,8 +1,7 @@
-import AceEditor from 'react-ace';
+import {generateLineId} from "./Helpers";
 
 class CRDTControl {
-    constructor() {
-    }
+    constructor() { }
 
     setIsPermissionToTransferFunc(e) {
         this.isTransferAllowed = e;
@@ -12,27 +11,26 @@ class CRDTControl {
 		this.editor = e;
 	}
 
+	addAtom(y, text, time) {
+        let ID = generateLineId();
+        this.atoms.set(ID, {
+            id: ID,
+            y: y,
+            text: text,
+            time: time,
+        });
+        return ID;
+    }
+
     init() {
         let text =  this.editor.getSession().getValue();
-        let textToStrings = text.split('\n');
+        let textByStrings = text.split('\n');
         
         this.atoms = new Map();
 
-        for(let i = 0; i < textToStrings.length; ++i) {
-            let ID = '';
-            //ASCII 33 - 126
-            for (let i = 0; i < 15; ++i) {
-                ID += String.fromCharCode(Math.floor(Math.random() * (127 - 33)+33));
-            }
-            let e = {
-                id: ID,
-                y: i,
-                text: textToStrings[i], 
-                time: 1
-            };
-            this.atoms.set(ID, e);
-        }
-
+        textByStrings.forEach((string, i) => {
+            this.addAtom(i, textByStrings[i], 1)
+        });
     }
     
     getAtomData(atom) {
@@ -68,21 +66,15 @@ class CRDTControl {
                 }
             }
 
-            for (let i = 0; i < e.text.length-1; ++i) {
-                let ID = '';
-                //ASCII 33 - 126
-                for (let i = 0; i < 15; ++i) {
-                    ID += String.fromCharCode(Math.floor(Math.random() * (127 - 33)+33));
-                }
-                this.atoms.set(ID, {
-                    id: ID,
-                    y: e.startRow+i,
-                    text: this.editor.session.getLine(e.startRow+i), 
-                    time: 1
-                });
-                sendPack.push(JSON.stringify({action : 'insert', data : this.getAtomData(this.atoms.get(ID))}));
+            for (let i = 0; i < e.text.length - 1; ++i) {
+                let ID = this.addAtom(e.startRow + i, this.editor.session.getLine(e.startRow + i), 1);
+                sendPack.push(JSON.stringify({
+                    action : 'insert',
+                    data : this.getAtomData(this.atoms.get(ID))
+                }));
             }
-        } else {//change first
+
+        } else { //change first
             let startID = 0;
             for (let [key, value] of this.atoms) {
                 if (value.y === e.startRow) {
@@ -104,19 +96,7 @@ class CRDTControl {
             }
 
             for (let i = 1; i < e.text.length; ++i) {
-                let ID = '';
-                //ASCII 33 - 126
-                for (let i = 0; i < 15; ++i) {
-                    ID += String.fromCharCode(Math.floor(Math.random() * (127 - 33)+33));
-                }
-
-                this.atoms.set(ID, {
-                    id: ID,
-                    y: e.startRow+i,
-                    text: this.editor.session.getLine(e.startRow+i), 
-                    time: 1
-                });
-
+                let ID = this.addAtom(e.startRow + i, this.editor.session.getLine(e. startRow + i), 1);
                 sendPack.push(JSON.stringify({action : 'insert', data : this.getAtomData(this.atoms.get(ID))}));
                 startID = ID;
             }
@@ -203,9 +183,12 @@ class CRDTControl {
                 }
                 let cursorPosition = this.editor.getCursorPosition();
 
-                this.editor.session.insert({row:e[i].data.y, column:0}, e[i].data.text + 
-                    ((i < e.length-1) ? '\n' : ''));
-                    this.editor.selection.moveTo(cursorPosition.row++, cursorPosition.col);
+                this.editor.session.insert({
+                    row: e[i].data.y,
+                    column:0
+                }, e[i].data.text + ((i < e.length-1) ? '\n' : ''));
+
+                this.editor.selection.moveTo(cursorPosition.row++, cursorPosition.col);
             }
 
             if (e[i].action === 'remove') {
@@ -219,10 +202,18 @@ class CRDTControl {
                 }
                 let cursorPosition = this.editor.getCursorPosition();
                 
-                let rng = {start: {row: (e[i].data.y>0)?e[i].data.y-1:e[i].data.y, column: (e[i].data.y>0)?Number.MAX_VALUE:0}, 
-                    end: {row: e[i].data.y, column: Number.MAX_VALUE}};
+                let rng = {
+                    start: {
+                        row: (e[i].data.y > 0) ? e[i].data.y - 1 : e[i].data.y,
+                        column: (e[i].data.y > 0) ? Number.MAX_VALUE : 0
+                    },
+                    end: {
+                        row: e[i].data.y,
+                        column: Number.MAX_VALUE}
+                };
+
                 this.editor.session.remove(rng);
-                this.moveTo(cursorPosition.row--, cursorPosition.col);
+                this.editor.selection.moveTo(cursorPosition.row--, cursorPosition.col);
             }
 
             if (e[i].action === 'replace') {
