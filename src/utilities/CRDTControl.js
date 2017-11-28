@@ -62,9 +62,9 @@ class CRDTControl {
 
             for (let [key, value] of this.atoms) {
                 if (value.y > e.endRow && value.y > 0) {
-                    var a = this.atoms.get(key);
-                    a.y += (e.endRow - e.startRow);
-                    this.atoms.set(key, a);
+                    let atom = this.atoms.get(key);
+                    atom.y += (e.endRow - e.startRow);
+                    this.atoms.set(key, atom);
                 }
             }
 
@@ -149,9 +149,9 @@ class CRDTControl {
                 }
                 for (let [key, value] of this.atoms) {
                     if (value.y > e.endRow) {
-                        let a = this.atoms.get(key);
-                        a.y -= (e.endRow - e.startRow);
-                        this.atoms.set(key, a);
+                        let atom = this.atoms.get(key);
+                        atom.y -= (e.endRow - e.startRow);
+                        this.atoms.set(key, atom);
                     }
                 }
         } else {
@@ -163,21 +163,21 @@ class CRDTControl {
             }
 
             let atom = this.atoms.get(startID);
-            a.text = this.getLine(a.y);
-            this.atoms.set(a.id, a);
-            sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(a)}));
+            atom.text = this.editor.session.getLine(atom.y);
+            this.atoms.set(atom.id, atom);
+            sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(atom)}));
             
             for (let [key, value] of this.atoms) {
-                if (value.y > e.startRow && value.y <= e.endRow && key != a.id) {
+                if (value.y > e.startRow && value.y <= e.endRow && key !== atom.id) {
                     sendPack.push(JSON.stringify({action : 'remove', data : this.getAtomData(this.atoms.get(key))}));
                     this.atoms.delete(key);
                 }
             }
             for (let [key, value] of this.atoms) {
                 if (value.y > e.endRow) {
-                    let a = this.atoms.get(key);
-                    a.y -= (e.endRow - e.startRow);
-                    this.atoms.set(key, a);
+                    let atom = this.atoms.get(key);
+                    atom.y -= (e.endRow - e.startRow);
+                    this.atoms.set(key, atom);
                 }
             }
         }
@@ -210,11 +210,11 @@ class CRDTControl {
 
             if (e[i].action === 'remove') {
                 this.atoms.delete(e[i].data.id);
-                for (var [key, value] of this.atoms) {
+                for (let [key, value] of this.atoms) {
                     if (value.y > e[i].data.y) {
-                        var a = this.atoms.get(key);
-                        a.y--;
-                        this.atoms.set(key, a);
+                        let atom = this.atoms.get(key);
+                        atom.y--;
+                        this.atoms.set(key, atom);
                     }
                 }
                 let cursorPosition = this.editor.getCursorPosition();

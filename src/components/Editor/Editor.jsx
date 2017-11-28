@@ -29,25 +29,23 @@ class Editor extends Component {
     
 	onChange(newValue, newEvent) {
         if (this.props.getIsPermissionToTransfer.call()) {
-			console.log('ONCHANGE: ',this.props.getOnChangeStatus);
+			console.log('ONCHANGE: ',this.props.getIsPermissiotToTransfer);
             let event = new ChangeEvent(newEvent);
 			let eventStr = event.packEventOnChange();
             event = new ChangeEvent(eventStr);
             let e = event.unpackEvent();
             let msg = [];
 
-            if (newEvent.action == 'insert') {
+            if (newEvent.action === 'insert') {
                 msg = this.crdt.insert(e);
 				console.log(msg);
                 this.props.peerControl.broadcastMessage(msg);
             }
 
-            if (newEvent.action == 'remove') {
+            if (newEvent.action === 'remove') {
                 msg = this.crdt.remove(e);
                 this.props.peerControl.broadcastMessage(msg);
             }
-
-			//window.peer.broadcastMessage(msg);
 		}
 		this.props.onChange(newValue, newEvent);
     }
@@ -122,7 +120,7 @@ class Editor extends Component {
     }
 
     delCursor(peer) {
-        console.log('__cursor: '+peer + ' ' + this.cursors.get(peer));
+        console.log('__cursor: '+ peer + ' ' + this.cursors.get(peer));
         this.editor.session.removeMarker(this.cursors.get(peer));
         this.cursors.delete(peer);
     }
