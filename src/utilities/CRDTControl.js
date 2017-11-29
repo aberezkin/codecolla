@@ -22,6 +22,10 @@ class CRDTControl {
         return ID;
     }
 
+    atomShift(shift, condition = atom => true) {
+        this.atoms.forEach(atom => atom.y += condition(atom) ? shift : 0);
+    }
+
     init() {
         let text =  this.editor.getSession().getValue();
         let textByStrings = text.split('\n');
@@ -59,13 +63,7 @@ class CRDTControl {
             this.atoms.set(atom.id, atom);
             sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(atom)}));
 
-            for (let [key, value] of this.atoms) {
-                if (value.y > e.endRow && value.y > 0) {
-                    let atom = this.atoms.get(key);
-                    atom.y += (e.endRow - e.startRow);
-                    this.atoms.set(key, atom);
-                }
-            }
+            this.atomShift(e.endRow - e.startRow, atom => atom.y > e.endRow && atom.y > 0);
 
             for (let i = 0; i < e.text.length - 1; ++i) {
                 let ID = this.addAtom(e.startRow + i, this.editor.session.getLine(e.startRow + i), 1);
@@ -88,13 +86,8 @@ class CRDTControl {
             this.atoms.set(atom.id, atom);
             sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(atom)}));
 
-            for (let [key, value] of this.atoms) {
-                if (value.y > e.startRow) {
-                    let atom = this.atoms.get(key);
-                    atom.y += (e.endRow - e.startRow);
-                    this.atoms.set(key, atom);
-                }
-            }
+            this.atomShift(e.endRow - e.startRow, atom => atom.y > e.startRow);
+
 
             for (let i = 1; i < e.text.length; ++i) {
                 let ID = this.addAtom(e.startRow + i, this.editor.session.getLine(e. startRow + i), 1);
@@ -109,32 +102,30 @@ class CRDTControl {
         let sendPack = [];
         if (e.startCol === 0 &&
             e.endCol !== this.editor.session.getLine(e.endRow-(e.endRow - e.startRow)).length) {
-                let endID = 0;
-                for (let [key, value] of this.atoms) {
-                    if (value.y === e.endRow) {
-                        endID = key;
-                    }
-                }
 
-                let atom = this.atoms.get(endID);
-                atom.y -= (e.endRow - e.startRow);
-                atom.text = this.editor.session.getLine(atom.y);
-                this.atoms.set(atom.id, atom);
-                sendPack.push(JSON.stringify({action : 'replace', data : this.getAtomData(atom)}));
+            let endID = 0;
+            for (let [key, value] of this.atoms) {
+                if (value.y === e.endRow) {
+                    endID = key;
+                }
+            }
 
-                for (let [key, value] of this.atoms) {
-                    if (value.y >= e.startRow && value.y < e.endRow && key !== atom.id) {
-                        sendPack.push(JSON.stringify({action : 'remove', data : this.getAtomData(this.atoms.get(key))}));
-                        this.atoms.delete(key);
-                    }
+            let atom = this.atoms.get(endID);
+            atom.y -= (e.endRow - e.startRow);
+            atom.text = this.editor.session.getLine(atom.y);
+            this.atoms.set(atom.id, atom);
+            sendPack.push(JSON.stringify({action: 'replace', data: this.getAtomData(atom)}));
+
+            for (let [key, value] of this.atoms) {
+                if (value.y >= e.startRow && value.y < e.endRow && key !== atom.id) {
+                    sendPack.push(JSON.stringify({action: 'remove', data: this.getAtomData(this.atoms.get(key))}));
+                    this.atoms.delete(key);
                 }
-                for (let [key, value] of this.atoms) {
-                    if (value.y > e.endRow) {
-                        let atom = this.atoms.get(key);
-                        atom.y -= (e.endRow - e.startRow);
-                        this.atoms.set(key, atom);
-                    }
-                }
+            }
+
+            this.atomShift(e.startRow - e.endRow, atom => atom.y > e.endRow);
+
+
         } else {
             let startID = 0;
             for (let [key, value] of this.atoms) {
@@ -154,13 +145,8 @@ class CRDTControl {
                     this.atoms.delete(key);
                 }
             }
-            for (let [key, value] of this.atoms) {
-                if (value.y > e.endRow) {
-                    let atom = this.atoms.get(key);
-                    atom.y -= (e.endRow - e.startRow);
-                    this.atoms.set(key, atom);
-                }
-            }
+
+            this.atomShift(e.startRow - e.endRow, atom => atom.y > e.endRow);
         }
         return sendPack;
     }
@@ -169,19 +155,13 @@ class CRDTControl {
         e.sort(function(a, b) {
             return a.data.y - b.data.y;
         });
-        console.log("SORTED>> " + e[0].data.y + " " + e[e.length-1].data.y);
-		
+
         this.isTransferAllowed(false);
         for (let i = 0; i < e.length; ++i) {
             if (e[i].action === 'insert') {
                 this.atoms.set(e[i].data.id, e[i].data);
-                for (let [key, value] of this.atoms) {
-                    if (value.y > e[i].data.y) {
-                        let a = this.atoms.get(key);
-                        a.y ++;
-                        this.atoms.set(key, a);
-                    }
-                }
+                this.atomShift(1, atom => atom.y > e[i].data.y);
+
                 let cursorPosition = this.editor.getCursorPosition();
 
                 this.editor.session.insert({
@@ -194,13 +174,8 @@ class CRDTControl {
 
             if (e[i].action === 'remove') {
                 this.atoms.delete(e[i].data.id);
-                for (let [key, value] of this.atoms) {
-                    if (value.y > e[i].data.y) {
-                        let atom = this.atoms.get(key);
-                        atom.y--;
-                        this.atoms.set(key, atom);
-                    }
-                }
+                this.atomShift(e.startRow - e.endRow, atom => atom.y > e[i].data.y);
+
                 let cursorPosition = this.editor.getCursorPosition();
                 
                 let rng = {
