@@ -30,9 +30,9 @@ class Editor extends Component {
     
 	onChange(newValue, newEvent) {
         if (this.props.getIsPermissionToTransfer.call()) {
-			console.log('ONCHANGE: ',this.props.getIsPermissiotToTransfer);
+
             let event = new ChangeEvent(newEvent);
-			let eventStr = event.packEventOnChange();
+			let eventStr = event.packEditEvent();
             event = new ChangeEvent(eventStr);
             let e = event.unpackEvent();
             let msg = [];
@@ -59,7 +59,7 @@ class Editor extends Component {
         };
 
         let event = new ChangeEvent(e);
-        let eventStr = event.packEventMoveCursor();
+        let eventStr = event.packCursorMoveEvent();
         this.props.peerControl.broadcastMessage(eventStr);
     }
     
@@ -93,15 +93,14 @@ class Editor extends Component {
 	}
 	
 	handleCursorEvent(e) {
-		console.log(e);
 		switch (e.type) {
-			case "ADD_CURSOR":
+			case ADD_CURSOR:
                 this.addCursor(e.peerId, e.position);
                 break;
-			case "DELETE_CURSOR":
+			case DELETE_CURSOR:
                 this.delCursor(e.peerId);
                 break;
-			case "MOVE_CURSOR":
+			case MOVE_CURSOR:
                 this.moveCursor(e.peerId, e.position);
                 break;
 			default: return;

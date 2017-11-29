@@ -1,7 +1,12 @@
 import './Peerjs.js';
 
-import ChangeEvent from './ChangeEvent';
+import ChangeEvent, {CHAT_MESSAGE, CURSOR_MOVE, PEER_ADDITION} from './ChangeEvent';
 
+const CONNECTION_EVENT = 'connection';
+const CONNECTION_OPEN = 'open';
+const CONNECTION_CLOSE = 'close';
+const DATA_TRANSFER = 'data';
+const PEER_ERROR = 'error';
 
 export const ADD_CURSOR = "ADD_CURSOR";
 export const DELETE_CURSOR = "DELETE_CURSOR";
@@ -17,12 +22,12 @@ class PeerControl {
         this.getConnect = this.getConnect.bind(this);
         this.broadcastMessage = this.broadcastMessage.bind(this);
         
-        this.peer.on('open', (id) => {
+        this.peer.on(CONNECTION_OPEN, (id) => {
             this.ID = id;
             console.log('pid: ', id);
         });  
           
-        this.peer.on('connection', (conn) => this.handleConnection(conn));
+        this.peer.on(CONNECTION_EVENT, (conn) => this.handleConnection(conn));
     }
 
 	setEventHandler(eventHandler) {
@@ -38,49 +43,50 @@ class PeerControl {
 	}
 
     handleConnection(connection) {
-        connection.on('open', () => {
+        connection.on(CONNECTION_OPEN, () => {
             console.log("Connected with peer: ",this.getCheckboxStatus);
             console.log('CHECKBOX status',this.getCheckboxStatus());
 
             if (this.getCheckboxStatus.call()) {
                 let evnt = new ChangeEvent(connection.peer);
-                let strEvnt = evnt.packEventNewPeer();
+                let strEvnt = evnt.packAddPeerEvent();
                 this.broadcastMessage(strEvnt);
             }
 			
-            connection.on('data', (data) => {
+            connection.on(DATA_TRANSFER, (data) => {
                 let event = new ChangeEvent(data);
-                let unpackedEvent = event.unpackEventArray();
-                switch (unpackedEvent[0].action) {
-                    case 'chat': {
+                let unpackedEventArray = event.unpackEventArray();
+                let unpackedEvent = unpackedEventArray[0];
+                switch (unpackedEvent.action) {
+                    case CHAT_MESSAGE: {
                         console.log(connection.peer + ": " + unpackedEvent.text);
                         break;
                     }
-                    case 'move': {
+                    case CURSOR_MOVE: {
                         this.cursorEventHandler({
                             type: MOVE_CURSOR,
-                            peerId: unpackedEvent[0].peer,
-                            position: unpackedEvent[0].pos
+                            peerId: unpackedEvent.peer,
+                            position: unpackedEvent.pos
                         });
                         break;
                     }
-                    case 'addpeer': {
-                        this.getConnect(unpackedEvent[0].data);
+                    case PEER_ADDITION: {
+                        this.getConnect(unpackedEvent.data);
                         break;
                     }
                     default: {
                         console.log(this.eventHandler);
-                        this.eventHandler(unpackedEvent);
+                        this.eventHandler(unpackedEventArray);
                     }
                 }
             });
 			
-            connection.on('error', () => {
+            connection.on(PEER_ERROR, () => {
                 alert(connection.peer + ' : ERROR.');
 				this.removeConnection(connection);
             });
 
-            connection.on('close', (err) => {
+            connection.on(CONNECTION_CLOSE, (err) => {
                 alert(connection.peer + ' has left the chat.');
                 this.removeConnection(connection);
             });
@@ -96,7 +102,7 @@ class PeerControl {
 					type: ADD_CURSOR,
 					peerId: conn.peer,
 					position: {row: 0, column: 0}
-					});
+        });
     }
 
     removeConnection(connection) {

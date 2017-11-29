@@ -52,6 +52,7 @@ class CRDTControl {
                     endID = key;
                 }
             }
+
             let atom = this.atoms.get(endID);
             atom.y += (e.endRow - e.startRow);
             atom.text = this.editor.session.getLine(atom.y);
@@ -221,8 +222,16 @@ class CRDTControl {
 
                 let cursorPosition = this.editor.getCursorPosition();
 
-                let rng = {start: {row: e[i].data.y, column: 0},
-                    end: {row: e[i].data.y, column: Number.MAX_VALUE}};
+                let rng = {
+                    start: {
+                        row: e[i].data.y,
+                        column: 0
+                    },
+                    end: {
+                        row: e[i].data.y,
+                        column: Number.MAX_VALUE}
+                };
+
                 if ((i > 0 && e[i-1].action === 'remove') || (i < e.length-1 && e.length > 1 && e[i+1].action === 'remove')) {
                     this.editor.session.replace(rng, e[i].data.text);
                 } else {
@@ -231,6 +240,7 @@ class CRDTControl {
                 this.editor.selection.moveTo(cursorPosition.row, cursorPosition.col-e[i].data.text.length);
             }
         }
+
         this.isTransferAllowed(true);
     }
 }
