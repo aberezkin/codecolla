@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import {getPageHeight} from "../../utilities/Helpers";
 import Editor from '../Editor/Editor';
 import StatusBar from '../StatusBar/StatusBar';
@@ -38,14 +39,14 @@ class App extends Component {
     }
 	
 	componentDidMount() {
-		this.peerControl.setEventHandler((e) => {
+		this.peerControl.setEditEventHandler((e) => {
 			this.editorRef.handleEvent(e);
 		});
 		this.peerControl.setCursorEventHandler((e) => {
 			this.editorRef.handleCursorEvent(e);
         });
         this.peerControl.setCheckboxStatusHandler(() => {
-            return this.isSeed;
+            return this.props.isSeed;x
         })
 	}
 
@@ -54,9 +55,9 @@ class App extends Component {
     }
 
     static resize() {
-        let wrapper = document.querySelectorAll('.'+App.name()+' .wrapper')[0];
-        let statusBar = document.querySelectorAll('.'+App.name()+' .'+StatusBar.name())[0];
-        wrapper.style.height = getPageHeight() - statusBar.offsetHeight + 'px';
+        let wrapper = document.querySelectorAll(`.${App.name()} .wrapper`)[0];
+        let statusBar = document.querySelectorAll(`.${App.name()} .${StatusBar.name()}`)[0];
+        wrapper.style.height = `${getPageHeight() - statusBar.offsetHeight}px`;
     }
 
     onChangeMode(event, key, value) {
@@ -100,9 +101,6 @@ class App extends Component {
                     />
                 </div>
                 <StatusBar
-                    setCheckboxStatus={(e) => {
-                        this.isSeed = e;
-                    }}
 					onConnect={this.onConnect()}
                     style={this.style.statusBar}
                     theme={{
@@ -121,4 +119,10 @@ class App extends Component {
 
 window.addEventListener('resize', App.resize, true);
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        isSeed: state.isSeed
+    }
+};
+
+export default connect(mapStateToProps)(App)

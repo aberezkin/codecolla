@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux'
-import seed from './seed';
+import isSeed from './is-seed';
 
 export default  combineReducers({
-    seed,
+    isSeed,
 });

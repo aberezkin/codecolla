@@ -26,12 +26,15 @@ class StatusBar extends Component {
         };
 
     }
+
     static name() {
         return 'StatusBar';
     }
+
     static styleId() {
         return 'StatusBarStyle';
     }
+
     onThemeHandler(event, key, value) {
         this.props.theme.onChange(event, key, value);
 
@@ -52,10 +55,7 @@ class StatusBar extends Component {
         return (
             <div className={StatusBar.name() + ' ace-'+this.state.theme} style={this.props.style}>
                 <div className="Left">
-                    <Connector
-						onConnect={this.props.onConnect}
-                        setCheckboxStatus={this.props.setCheckboxStatus}
-                    />
+                    <Connector onConnect={this.props.onConnect}/>
                 </div>
                 <div className="Right">
                     <LineSeparatorSelector

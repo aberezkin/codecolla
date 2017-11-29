@@ -12,7 +12,7 @@ class Editor extends Component {
     constructor(props) {
         super(props);
 
-        this.cursors= new Map();
+        this.cursors = new Map();
 
         this.onChange = this.onChange.bind(this);
         this.onLoad = this.onLoad.bind(this);

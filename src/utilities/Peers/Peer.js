@@ -30,7 +30,7 @@ class PeerControl {
         this.peer.on(CONNECTION_EVENT, (conn) => this.handleConnection(conn));
     }
 
-	setEventHandler(eventHandler) {
+	setEditEventHandler(eventHandler) {
 		this.eventHandler = eventHandler;
 	}
 	
@@ -44,63 +44,62 @@ class PeerControl {
 
     handleConnection(connection) {
         connection.on(CONNECTION_OPEN, () => {
-            console.log("Connected with peer: ",this.getCheckboxStatus);
-            console.log('CHECKBOX status',this.getCheckboxStatus());
-
             if (this.getCheckboxStatus.call()) {
-                let evnt = new ChangeEvent(connection.peer);
-                let strEvnt = evnt.packAddPeerEvent();
-                this.broadcastMessage(strEvnt);
+                this.broadcastMessage(new ChangeEvent(connection.peer).packAddPeerEvent());
             }
-			
-            connection.on(DATA_TRANSFER, (data) => {
-                let event = new ChangeEvent(data);
-                let unpackedEventArray = event.unpackEventArray();
-                let unpackedEvent = unpackedEventArray[0];
-                switch (unpackedEvent.action) {
-                    case CHAT_MESSAGE: {
-                        console.log(connection.peer + ": " + unpackedEvent.text);
-                        break;
-                    }
-                    case CURSOR_MOVE: {
-                        this.cursorEventHandler({
-                            type: MOVE_CURSOR,
-                            peerId: unpackedEvent.peer,
-                            position: unpackedEvent.pos
-                        });
-                        break;
-                    }
-                    case PEER_ADDITION: {
-                        this.getConnect(unpackedEvent.data);
-                        break;
-                    }
-                    default: {
-                        console.log(this.eventHandler);
-                        this.eventHandler(unpackedEventArray);
-                    }
-                }
-            });
-			
-            connection.on(PEER_ERROR, () => {
-                alert(connection.peer + ' : ERROR.');
-				this.removeConnection(connection);
-            });
 
-            connection.on(CONNECTION_CLOSE, (err) => {
-                alert(connection.peer + ' has left the chat.');
-                this.removeConnection(connection);
-            });
-            
             this.connections.push(connection);
+        });
+
+        this.setEventHandlers(connection);
+    }
+
+    setEventHandlers(connection) {
+        connection.on(DATA_TRANSFER, (data) => {
+            let event = new ChangeEvent(data);
+            let unpackedEventArray = event.unpackEventArray();
+            let unpackedEvent = unpackedEventArray[0];
+            switch (unpackedEvent.action) {
+                case CHAT_MESSAGE: {
+                    console.log(connection.peer + ": " + unpackedEvent.text);
+                    break;
+                }
+                case CURSOR_MOVE: {
+                    this.cursorEventHandler({
+                        type: MOVE_CURSOR,
+                        peerId: unpackedEvent.peer,
+                        position: unpackedEvent.pos
+                    });
+                    break;
+                }
+                case PEER_ADDITION: {
+                    this.getConnect(unpackedEvent.data);
+                    break;
+                }
+                default: {
+                    console.log(this.eventHandler);
+                    this.eventHandler(unpackedEventArray);
+                }
+            }
+        });
+
+        connection.on(PEER_ERROR, () => {
+            alert(connection.peer + ' : ERROR.');
+            this.removeConnection(connection);
+        });
+
+        connection.on(CONNECTION_CLOSE, (err) => {
+            alert(connection.peer + ' has left the chat.');
+            this.removeConnection(connection);
         });
     }
 
     getConnect(id) {
-        let conn = this.peer.connect(id);
-        this.handleConnection(conn);
+        let connection = this.peer.connect(id);
+        this.handleConnection(connection);
 		this.cursorEventHandler({
 					type: ADD_CURSOR,
-					peerId: conn.peer,
+					peerId: connection.peer,
 					position: {row: 0, column: 0}
         });
     }
