@@ -46,15 +46,6 @@ class CRDTControl {
             this.addAtom(i, string, 1)
         });
     }
-    
-    getAtomData(atom) {
-        return {
-            id: atom.id,
-            y: atom.y,
-            text: atom.text,
-            time: atom.time
-        };
-    }
 
     insert(e) {
         const isFirstLine = e.startCol !== 0 || e.startRow === e.endRow;
@@ -70,12 +61,12 @@ class CRDTControl {
         atom.text = this.editor.session.getLine(atom.y);
 
         let sendPack = [];
-        sendPack.push({action: EDIT_REPLACE, data : this.getAtomData(atom)});
+        sendPack.push({action: EDIT_REPLACE, data : atom});
         for (let i = 0 + isFirstLine; i < e.text.length + isFirstLine - 1; ++i) {
             let ID = this.addAtom(e.startRow + i, this.editor.session.getLine(e.startRow + i), 1);
             sendPack.push({
                 action : EDIT_INSERT,
-                data : this.getAtomData(this.atoms.get(ID))
+                data : this.atoms.get(ID)
             });
         }
 
@@ -89,11 +80,11 @@ class CRDTControl {
             let atom = this.findAtom(a => a.y === e.endRow);
             atom.y -= (e.endRow - e.startRow);
             atom.text = this.editor.session.getLine(atom.y);
-            sendPack.push({action: EDIT_REPLACE, data: this.getAtomData(atom)});
+            sendPack.push({action: EDIT_REPLACE, data: atom});
 
             for (let [key, value] of this.atoms) {
                 if (value.y >= e.startRow && value.y < e.endRow && key !== atom.id) {
-                    sendPack.push({action: EDIT_REMOVE, data: this.getAtomData(this.atoms.get(key))});
+                    sendPack.push({action: EDIT_REMOVE, data: this.atoms.get(key)});
                     this.atoms.delete(key);
                 }
             }
@@ -102,13 +93,13 @@ class CRDTControl {
 
 
         } else {
-            let atom = this.findAtom(a => a.t === e.startRow);
+            let atom = this.findAtom(a => a.y === e.startRow);
             atom.text = this.editor.session.getLine(atom.y);
-            sendPack.push({action : EDIT_REPLACE, data : this.getAtomData(atom)});
+            sendPack.push({action : EDIT_REPLACE, data : atom});
             
             for (let [key, value] of this.atoms) {
                 if (value.y > e.startRow && value.y <= e.endRow && key !== atom.id) {
-                    sendPack.push({action : EDIT_REMOVE, data : this.getAtomData(this.atoms.get(key))});
+                    sendPack.push({action : EDIT_REMOVE, data : this.atoms.get(key)});
                     this.atoms.delete(key);
                 }
             }
