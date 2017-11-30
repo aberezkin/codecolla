@@ -30,7 +30,6 @@ class CRDTControl {
     }
 
     atomShift(shift, condition = atom => true) {
-        console.log("SHIFT: ", shift);
         this.atoms.forEach(atom => atom.y += condition(atom) ? shift : 0);
     }
 
@@ -59,7 +58,7 @@ class CRDTControl {
         atom.text = this.editor.session.getLine(atom.y);
 
         let sendPack = [];
-        sendPack.push({action: EDIT_REPLACE, data : atom});
+        sendPack.push({action: EDIT_REPLACE, data: atom});
         for (let i = 0 + isFirstLine; i < e.text.length + isFirstLine - 1; ++i) {
             let ID = this.addAtom(e.startRow + i, this.editor.session.getLine(e.startRow + i), 1);
             sendPack.push({
@@ -78,7 +77,7 @@ class CRDTControl {
         atom.text = this.editor.session.getLine(atom.y);
 
         let sendPack = [];
-        sendPack.push({action: EDIT_REPLACE, data:atom});
+        sendPack.push({action: EDIT_REPLACE, data: atom});
         for (let [key, value] of this.atoms) {
             if (value.y >= e.startRow + !isNotLineEnd && value.y <= e.endRow + isNotLineEnd && key !== atom.id) {
                 sendPack.push({action: EDIT_REMOVE, data: this.atoms.get(key)});
@@ -115,7 +114,7 @@ class CRDTControl {
                 }
                 case EDIT_REMOVE: {
                     this.atoms.delete(e[i].data.id);
-                    this.atomShift(e.startRow - e.endRow, atom => atom.y > e[i].data.y);
+                    this.atomShift(-1, atom => atom.y > e[i].data.y);
 
                     let cursorPosition = this.editor.getCursorPosition();
 
@@ -126,7 +125,8 @@ class CRDTControl {
                         },
                         end: {
                             row: e[i].data.y,
-                            column: Number.MAX_VALUE}
+                            column: Number.MAX_VALUE
+                        }
                     };
 
                     this.editor.session.remove(rng);
@@ -149,10 +149,11 @@ class CRDTControl {
                         }
                     };
 
-                    if ((i > 0 && e[i-1].action === EDIT_REMOVE) || (i < e.length-1 && e.length > 1 && e[i+1].action === EDIT_REMOVE)) {
+                    if ((i > 0 && e[i - 1].action === EDIT_REMOVE) ||
+                        (i < e.length - 1 && e.length > 1 && e[i + 1].action === EDIT_REMOVE)) {
                         this.editor.session.replace(rng, e[i].data.text);
                     } else {
-                        this.editor.session.replace(rng, e[i].data.text + ((i < e.length-1 && e.length > 1) ? '\n' : ''));
+                        this.editor.session.replace(rng, e[i].data.text + ((i < e.length - 1 && e.length > 1) ? '\n' : ''));
                     }
                     this.editor.selection.moveTo(cursorPosition.row, cursorPosition.col-e[i].data.text.length);
                     break
