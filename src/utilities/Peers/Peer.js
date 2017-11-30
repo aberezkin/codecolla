@@ -8,6 +8,10 @@ const CONNECTION_CLOSE = 'close';
 const DATA_TRANSFER = 'data';
 const PEER_ERROR = 'error';
 
+export const EDIT_INSERT = 'insert';
+export const EDIT_REMOVE = 'remove';
+export const EDIT_REPLACE = 'replace';
+
 export const ADD_CURSOR = "ADD_CURSOR";
 export const DELETE_CURSOR = "DELETE_CURSOR";
 export const MOVE_CURSOR = "MOVE_CURSOR";
@@ -45,7 +49,7 @@ class PeerControl {
     handleConnection(connection) {
         connection.on(CONNECTION_OPEN, () => {
             if (this.getCheckboxStatus.call()) {
-                this.broadcastMessage(new ChangeEvent(connection.peer).packAddPeerEvent());
+                this.broadcastEvent(ChangeEvent.getAddPeerEvent(connection.peer));
             }
 
             this.connections.push(connection);
@@ -56,9 +60,9 @@ class PeerControl {
 
     setEventHandlers(connection) {
         connection.on(DATA_TRANSFER, (data) => {
-            let event = new ChangeEvent(data);
-            let unpackedEventArray = event.unpackEventArray();
+            let unpackedEventArray = JSON.parse(data);
             let unpackedEvent = unpackedEventArray[0];
+
             switch (unpackedEvent.action) {
                 case CHAT_MESSAGE: {
                     console.log(connection.peer + ": " + unpackedEvent.text);
@@ -77,7 +81,6 @@ class PeerControl {
                     break;
                 }
                 default: {
-                    console.log(this.eventHandler);
                     this.eventHandler(unpackedEventArray);
                 }
             }
@@ -110,6 +113,10 @@ class PeerControl {
             peerId: connection.peer
         });
         this.connections = this.connections.filter(conn => conn.peer !== connection.peer);
+    }
+
+    broadcastEvent(event) {
+        this.connections.forEach(conn => conn.send(JSON.stringify(event)));
     }
 
     broadcastMessage(msg) {

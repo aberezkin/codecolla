@@ -5,6 +5,7 @@ import ChangeEvent from '../../utilities/Peers/ChangeEvent';
 import CRDTControl from '../../utilities/CRDTControl.js';
 import './Editor.styl';
 import {generateCursorMarker} from "../../utilities/Helpers";
+import {EDIT_INSERT, EDIT_REMOVE} from "../../utilities/Peers/Peer";
 
 const { Range } = ace.acequire('ace/range');
 
@@ -27,40 +28,32 @@ class Editor extends Component {
 
         this.isCursorTransfer = true;
     }
+
+    broadcastEditEvent(e) {
+        if (e.action === EDIT_INSERT) {
+            this.props.peerControl.broadcastEvent(this.crdt.insert(e));
+        }
+        if (e.action === EDIT_REMOVE) {
+            this.props.peerControl.broadcastEvent(this.crdt.remove(e));
+        }
+    }
     
 	onChange(newValue, newEvent) {
         if (this.props.getIsPermissionToTransfer.call()) {
-
-            let event = new ChangeEvent(newEvent);
-			let eventStr = event.packEditEvent();
-            event = new ChangeEvent(eventStr);
-            let e = event.unpackEvent();
-            let msg = [];
-
-            if (newEvent.action === 'insert') {
-                msg = this.crdt.insert(e);
-				console.log(msg);
-                this.props.peerControl.broadcastMessage(msg);
-            }
-
-            if (newEvent.action === 'remove') {
-                msg = this.crdt.remove(e);
-                this.props.peerControl.broadcastMessage(msg);
-            }
+            this.broadcastEditEvent(ChangeEvent.getEditEvent(newEvent))
 		}
-		this.props.onChange(newValue, newEvent);
+
+		if (this.props.onChange) this.props.onChange(newValue, newEvent);
     }
     
     onCursorChange() {
         let pos = this.editor.getCursorPosition();
         let e = {
-            pos: pos,
-            peer: this.props.peerControl.ID
+            peer: this.props.peerControl.ID,
+            pos: pos
         };
 
-        let event = new ChangeEvent(e);
-        let eventStr = event.packCursorMoveEvent();
-        this.props.peerControl.broadcastMessage(eventStr);
+        this.props.peerControl.broadcastEvent(ChangeEvent.getCursorMoveEvent(e));
     }
     
     onLoad(ed) {
@@ -127,9 +120,6 @@ class Editor extends Component {
 Editor.defaultProps = {
     mode : 'text',
     theme: 'github',
-    onChange: (value) => {
-        console.log('change:\n', value);
-    },
     value: '//code is a new God',
 };
 

@@ -3,49 +3,37 @@ export const CHAT_MESSAGE = 'CHAT MESSAGE';
 export const PEER_ADDITION = 'PEER ADDITION ';
 
 class ChangeEvent {
-    constructor(newEvent) {
-        this.event = newEvent;
-    }
-
-    packCursorMoveEvent() {
-        return [JSON.stringify({
+    static getCursorMoveEvent(e) {
+        return [{
             action: CURSOR_MOVE,
-            peer: this.event.peer,
-            pos: this.event.pos
-        })];
+            peer: e.peer,
+            pos: e.pos
+        }]
     }
 
-    packChatMessageEvent() {
-        return [JSON.stringify({
+    static chatMessageEvent(e) {
+        return [{
             action: CHAT_MESSAGE,
             text: this.event
-        })];
+        }]
     }
 
-    packAddPeerEvent() {
-        return [JSON.stringify({
+    static getAddPeerEvent(e) {
+        return [{
             action: PEER_ADDITION,
-            data: this.event
-        })];
+            data: e
+        }]
     }
 
-    packEditEvent() {
-        return JSON.stringify({
-            action: this.event.action,
-            startRow: this.event.start.row,
-            startCol: this.event.start.column,
-            endRow: this.event.end.row,
-            endCol: this.event.end.column,
-            text: this.event.lines
-        });
-    }
-
-    unpackEvent() {
-        return JSON.parse(this.event);  
-    }
-    
-    unpackEventArray() {
-        return this.event.map(JSON.parse);
+    static getEditEvent(e) {
+        return {
+            action: e.action,
+            startRow: e.start.row,
+            startCol: e.start.column,
+            endRow: e.end.row,
+            endCol: e.end.column,
+            text: e.lines
+        }
     }
 }
 
