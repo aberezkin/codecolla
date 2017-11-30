@@ -31,9 +31,7 @@ class CRDTControl {
 
     atomShift(shift, condition = atom => true) {
         console.log("SHIFT: ", shift);
-        console.log(Array.from(this.atoms.values()));
         this.atoms.forEach(atom => atom.y += condition(atom) ? shift : 0);
-        console.log(Array.from(this.atoms.values()));
     }
 
     init() {
@@ -52,10 +50,10 @@ class CRDTControl {
 
         let atom = this.findAtom(a => a.y === e.startRow);
 
-        const predicate = isFirstLine ?
+        this.atomShift(e.endRow - e.startRow,
+            isFirstLine ?
             atom => atom.y > e.startRow :
-            atom => atom.y >= e.endRow && atom.y > 0;
-        this.atomShift(e.endRow - e.startRow, predicate);
+            atom => atom.y >= e.endRow && atom.y > 0);
 
         atom.y += isFirstLine ? 0 : (e.endRow - e.startRow);
         atom.text = this.editor.session.getLine(atom.y);
@@ -74,38 +72,21 @@ class CRDTControl {
     }
 
     remove(e) {
+        const isNotLineEnd = e.startCol === 0 && e.endCol !== this.editor.session.getLine(e.startRow).length;
+        let atom = this.findAtom(a => a.y === e[isNotLineEnd ? 'endRow' : 'startRow']);
+        atom.y -= isNotLineEnd ? e.endRow - e.startRow : 0;
+        atom.text = this.editor.session.getLine(atom.y);
+
         let sendPack = [];
-        if (e.startCol === 0 && e.endCol !== this.editor.session.getLine(e.startRow).length) {
-
-            let atom = this.findAtom(a => a.y === e.endRow);
-            atom.y -= (e.endRow - e.startRow);
-            atom.text = this.editor.session.getLine(atom.y);
-            sendPack.push({action: EDIT_REPLACE, data: atom});
-
-            for (let [key, value] of this.atoms) {
-                if (value.y >= e.startRow && value.y < e.endRow && key !== atom.id) {
-                    sendPack.push({action: EDIT_REMOVE, data: this.atoms.get(key)});
-                    this.atoms.delete(key);
-                }
+        sendPack.push({action: EDIT_REPLACE, data:atom});
+        for (let [key, value] of this.atoms) {
+            if (value.y >= e.startRow + !isNotLineEnd && value.y <= e.endRow + isNotLineEnd && key !== atom.id) {
+                sendPack.push({action: EDIT_REMOVE, data: this.atoms.get(key)});
+                this.atoms.delete(key);
             }
-
-            this.atomShift(e.startRow - e.endRow, atom => atom.y > e.endRow);
-
-
-        } else {
-            let atom = this.findAtom(a => a.y === e.startRow);
-            atom.text = this.editor.session.getLine(atom.y);
-            sendPack.push({action : EDIT_REPLACE, data : atom});
-            
-            for (let [key, value] of this.atoms) {
-                if (value.y > e.startRow && value.y <= e.endRow && key !== atom.id) {
-                    sendPack.push({action : EDIT_REMOVE, data : this.atoms.get(key)});
-                    this.atoms.delete(key);
-                }
-            }
-
-            this.atomShift(e.startRow - e.endRow, atom => atom.y > e.endRow);
         }
+
+        this.atomShift(e.startRow - e.endRow, atom => atom.y > e.endRow);
         return sendPack;
     }
 
