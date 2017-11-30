@@ -81,7 +81,6 @@ class Editor extends Component {
     }
 	
 	handleEvent(e) {
-		console.log("Handling event: ", e);
 		this.crdt.insertEvent(e);
 	}
 	
