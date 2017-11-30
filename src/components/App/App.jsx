@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
 import {getPageHeight} from "../../utilities/Helpers";
 import Editor from '../Editor/Editor';
 import StatusBar from '../StatusBar/StatusBar';
@@ -12,7 +11,7 @@ const defaultValue =
     console.log('Hello, World!');
 }`;
 
-class App extends Component {
+export default class App extends Component {
     constructor(props) {
         super(props);
 
@@ -118,11 +117,3 @@ class App extends Component {
 }
 
 window.addEventListener('resize', App.resize, true);
-
-const mapStateToProps = (state) => {
-    return {
-        isSeed: state.isSeed
-    }
-};
-
-export default connect(mapStateToProps)(App)

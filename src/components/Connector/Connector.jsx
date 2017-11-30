@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import './Connector.styl';
-import {connect} from 'react-redux';
-import {setIsSeed} from "../../actions/index";
 
-class Connector extends Component {
+export default class Connector extends Component {
     constructor(props) {
         super(props);
 
@@ -48,12 +46,3 @@ class Connector extends Component {
         );
     }
 }
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        seedChange: (e) => dispatch(setIsSeed(e.target.checked))
-    }
-};
-
-export default connect(null, mapDispatchToProps)(Connector);
-// export default Connector;

@@ -97,12 +97,11 @@ class CRDTControl {
         this.isTransferAllowed(false);
 
         for (let i = 0; i < e.length; ++i) {
+            let cursorPosition = this.editor.getCursorPosition();
             switch (e[i].action) {
                 case EDIT_INSERT: {
                     this.atoms.set(e[i].data.id, e[i].data);
                     this.atomShift(1, atom => atom.y > e[i].data.y);
-
-                    let cursorPosition = this.editor.getCursorPosition();
 
                     this.editor.session.insert({
                         row: e[i].data.y,
@@ -115,8 +114,6 @@ class CRDTControl {
                 case EDIT_REMOVE: {
                     this.atoms.delete(e[i].data.id);
                     this.atomShift(-1, atom => atom.y > e[i].data.y);
-
-                    let cursorPosition = this.editor.getCursorPosition();
 
                     let rng = {
                         start: {
@@ -135,8 +132,6 @@ class CRDTControl {
                 }
                 case EDIT_REPLACE: {
                     this.atoms.set(e[i].data.id, e[i].data);
-
-                    let cursorPosition = this.editor.getCursorPosition();
 
                     let rng = {
                         start: {
