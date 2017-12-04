@@ -3,7 +3,7 @@ import App from './App'
 
 const mapStateToProps = (state) => {
     return {
-        isSeed: state.isSeed
+        isSeed: state.isSeed,
     }
 };
 

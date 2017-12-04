@@ -39,7 +39,7 @@ class Editor extends Component {
     }
     
 	onChange(newValue, newEvent) {
-        this.state.value = newValue;
+        this.setState({value: newValue});
         if (this.props.isTransferAllowed) {
             this.broadcastEditEvent(ChangeEvent.getEditEvent(newEvent))
 		}
@@ -104,7 +104,7 @@ class Editor extends Component {
         return (
             <AceEditor
                 onLoad={this.onLoad}
-                mode={this.props.mode}
+                mode={this.props.language}
                 theme={this.props.theme}
                 width={'100%'}
                 height={'100%'}

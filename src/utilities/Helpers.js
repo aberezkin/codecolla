@@ -49,3 +49,7 @@ export function generateCursorMarker(session, pos) {
     marker.session.addDynamicMarker(marker, true);
     return marker;
 }
+
+export function generateSetterReducer(actionType, defaultValue) {
+    return (state = defaultValue, action) => action.type === actionType ? action.payload : state;
+}

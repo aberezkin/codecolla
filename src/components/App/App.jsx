@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {getPageHeight} from "../../utilities/Helpers";
 import Editor from '../Editor';
-import StatusBar from '../StatusBar/StatusBar';
+import StatusBar from '../StatusBar';
 import PeerControl from '../../utilities/Peers/Peer.js';
 import '../../utilities/BraceConfigs';
 import './App.styl';
@@ -16,7 +16,6 @@ export default class App extends Component {
         super(props);
 
         this.state = {
-            value: defaultValue,
             theme: 'monokai',
             mode: 'javascript',
         };
@@ -84,9 +83,7 @@ export default class App extends Component {
                 <div className={'wrapper'} style={this.style.wrapper}>
                     <Editor
 						ref={(editor) => { this.editorRef = editor; }}
-                        mode={this.state.mode}
-                        theme={this.state.theme}
-                        value={this.state.value}
+                        value={defaultValue}
                         peerControl={this.peerControl}
                     />
                 </div>

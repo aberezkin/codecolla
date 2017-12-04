@@ -8,19 +8,21 @@ class ListSelector extends Component {
         super(props);
         this.onChangeHandler= this.onChangeHandler.bind(this);
     }
+
     onChangeHandler(event) {
-        let elem = document.querySelectorAll('.ListSelector.'+this.props.className)[0];
+        let elem = document.querySelectorAll(`.ListSelector.${this.props.className}`)[0];
         elem.getElementsByTagName('span')[0].innerText = this.props.options[event.target.value];
         this.props.onChange(event, event.target.value, this.props.options[event.target.value]);
     }
+
     render() {
         this.onChange = this.props.onChange;
         return (
-            <div className={'ListSelector ' + this.props.className}>
+            <div className={`ListSelector ${this.props.className}`}>
                 <span className="selected">{this.props.options[this.props.active]}</span>
                 <span className="pointer"
-                      style={{borderTop: '.33em solid '+this.props.textColor}}
-                ></span>
+                      style={{borderTop: `.33em solid ${this.props.textColor}`}}
+                />
                 <select onChange={this.onChangeHandler.bind(this)}
                         style={{
                             color: this.props.textColor,

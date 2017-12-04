@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import './StatusBar.styl';
-import LineSeparatorSelector from './LineSeparatorSelector/LineSeparatorSelector';
+import LinefeedSelector from './LinefeedSelector/LinefeedSelector';
 import LanguageSelector from './LanguageSelector/LanguageSelector';
 import EncodingSelector from './EncodingSelector/EncodingSelector';
-import ColorSchemeSelector from './ColorSchemeSelector/ColorSchemeSelector';
+import ThemeSelector from './ThemeSelector/ThemeSelector';
 
 import Connector from '../Connector';
 
 class StatusBar extends Component {
     constructor(props) {
         super(props);
-        this.onThemeHandler = this.onThemeHandler.bind(this);
+        this.changeTheme = this.changeTheme.bind(this);
 
         let styleDiv = document.createElement('div');
         styleDiv.setAttribute('id', StatusBar.styleId());
@@ -35,50 +35,50 @@ class StatusBar extends Component {
         return 'StatusBarStyle';
     }
 
-    onThemeHandler(event, key, value) {
-        this.props.theme.onChange(event, key, value);
+    changeTheme(value) {
+        this.props.setTheme(value);
 
-        value = value.replace(/_/g, "-");
+        let styleName = value.replace(/_/g, "-");
 
         let styleDiv = document.getElementById(StatusBar.styleId());
-        styleDiv.setAttribute('class', 'ace-'+value);
-        this.setState({
-            theme : value
-        });
+        styleDiv.setAttribute('class', `ace-${styleName}`);
         let style = getComputedStyle(styleDiv);
+
         this.setState({
+            theme: styleName,
             textColor: style.color,
             backgroundColor: style.backgroundColor
         });
     }
+
     render() {
         return (
-            <div className={StatusBar.name() + ' ace-'+this.state.theme} style={this.props.style}>
+            <div className={`${StatusBar.name()} +  ace-${this.state.theme}`} style={this.props.style}>
                 <div className="Left">
                     <Connector onConnect={this.props.onConnect}/>
                 </div>
                 <div className="Right">
-                    <LineSeparatorSelector
+                    <LinefeedSelector
                         selectedOption={this.props.ending.value}
-                        onChange={this.props.ending.onChange}
+                        onChange={(e, k, value) => this.props.setLinefeed(value)}
                         textColor={this.state.textColor}
                         backgroundColor={this.state.backgroundColor}
                     />
                     <EncodingSelector
                         selectedOption={this.props.encoding.value}
-                        onChange={this.props.encoding.onChange}
+                        onChange={(e, k, value) => this.props.setEncoding(value)}
                         textColor={this.state.textColor}
                         backgroundColor={this.state.backgroundColor}
                     />
                     <LanguageSelector
                         selectedOption={this.props.language.value}
-                        onChange={this.props.language.onChange}
+                        onChange={(e, k, value) => this.props.setLanguage(value)}
                         textColor={this.state.textColor}
                         backgroundColor={this.state.backgroundColor}
                     />
-                    <ColorSchemeSelector
+                    <ThemeSelector
                         selectedOption={this.props.theme.value}
-                        onChange={this.onThemeHandler}
+                        onChange={(e, k, value) => this.changeTheme(value)}
                         textColor={this.state.textColor}
                         backgroundColor={this.state.backgroundColor}
                     />

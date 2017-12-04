@@ -27,9 +27,6 @@ class LanguageSelector extends Component {
 
 LanguageSelector.defaultProps = {
     selectedOption: 'text',
-    onChange: (event, key, value) => {
-        console.log(this.name, event, key, value);
-    },
     textColor: 'black',
     backgroundColor: 'white',
 };

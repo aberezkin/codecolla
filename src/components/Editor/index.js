@@ -4,7 +4,9 @@ import Editor from "./Editor";
 
 const mapStateToProps = (state) => {
     return {
-        isTransferAllowed: state.isTransferAllowed
+        isTransferAllowed: state.isTransferAllowed,
+        theme: state.editorPreferences.theme,
+        language: state.editorPreferences.language
     }
 };
 
