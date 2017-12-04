@@ -1,6 +1,6 @@
 import './Peerjs.js';
 
-import ChangeEvent, {CHAT_MESSAGE, CURSOR_MOVE, PEER_ADDITION} from './ChangeEvent';
+import ChangeEvent, {ADD_CURSOR, CHAT_MESSAGE, DELETE_CURSOR, MOVE_CURSOR, PEER_ADDITION} from './ChangeEvent';
 
 const CONNECTION_EVENT = 'connection';
 const CONNECTION_OPEN = 'open';
@@ -11,10 +11,6 @@ const PEER_ERROR = 'error';
 export const EDIT_INSERT = 'insert';
 export const EDIT_REMOVE = 'remove';
 export const EDIT_REPLACE = 'replace';
-
-export const ADD_CURSOR = "ADD_CURSOR";
-export const DELETE_CURSOR = "DELETE_CURSOR";
-export const MOVE_CURSOR = "MOVE_CURSOR";
 
 class PeerControl {
     constructor() {
@@ -68,9 +64,11 @@ class PeerControl {
                     console.log(connection.peer + ": " + unpackedEvent.text);
                     break;
                 }
-                case CURSOR_MOVE: {
+                case DELETE_CURSOR:
+                case MOVE_CURSOR:
+                case ADD_CURSOR: {
                     this.cursorEventHandler({
-                        type: MOVE_CURSOR,
+                        type: unpackedEvent.action,
                         peerId: unpackedEvent.peer,
                         position: unpackedEvent.pos
                     });

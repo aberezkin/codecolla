@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {getPageHeight} from "../../utilities/Helpers";
-import Editor from '../Editor/Editor';
+import Editor from '../Editor';
 import StatusBar from '../StatusBar/StatusBar';
 import PeerControl from '../../utilities/Peers/Peer.js';
 import '../../utilities/BraceConfigs';
@@ -32,21 +32,18 @@ export default class App extends Component {
         this.onChangeTheme = this.onChangeTheme.bind(this);
         this.onChange = this.onChange.bind(this);
 
-		this.isTransferAllowed = true;
         this.isSeed = false;
         this.peerControl = new PeerControl();
     }
 	
 	componentDidMount() {
 		this.peerControl.setEditEventHandler((e) => {
-			this.editorRef.handleEvent(e);
+            this.editorRef.getWrappedInstance().handleEvent(e);
 		});
 		this.peerControl.setCursorEventHandler((e) => {
-			this.editorRef.handleCursorEvent(e);
+            this.editorRef.getWrappedInstance().handleCursorEvent(e);
         });
-        this.peerControl.setCheckboxStatusHandler(() => {
-            return this.props.isSeed;x
-        })
+        this.peerControl.setCheckboxStatusHandler(() => this.props.isSeed)
 	}
 
     static name() {
@@ -91,12 +88,6 @@ export default class App extends Component {
                         theme={this.state.theme}
                         value={this.state.value}
                         peerControl={this.peerControl}
-                        getIsPermissionToTransfer={() => {
-                            return this.isTransferAllowed;
-                        }}
-                        setIsPermissionToTransfer={(e) => {
-                            this.isTransferAllowed = e;
-                        }}
                     />
                 </div>
                 <StatusBar

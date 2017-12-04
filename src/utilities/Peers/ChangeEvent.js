@@ -1,11 +1,14 @@
-export const CURSOR_MOVE = 'CURSOR MOVE';
+export const ADD_CURSOR = "ADD_CURSOR";
+export const DELETE_CURSOR = "DELETE_CURSOR";
+export const MOVE_CURSOR = "MOVE_CURSOR";
+
 export const CHAT_MESSAGE = 'CHAT MESSAGE';
 export const PEER_ADDITION = 'PEER ADDITION ';
 
 class ChangeEvent {
     static getCursorMoveEvent(e) {
         return [{
-            action: CURSOR_MOVE,
+            action: MOVE_CURSOR,
             peer: e.peer,
             pos: e.pos
         }]

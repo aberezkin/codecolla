@@ -4,8 +4,8 @@ import {EDIT_INSERT, EDIT_REMOVE, EDIT_REPLACE} from "./Peers/Peer"
 class CRDTControl {
     constructor() { }
 
-    setIsPermissionToTransferFunc(e) {
-        this.isTransferAllowed = e;
+    setIsTransferAllowed(e) {
+        this.allowEventTransfer = e;
     }
 	
 	setEditor(e) {
@@ -39,9 +39,7 @@ class CRDTControl {
         
         this.atoms = new Map();
 
-        textByStrings.forEach((string, i) => {
-            this.addAtom(i, string, 1)
-        });
+        textByStrings.forEach((string, i) => this.addAtom(i, string, 1));
     }
 
     insert(e) {
@@ -94,7 +92,7 @@ class CRDTControl {
             return a.data.y - b.data.y;
         });
 
-        this.isTransferAllowed(false);
+        this.allowEventTransfer(false);
 
         for (let i = 0; i < e.length; ++i) {
             let cursorPosition = this.editor.getCursorPosition();
@@ -156,7 +154,7 @@ class CRDTControl {
             }
         }
 
-        this.isTransferAllowed(true);
+        this.allowEventTransfer(true);
     }
 }
 

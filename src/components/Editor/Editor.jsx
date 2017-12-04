@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import AceEditor from 'react-ace';
-import {ADD_CURSOR, DELETE_CURSOR, MOVE_CURSOR} from '../../utilities/Peers/Peer.js';
-import ChangeEvent from '../../utilities/Peers/ChangeEvent';
+import ChangeEvent, {ADD_CURSOR, DELETE_CURSOR, MOVE_CURSOR} from '../../utilities/Peers/ChangeEvent';
 import CRDTControl from '../../utilities/CRDTControl.js';
 import './Editor.styl';
 import {generateCursorMarker} from "../../utilities/Helpers";
@@ -12,6 +11,7 @@ const { Range } = ace.acequire('ace/range');
 class Editor extends Component {
     constructor(props) {
         super(props);
+        this.state = {value: props.value}; // TODO move this state to store
 
         this.cursors = new Map();
 
@@ -24,7 +24,7 @@ class Editor extends Component {
         this.moveCursor = this.moveCursor.bind(this);
 
         this.crdt = new CRDTControl();
-        this.crdt.setIsPermissionToTransferFunc(this.props.setIsPermissionToTransfer);
+        this.crdt.setIsTransferAllowed(this.props.allowEventTransfer);
 
         this.isCursorTransfer = true;
     }
@@ -39,13 +39,14 @@ class Editor extends Component {
     }
     
 	onChange(newValue, newEvent) {
-        if (this.props.getIsPermissionToTransfer.call()) {
+        this.state.value = newValue;
+        if (this.props.isTransferAllowed) {
             this.broadcastEditEvent(ChangeEvent.getEditEvent(newEvent))
 		}
 
 		if (this.props.onChange) this.props.onChange(newValue, newEvent);
     }
-    
+
     onCursorChange() {
         let pos = this.editor.getCursorPosition();
         let e = {
@@ -107,7 +108,7 @@ class Editor extends Component {
                 theme={this.props.theme}
                 width={'100%'}
                 height={'100%'}
-                value={this.props.value}
+                value={this.state.value}
                 onChange={this.onChange}
                 name="UNIQUE_ID_OF_DIV"
                 editorProps={{$blockScrolling: 'Infinity'}}
