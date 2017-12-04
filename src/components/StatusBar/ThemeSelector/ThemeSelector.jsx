@@ -18,7 +18,6 @@ class ColorSchemeSelector extends Component {
                 options={this.options}
                 active={this.selectedOption}
                 onChange={this.props.onChange}
-                MarkSelected={true}
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}
             />

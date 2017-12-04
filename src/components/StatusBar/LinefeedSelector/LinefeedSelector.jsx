@@ -10,6 +10,7 @@ class LinefeedSelector extends Component {
         this.options = ['CRLF', 'LF', 'CR'];
         this.selectedOption = this.options.findIndex((elem) => {return elem === props.selectedOption;});
     }
+
     render() {
         return (
             <ListSelector
@@ -17,7 +18,6 @@ class LinefeedSelector extends Component {
                 options={this.options}
                 active={this.selectedOption}
                 onChange={this.props.onChange}
-                MarkSelected={true}
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}
             />

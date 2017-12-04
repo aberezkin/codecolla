@@ -10,6 +10,7 @@ class EncodingSelector extends Component {
         this.options = ['UTF-8', 'CP-866', 'CP-1255'];
         this.selectedOption = this.options.findIndex((elem) => {return elem === props.selectedOption;});
     }
+
     render() {
         return (
             <ListSelector
@@ -17,7 +18,6 @@ class EncodingSelector extends Component {
                 options={this.options}
                 active={this.selectedOption}
                 onChange={this.props.onChange}
-                MarkSelected={true}
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}
             />
@@ -27,9 +27,6 @@ class EncodingSelector extends Component {
 
 EncodingSelector.defaultProps = {
     selectedOption : 'UTF-8',
-    onChange: (event, key, value) => {
-        console.log('EncodingSelector', event, key, value);
-    },
     textColor: 'black',
     backgroundColor: 'white',
 };

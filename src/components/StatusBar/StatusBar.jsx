@@ -60,25 +60,25 @@ class StatusBar extends Component {
                 <div className="Right">
                     <LinefeedSelector
                         selectedOption={this.props.ending.value}
-                        onChange={(e, k, value) => this.props.setLinefeed(value)}
+                        onChange={this.props.setLinefeed}
                         textColor={this.state.textColor}
                         backgroundColor={this.state.backgroundColor}
                     />
                     <EncodingSelector
                         selectedOption={this.props.encoding.value}
-                        onChange={(e, k, value) => this.props.setEncoding(value)}
+                        onChange={this.props.setEncoding}
                         textColor={this.state.textColor}
                         backgroundColor={this.state.backgroundColor}
                     />
                     <LanguageSelector
                         selectedOption={this.props.language.value}
-                        onChange={(e, k, value) => this.props.setLanguage(value)}
+                        onChange={this.props.setLanguage}
                         textColor={this.state.textColor}
                         backgroundColor={this.state.backgroundColor}
                     />
                     <ThemeSelector
                         selectedOption={this.props.theme.value}
-                        onChange={(e, k, value) => this.changeTheme(value)}
+                        onChange={this.changeTheme}
                         textColor={this.state.textColor}
                         backgroundColor={this.state.backgroundColor}
                     />
@@ -95,27 +95,15 @@ StatusBar.defaultProps = {
     },
     ending: {
         value: 'LF',
-        onChange: (event, key, value) => {
-            console.log(key, value);
-        }
     },
     encoding: {
         value: 'UTF-8',
-        onChange: (event, key, value) => {
-            console.log(key, value);
-        }
     },
     language: {
         value: 'text',
-        onChange: (event, key, value) => {
-            console.log(key, value);
-        }
     },
     theme: {
         value: 'github',
-        onChange: (event, key, value) => {
-            console.log(key, value);
-        }
     },
 };
 
