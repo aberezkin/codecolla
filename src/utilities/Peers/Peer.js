@@ -2,11 +2,11 @@ import './Peerjs.js';
 
 import ChangeEvent, {ADD_CURSOR, CHAT_MESSAGE, DELETE_CURSOR, MOVE_CURSOR, PEER_ADDITION} from './ChangeEvent';
 
-const CONNECTION_EVENT = 'connection';
-const CONNECTION_OPEN = 'open';
-const CONNECTION_CLOSE = 'close';
-const DATA_TRANSFER = 'data';
-const PEER_ERROR = 'error';
+export const CONNECTION_EVENT = 'connection';
+export const CONNECTION_OPEN = 'open';
+export const CONNECTION_CLOSE = 'close';
+export const DATA_TRANSFER = 'data';
+export const PEER_ERROR = 'error';
 
 export const EDIT_INSERT = 'insert';
 export const EDIT_REMOVE = 'remove';
@@ -39,12 +39,12 @@ class PeerControl {
     }
     
     setCheckboxStatusHandler(checkboxStatusHandler) {
-		this.getCheckboxStatus = checkboxStatusHandler;
+		this.isSeed = checkboxStatusHandler;
 	}
 
     handleConnection(connection) {
         connection.on(CONNECTION_OPEN, () => {
-            if (this.getCheckboxStatus.call()) {
+            if (this.isSeed()) {
                 this.broadcastEvent(ChangeEvent.getAddPeerEvent(connection.peer));
             }
 

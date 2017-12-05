@@ -9,20 +9,10 @@ export default class Connector extends Component {
         this.msg = '';
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleChangeMsg = this.handleChangeMsg.bind(this);
-        this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     }
 
     handleChange(evt) {  
         this.addPeer = evt.target.value;
-    }
-
-    handleChangeMsg(evt) {  
-        this.msg = evt.target.value;
-    }
-
-    handleCheckboxChange(evt) {
-        this.props.setCheckboxStatus(evt.target.checked);
     }
 
     static name() {
@@ -35,10 +25,8 @@ export default class Connector extends Component {
                <input type="text" id="rid"
                     placeholder="Someone else's id"
                     onChange={this.handleChange}/>
-               <button onClick={() => {
-						this.props.onConnect(this.addPeer);
-                    }}>
-                    CONNECT
+               <button onClick={() => this.props.connectToPeer(this.addPeer)}>
+                    Connect
                </button>
                <input type="checkbox" id="cb" name="admin"
                     onChange={this.props.seedChange} />

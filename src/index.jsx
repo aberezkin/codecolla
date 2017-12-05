@@ -6,8 +6,9 @@ import reducers from './reducers';
 import App from './components/App' ;
 import logger from "./middleware/logger";
 import './index.styl';
+import peersMiddleware from "./middleware/peer";
 
-const store = createStore(reducers, applyMiddleware(logger));
+const store = createStore(reducers, applyMiddleware(peersMiddleware, logger));
 
 ReactDOM.render(
     <Provider store={store}>

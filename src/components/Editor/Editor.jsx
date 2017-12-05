@@ -29,32 +29,32 @@ class Editor extends Component {
         this.isCursorTransfer = true;
     }
 
-    broadcastEditEvent(e) {
-        if (e.action === EDIT_INSERT) {
-            this.props.peerControl.broadcastEvent(this.crdt.insert(e));
-        }
-        if (e.action === EDIT_REMOVE) {
-            this.props.peerControl.broadcastEvent(this.crdt.remove(e));
-        }
-    }
+    // broadcastEditEvent(e) {
+    //     if (e.action === EDIT_INSERT) {
+    //         this.props.peerControl.broadcastEvent(this.crdt.insert(e));
+    //     }
+    //     if (e.action === EDIT_REMOVE) {
+    //         this.props.peerControl.broadcastEvent(this.crdt.remove(e));
+    //     }
+    // }
     
 	onChange(newValue, newEvent) {
         this.setState({value: newValue});
-        if (this.props.isTransferAllowed) {
-            this.broadcastEditEvent(ChangeEvent.getEditEvent(newEvent))
-		}
+        // if (this.props.isTransferAllowed) {
+         //    this.broadcastEditEvent(ChangeEvent.getEditEvent(newEvent))
+		// }
 
 		if (this.props.onChange) this.props.onChange(newValue, newEvent);
     }
 
     onCursorChange() {
-        let pos = this.editor.getCursorPosition();
-        let e = {
-            peer: this.props.peerControl.ID,
-            pos: pos
-        };
-
-        this.props.peerControl.broadcastEvent(ChangeEvent.getCursorMoveEvent(e));
+        // let pos = this.editor.getCursorPosition();
+        // let e = {
+        //     peer: this.props.peerControl.ID,
+        //     pos: pos
+        // };
+        //
+        // this.props.peerControl.broadcastEvent(ChangeEvent.getCursorMoveEvent(e));
     }
     
     onLoad(ed) {
