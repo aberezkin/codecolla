@@ -1,4 +1,4 @@
-import {INSERT_LINE, insertLine, removeLine, SET_LINE, setLine} from "../actions/index";
+import {broadcastActions, INSERT_LINE, insertLine, removeLine, SET_LINE, setLine} from "../actions/index";
 import {EDIT_INSERT, EDIT_REMOVE} from "../utilities/Peers/Peer";
 import {generateLineId} from "../utilities/Helpers";
 
@@ -57,12 +57,17 @@ function generateRemoveActions(atoms, event) {
 
 // TODO: create a INSERT_LINE_INTERVAL and REMOVE_LINE_INTERVAL actions?
 // TODO: with these we can use only reducers and operate with the state itself
+// TODO: it can complicate column merging though
 const textMiddleware = store => next => action => {
     switch (action.type) {
         case EDIT_INSERT:
-            next(generateInsertActions(store.getState().text, action.payload));
+            let actions = generateInsertActions(store.getState().text, action.payload);
+            store.dispatch(broadcastActions(actions));
+            next(actions);
             break;
         case EDIT_REMOVE:
+            actions = generateRemoveActions(store.getState().text, action.payload);
+            store.dispatch(broadcastActions(actions));
             next(generateRemoveActions(store.getState().text, action.payload));
             break;
         default: next(action);

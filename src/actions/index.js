@@ -55,6 +55,11 @@ export function removePeer(connection) {
     return createAction(REMOVE_PEER, connection);
 }
 
+export const BROADCAST_DATA = 'BROADCAST DATA';
+export function broadcastActions(data) {
+    return createAction(BROADCAST_DATA, data);
+}
+
 export function insertEvent(event) {
     return createAction(EDIT_INSERT, event);
 }
