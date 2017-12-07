@@ -1,3 +1,6 @@
+import {generateAtom} from "../utilities/Helpers";
+import {EDIT_INSERT, EDIT_REMOVE} from "../utilities/Peers/Peer";
+
 function createAction(type, payload = undefined) {
     return { type, payload }
 }
@@ -50,4 +53,32 @@ export function addPeerFromId(id) {
 export const REMOVE_PEER = 'REMOVE PEER';
 export function removePeer(connection) {
     return createAction(REMOVE_PEER, connection);
+}
+
+export function insertEvent(event) {
+    return createAction(EDIT_INSERT, event);
+}
+
+export function removeEvent(event) {
+    return createAction(EDIT_REMOVE, event);
+}
+
+export const SET_TEXT = 'SET TEXT';
+export function setText(text) {
+    return createAction(SET_TEXT, text.split('\n').map(line => generateAtom(line, 1)));
+}
+
+export const SET_LINE = 'SET LINE';
+export function setLine(line, atom) {
+    return createAction(SET_LINE, {line, atom})
+}
+
+export const INSERT_LINE = 'INSERT LINE';
+export function insertLine(line, atom) {
+    return createAction(INSERT_LINE, {line, atom})
+}
+
+export const REMOVE_LINE = 'REMOVE LINE';
+export function removeLine(line) {
+    return createAction(REMOVE_LINE, line);
 }

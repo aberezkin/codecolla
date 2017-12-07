@@ -1,3 +1,5 @@
+import {Map} from 'immutable';
+
 export function getPageHeight () {
     let body = document.body,
         html = document.documentElement;
@@ -14,6 +16,14 @@ export function generateLineId() {
     }
 
     return ID;
+}
+
+export function generateAtom(text, time) {
+    return Map({
+        id: generateLineId(),
+        text,
+        time
+    });
 }
 
 export function generateCursorMarker(session, pos) {

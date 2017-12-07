@@ -24,6 +24,7 @@ export default class App extends Component {
         };
 
         this.props.initPeer();
+        this.props.setText(defaultValue);
     }
 
     static name() {
@@ -40,10 +41,7 @@ export default class App extends Component {
         return (
             <div className={App.name()}>
                 <div className={'wrapper'} style={this.style.wrapper}>
-                    <Editor
-						ref={(editor) => { this.editorRef = editor; }}
-                        value={defaultValue}
-                    />
+                    <Editor ref={(editor) => { this.editorRef = editor; }}/>
                 </div>
                 <StatusBar style={this.style.statusBar} />
             </div>

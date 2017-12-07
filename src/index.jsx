@@ -7,8 +7,10 @@ import App from './components/App' ;
 import logger from "./middleware/logger";
 import './index.styl';
 import peersMiddleware from "./middleware/peer";
+import multi from 'redux-multi';
+import text from './middleware/text';
 
-const store = createStore(reducers, applyMiddleware(peersMiddleware, logger));
+const store = createStore(reducers, applyMiddleware(peersMiddleware, text, multi, logger));
 
 ReactDOM.render(
     <Provider store={store}>

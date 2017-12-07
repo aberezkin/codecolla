@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import App from './App'
-import {addPeer, initPeer} from "../../actions/index";
+import {addPeer, initPeer, setText} from "../../actions/index";
 
 const mapStateToProps = (state) => {
     return {
@@ -11,7 +11,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         initPeer: () => dispatch(initPeer()),
-        addPeer: (connection) => dispatch(addPeer(connection))
+        addPeer: (connection) => dispatch(addPeer(connection)),
+        setText: (text) => dispatch(setText(text))
     }
 };
 

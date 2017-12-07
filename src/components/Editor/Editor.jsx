@@ -11,8 +11,6 @@ const { Range } = ace.acequire('ace/range');
 class Editor extends Component {
     constructor(props) {
         super(props);
-        this.state = {value: props.value}; // TODO move this state to store
-
         this.cursors = new Map();
 
         this.onChange = this.onChange.bind(this);
@@ -29,21 +27,17 @@ class Editor extends Component {
         this.isCursorTransfer = true;
     }
 
-    // broadcastEditEvent(e) {
-    //     if (e.action === EDIT_INSERT) {
-    //         this.props.peerControl.broadcastEvent(this.crdt.insert(e));
-    //     }
-    //     if (e.action === EDIT_REMOVE) {
-    //         this.props.peerControl.broadcastEvent(this.crdt.remove(e));
-    //     }
-    // }
+    emitEditEvent(e) {
+        if (e.action === EDIT_INSERT) {
+            this.props.onInsert(e);
+        }
+        if (e.action === EDIT_REMOVE) {
+            this.props.onRemove(e);
+        }
+    }
     
 	onChange(newValue, newEvent) {
-        this.setState({value: newValue});
-        // if (this.props.isTransferAllowed) {
-         //    this.broadcastEditEvent(ChangeEvent.getEditEvent(newEvent))
-		// }
-
+        this.emitEditEvent(ChangeEvent.getEditEvent(newEvent));
 		if (this.props.onChange) this.props.onChange(newValue, newEvent);
     }
 
@@ -108,7 +102,7 @@ class Editor extends Component {
                 theme={this.props.theme}
                 width={'100%'}
                 height={'100%'}
-                value={this.state.value}
+                value={this.props.text}
                 onChange={this.onChange}
                 name="UNIQUE_ID_OF_DIV"
                 editorProps={{$blockScrolling: 'Infinity'}}

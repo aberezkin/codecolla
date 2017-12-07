@@ -70,7 +70,9 @@ class CRDTControl {
 
     remove(e) {
         const isNotLineEnd = e.startCol === 0 && e.endCol !== this.editor.session.getLine(e.startRow).length;
+
         let atom = this.findAtom(a => a.y === e[isNotLineEnd ? 'endRow' : 'startRow']);
+
         atom.y -= isNotLineEnd ? e.endRow - e.startRow : 0;
         atom.text = this.editor.session.getLine(atom.y);
 
