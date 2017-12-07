@@ -38,6 +38,7 @@
     "svg-sprite-loader": "^3.4.1"
   },
   "devDependencies": {
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "optimize-js-plugin": "0.0.4",
     "webpack": "^3.8.1",

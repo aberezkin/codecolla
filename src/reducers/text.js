@@ -10,7 +10,7 @@ function textReducer(state = List(), action) {
         case INSERT_LINE:
             return state.insert(action.payload.line, Map(action.payload.atom));
         case REMOVE_LINE:
-            return state.delete(action.payload.line);
+            return state.delete(action.payload);
         default: return state;
     }
 }
