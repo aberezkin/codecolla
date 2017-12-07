@@ -1,5 +1,5 @@
 import {generateAtom} from "../utilities/Helpers";
-import {EDIT_INSERT, EDIT_REMOVE} from "../utilities/Peers/Peer";
+import {EDIT_INSERT, EDIT_REMOVE} from "../components/Editor/Editor";
 
 function createAction(type, payload = undefined) {
     return { type, payload }
@@ -60,12 +60,14 @@ export function broadcastActions(data) {
     return createAction(BROADCAST_DATA, data);
 }
 
+export const INSERT_EVENT = 'INSERT_EVENT';
 export function insertEvent(event) {
-    return createAction(EDIT_INSERT, event);
+    return createAction(INSERT_EVENT, event);
 }
 
+export const REMOVE_EVENT = 'REMOVE_EVENT';
 export function removeEvent(event) {
-    return createAction(EDIT_REMOVE, event);
+    return createAction(REMOVE_EVENT, event);
 }
 
 export const SET_TEXT = 'SET TEXT';

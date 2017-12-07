@@ -1,10 +1,15 @@
-import {broadcastActions, INSERT_LINE, insertLine, removeLine, SET_LINE, setLine} from "../actions/index";
-import {EDIT_INSERT, EDIT_REMOVE} from "../utilities/Peers/Peer";
+import {broadcastActions, INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine} from "../actions/index";
 import {generateLineId} from "../utilities/Helpers";
 
 function insertTextToAtom(atom, pos, pasteText) {
     let oldText = atom.get('text');
     return atom.set('text', oldText.slice(0, pos) + pasteText + oldText.slice(pos));
+}
+
+function removeTextFromAtom(atom, from = 0, to = Number.MAX_VALUE) {
+    let oldText = atom.get('text');
+    let newText = oldText.slice(0, from) + oldText.slice(to);
+    return atom.set('text', newText);
 }
 
 function generateInsertActions(atoms, event) {
@@ -24,12 +29,6 @@ function generateInsertActions(atoms, event) {
     }
 
     return actions;
-}
-
-function removeTextFromAtom(atom, from = 0, to = Number.MAX_VALUE) {
-    let oldText = atom.get('text');
-    let newText = oldText.slice(0, from) + oldText.slice(to);
-    return atom.set('text', newText);
 }
 
 function generateRemoveActions(atoms, event) {
@@ -60,12 +59,12 @@ function generateRemoveActions(atoms, event) {
 // TODO: it can complicate column merging though
 const textMiddleware = store => next => action => {
     switch (action.type) {
-        case EDIT_INSERT:
+        case INSERT_EVENT:
             let actions = generateInsertActions(store.getState().text, action.payload);
             store.dispatch(broadcastActions(actions));
             next(actions);
             break;
-        case EDIT_REMOVE:
+        case REMOVE_EVENT:
             actions = generateRemoveActions(store.getState().text, action.payload);
             store.dispatch(broadcastActions(actions));
             next(generateRemoveActions(store.getState().text, action.payload));

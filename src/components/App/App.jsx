@@ -4,7 +4,6 @@ import Editor from '../Editor';
 import StatusBar from '../StatusBar';
 import '../../utilities/BraceConfigs';
 import './App.styl';
-import {CONNECTION_OPEN, CONNECTION_EVENT} from "../../utilities/Peers/Peer"
 import {STATUS_BAR_CLASSNAME} from "../StatusBar/StatusBar";
 
 const defaultValue =

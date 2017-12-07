@@ -1,9 +1,14 @@
-import '../utilities/Peers/Peerjs.js';
+import '../utilities/Peerjs.js';
 
 import {ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_DATA, INIT_PEER, removePeer} from "../actions/index";
-import {DATA_TRANSFER, PEER_ERROR, CONNECTION_CLOSE, CONNECTION_EVENT, CONNECTION_OPEN} from '../utilities/Peers/Peer'
-import {CHAT_MESSAGE, DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION} from "../utilities/Peers/ChangeEvent"
-import ChangeEvent from "../utilities/Peers/ChangeEvent";
+import {CHAT_MESSAGE, DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION} from "../utilities/ChangeEvent"
+import ChangeEvent from "../utilities/ChangeEvent";
+
+export const CONNECTION_EVENT = 'connection';
+export const CONNECTION_OPEN = 'open';
+export const CONNECTION_CLOSE = 'close';
+export const DATA_TRANSFER = 'data';
+export const PEER_ERROR = 'error';
 
 let peer = new Peer({key: 'e0twf5gs81lzbyb9'});
 peer.on(CONNECTION_OPEN, (id) => console.log('pid: ', id));
@@ -73,7 +78,6 @@ const peersMiddleware = store => next => action => {
                 store.dispatch)));
             break;
         case BROADCAST_DATA:
-            console.log('broadcasting', action.payload);
             store.getState().peers.forEach(conn => conn.send(JSON.stringify(action.payload)));
             break;
         default: next(action)
