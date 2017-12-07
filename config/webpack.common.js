@@ -2,16 +2,21 @@ const webpack = require('webpack');
 const path = require('path');
 const helpers = require('./helpers');
 
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 let BUILD_DIR = helpers.root('docs');
-let APP_DIR = helpers.root('src/dev');
+let APP_DIR = helpers.root('src');
 
 module.exports = config => {
     return {
         context: BUILD_DIR,
-        entry: APP_DIR + '/index.js',
+        entry: APP_DIR + '/index.jsx',
         output: {
             path: BUILD_DIR,
             filename: 'bundle.js'
+        },
+        resolve: {
+            extensions: ['.js', '.jsx']
         },
         module: {
             rules: [
@@ -49,7 +54,12 @@ module.exports = config => {
             ]
         },
         plugins: [
-            new webpack.NoEmitOnErrorsPlugin()
+            new webpack.NoEmitOnErrorsPlugin(),
+            new HtmlWebpackPlugin({
+                title: 'Codecolla',
+                filename: 'index.html',
+                template: helpers.root("/src/index.ejs"),
+            })
         ]
     }
 };

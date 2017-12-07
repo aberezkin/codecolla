@@ -2,20 +2,14 @@ const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.common');
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 
+let BUILD_DIR = helpers.root('dev-docs');
+
 module.exports = config => webpackMerge(commonConfig({env: ENV}), {
+    context: BUILD_DIR,
     devtool: 'cheap-module-eval-source-map',
     output: {
-        filename: 'bundle-dev.js'
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: 'Codecolla',
-            filename: 'index-dev.html',
-            template: helpers.root("/src/dev/index.ejs"),
-        })
-    ]
+        path: BUILD_DIR,
+    }
 });

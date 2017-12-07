@@ -1,0 +1,27 @@
+.ListSelector
+  overflow hidden
+  margin 0 5px
+  cursor pointer
+  position relative
+  display flex
+  flex-direction row
+.ListSelector .pointer
+  margin-right 1px
+  display block
+  content ''
+  height 0
+  width 0
+  border .33em solid transparent
+  margin-top: .50em
+  margin-left: .2em
+.ListSelector select
+  font-size 1.2em
+  position absolute
+  top 0
+  left 0
+  right 0
+  width fit-content
+  opacity 0
+  z-index 1
+.ListSelector.bright::after
+  border-top .33em solid rgba(255, 255, 255, .33)

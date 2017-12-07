@@ -1,9 +1,8 @@
 const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge');
 const webpack = require('webpack');
-const commonConfig = require('./webpack.common')
+const commonConfig = require('./webpack.common');
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OptimizeJsPlugin = require('optimize-js-plugin');
 const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 
@@ -35,11 +34,6 @@ module.exports = config => webpackMerge(commonConfig({env: ENV}), {
         }),
         new OptimizeJsPlugin({
             sourceMap: false, 
-        }),
-        new HtmlWebpackPlugin({
-            title: 'Codecolla',
-            filename: 'index.html',
-            template: helpers.root("/src/dev/index.ejs"),
         }),
     ]
 });
