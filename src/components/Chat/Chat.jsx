@@ -16,7 +16,7 @@ class Chat extends Component {
     }
     sendMessage() {
         let elem = {
-            author: 'me',
+            author: 'test',
             content: this.state.value,
             date: (new Date()).toLocaleTimeString(),
         };
