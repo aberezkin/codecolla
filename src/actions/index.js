@@ -1,5 +1,4 @@
 import {generateAtom} from "../utilities/Helpers";
-import {EDIT_INSERT, EDIT_REMOVE} from "../components/Editor/Editor";
 
 function createAction(type, payload = undefined) {
     return { type, payload }
