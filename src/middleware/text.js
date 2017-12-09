@@ -14,6 +14,7 @@ function insertTextToAtom(atom, pos, pasteText) {
 
 function removeTextFromAtom(atom, from = 0, to = Number.MAX_VALUE) {
     let oldText = atom.get('text');
+    let newText = oldText.slice(0, from) + oldText.slice(to);
     atom = getNewTimeForAtom(atom);
     return atom.set('text', newText);
 }
@@ -68,6 +69,9 @@ const textMiddleware = store => next => action => {
         case INSERT_EVENT:
             let actions = generateInsertActions(store.getState().text, action.payload);
             store.dispatch(broadcastActions(actions));
+            actions.forEach(a => {
+                a.payload.atom.peer = store.getState().peers.id;
+            });
             next(actions);
             break;
         case REMOVE_EVENT:

@@ -5,9 +5,35 @@ function createAction(type, payload = undefined) {
     return { type, payload }
 }
 
+export const SET_PEER_ID = 'SET PEER ID';
+export function setPeerId(id) {
+    return createAction(SET_PEER_ID, id);
+}
+
+export const MOVE_CURSOR = 'MOVE CURSOR';
+export function moveCursor(id, pos) {
+    return createAction(MOVE_CURSOR, {id, pos});
+}
+
+export const ADD_CURSOR = 'ADD CURSOR';
+export function addCursor(pos) {
+    return createAction(ADD_CURSOR, pos);
+}
+
+export const DELETE_CURSOR = 'DELETE CURSOR';
+export function deleteCursor(pos) {
+    return createAction(DELETE_CURSOR, pos);
+}
+
+export const SET_CURSOR = 'SET CURSOR';
+export function setCursor(pos) {
+    return createAction(SET_CURSOR, pos);
+}
+
+
 export const SET_IS_SEED = 'SET IS SEED';
 export function setIsSeed(isSeed) {
-    return createAction(SET_IS_SEED, isSeed)
+    return createAction(SET_IS_SEED, isSeed);
 }
 
 export const SET_IS_TRANSFER_ALLOWED = 'SET IS TRANSFER ALLOWED';
