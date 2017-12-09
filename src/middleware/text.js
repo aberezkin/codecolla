@@ -1,4 +1,4 @@
-import {broadcastActions, INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine} from "../actions/index";
+import {GET_ALL_TEXT, broadcastActions, broadcastActionsForPeer, INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine, SET_LINE, SEND_ALL_TEXT} from "../actions/index";
 import {generateLineId} from "../utilities/Helpers";
 
 function getNewTimeForAtom(atom) {
@@ -68,16 +68,48 @@ const textMiddleware = store => next => action => {
     switch (action.type) {
         case INSERT_EVENT:
             let actions = generateInsertActions(store.getState().text, action.payload);
-            store.dispatch(broadcastActions(actions));
             actions.forEach(a => {
                 a.payload.atom.peer = store.getState().peers.id;
             });
+            store.dispatch(broadcastActions(actions));
             next(actions);
             break;
         case REMOVE_EVENT:
             actions = generateRemoveActions(store.getState().text, action.payload);
             store.dispatch(broadcastActions(actions));
             next(generateRemoveActions(store.getState().text, action.payload));
+            break;
+        case SET_LINE:
+            console.log('$$$$$$$$$$\n');
+            if (action.payload.atom.time <= store.getState().text.get(action.payload.line).time) {
+                store.dispatch(broadcastActions(store.getState().text.get(action.payload.line)));
+                console.log('%%%%%%%%%%\n');
+                break;
+            } else if (action.payload.atom.time === store.getState().text.get(action.payload.line).time) {
+                if (store.getState().peers.id > action.payload.atom.peer) {
+                    console.log('&&&&&&&&&&&&\n');
+                    store.dispatch(broadcastActions(store.getState().text.get(action.payload.line)));
+                    break;
+                }
+            }
+            next(action);
+            break;
+        case SEND_ALL_TEXT:
+            let i = 0;
+            let sendArr = store.getState().text.map(atom => {
+                return {
+                    type: GET_ALL_TEXT,
+                    payload: {
+                        line: i++,
+                        atom: atom
+                    }
+                }
+            });
+            actions = {
+                id: action.payload,
+                text: sendArr
+            }
+            store.dispatch(broadcastActionsForPeer(actions));
             break;
         default: next(action);
     }

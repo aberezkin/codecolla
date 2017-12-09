@@ -1,4 +1,4 @@
-import {ADD_PEER, REMOVE_PEER, SET_PEER_ID} from "../actions/index";
+import {ADD_PEER, REMOVE_PEER, SET_PEER_ID, ADD_ALL_TEXT} from "../actions/index";
 import { combineReducers } from "redux";
 import {generateSetterReducer} from '../utilities/Helpers'
 
