@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {getPageHeight} from "../../utilities/Helpers";
 import Editor from '../Editor';
 import StatusBar from '../StatusBar';
+import Chat from '../Chat';
 import '../../utilities/BraceConfigs';
 import './App.styl';
 import {STATUS_BAR_CLASSNAME} from "../StatusBar/StatusBar";
@@ -41,6 +42,7 @@ export default class App extends Component {
             <div className={App.name()}>
                 <div className={'wrapper'} style={this.style.wrapper}>
                     <Editor ref={(editor) => { this.editorRef = editor; }}/>
+                    <Chat/>
                 </div>
                 <StatusBar style={this.style.statusBar} />
             </div>
