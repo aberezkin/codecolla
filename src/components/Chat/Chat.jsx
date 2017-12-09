@@ -3,6 +3,8 @@ import './Chat.styl';
 import Message from './Message/Message';
 import Textarea from 'react-textarea-autosize';
 
+export const CHAT_CLASSNAME = 'Chat';
+
 class Chat extends Component {
     constructor(props) {
         super(props);
@@ -11,9 +13,6 @@ class Chat extends Component {
         this.state = {
             value: '',
         };
-    }
-    static name() {
-        return 'Chat';
     }
     sendMessage() {
         let elem = {
@@ -35,7 +34,7 @@ class Chat extends Component {
     }
     render() {
         return (
-            <div className={Chat.name()} onKeyDown={this.onKeyDown} tabIndex="0">
+            <div className={`${CHAT_CLASSNAME}`} onKeyDown={this.onKeyDown} tabIndex="0">
                 <div className="MessageBox">
                     {
                         this.props.messages.map((object, index) =>
