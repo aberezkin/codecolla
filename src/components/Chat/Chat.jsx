@@ -7,6 +7,7 @@ class Chat extends Component {
     constructor(props) {
         super(props);
         this.sendMessage = this.sendMessage.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
         this.state = {
             value: '',
         };
@@ -25,9 +26,16 @@ class Chat extends Component {
         });
         this.props.onMessage(elem);
     }
+    onKeyDown(event) {
+        if (event.keyCode == 13 && event.ctrlKey) {
+            if (this.state.value === '')
+                return;
+            this.sendMessage();
+        }
+    }
     render() {
         return (
-            <div className={Chat.name()}>
+            <div className={Chat.name()} onKeyDown={this.onKeyDown} tabIndex="0">
                 <div className="MessageBox">
                     {
                         this.props.messages.map((object, index) =>
