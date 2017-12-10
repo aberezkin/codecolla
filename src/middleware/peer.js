@@ -18,7 +18,7 @@ var PeerID = '';
 function eventifyConnection(connection, isSeed, dispatch) {
     connection.on(CONNECTION_OPEN, () => {
         if (isSeed) {
-            dispatch(broadcastActions(ChangeEvent.getAddPeerEvent(connection.peer)));
+            //dispatch(broadcastActions(ChangeEvent.getAddPeerEvent(connection.peer)));
             dispatch(sendAllText(connection.peer));
         }
     });
@@ -72,7 +72,7 @@ function eventifyConnection(connection, isSeed, dispatch) {
         alert(connection.peer + ' has left the chat.');
         dispatch(removePeer(connection));
     });
-
+    dispatch(broadcastActions(ChangeEvent.getAddPeerEvent(connection.peer)));
     return connection;
 }
 
@@ -93,11 +93,14 @@ const peersMiddleware = store => next => action => {
                 store.dispatch)));
             break;
         case BROADCAST_DATA:
-            store.getState().peers.connections.forEach(conn => conn.send(JSON.stringify(action.payload)));
+            store.getState().peers.connections.forEach(conn => {
+                console.log(conn.peer);
+                conn.send(JSON.stringify(action.payload))
+            });
             break;
         case BROADCAST_DATA_FOR_PEER:
             store.getState().peers.connections.forEach(conn => {
-                if (conn.peer == action.payload.id) {
+                if (conn.peer === action.payload.id) {
                     conn.send(JSON.stringify(action.payload.text));
                 }
             });

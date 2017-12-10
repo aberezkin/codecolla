@@ -67,6 +67,11 @@ class Editor extends Component {
                 onChange={this.onChange}
                 name="UNIQUE_ID_OF_DIV"
                 editorProps={{$blockScrolling: 'Infinity'}}
+                commands={[{   
+                  name: 'commandCtrlZ',
+                  bindKey: {win: 'Ctrl-z', mac: 'Command-z', linux: 'Ctrl-z'},
+                  exec: () => { console.log('Ctrl-z')} 
+                }]}
             />
         );
     }
