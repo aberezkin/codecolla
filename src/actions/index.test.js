@@ -76,3 +76,5 @@ describe('throws from action creators', () => {
         expect(() => setLine('4', {atom: 'mock'})).toThrow();
     })
 });
+
+// TODO: test SET_TEXT action creator
