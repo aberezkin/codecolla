@@ -89,3 +89,13 @@ export const REMOVE_LINE = 'REMOVE LINE';
 export function removeLine(line) {
     return createAction(REMOVE_LINE, line);
 }
+
+export const SEND_MESSAGE = 'SEND MESSAGE';
+export function sendMessage(message) {
+    return createAction(SEND_MESSAGE, message)
+}
+
+export const ADD_MESSAGE = 'ADD MESSAGE';
+export function addMessage(message) {
+    return createAction(ADD_MESSAGE, message);
+}
