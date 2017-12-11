@@ -1,17 +1,15 @@
 import {ADD_MESSAGE} from "../actions";
+import {combineReducers} from 'redux';
 
-const chatReducer = (state = {messages: []}, action) => {
+const messages = (state = [], action) => {
     switch (action.type) {
         case ADD_MESSAGE:
-            return {
+            return [
                 ...state,
-                messages: [
-                    ...state.messages,
-                    action.payload,
-                ]
-            };
+                action.payload,
+            ];
         default: return state;
     }
 };
 
-export default chatReducer;
+export default combineReducers(messages);
