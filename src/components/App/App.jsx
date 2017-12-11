@@ -19,7 +19,7 @@ export default class App extends Component {
         this.style = {
             wrapper : {
                 width: '100%',
-                height : getPageHeight() - 20 + 'px',
+                height : getPageHeight() - 21 + 'px',
             },
         };
 
@@ -39,7 +39,7 @@ export default class App extends Component {
 	
     render() {
         return (
-            <div className={App.name()}>
+            <div className={`${App.name()} ace-${this.props.theme}`}>
                 <div className={'wrapper'} style={this.style.wrapper}>
                     <Editor ref={(editor) => { this.editorRef = editor; }}/>
                     <Chat/>
