@@ -21,7 +21,7 @@ export default class App extends Component {
         this.style = {
             wrapper : {
                 width: '100%',
-                height : getPageHeight() - 44 + 'px',
+                height : getPageHeight() - 42 + 'px',
             },
         };
 
@@ -37,7 +37,8 @@ export default class App extends Component {
         let wrapper = document.querySelectorAll(`.${App.name()} .wrapper`)[0];
         let statusBar = document.querySelectorAll(`.${App.name()} .${STATUS_BAR_CLASSNAME}`)[0];
         let menuBar = document.querySelectorAll(`.${App.name()} .${MENU_BAR_CLASSNAME}`)[0];
-        wrapper.style.height = `${getPageHeight() - statusBar.offsetHeight - menuBar.offsetHeight}px`;
+        console.log(statusBar.offsetHeight + menuBar.offsetHeight);
+        wrapper.style.height = `${getPageHeight() - statusBar.offsetHeight - menuBar.offsetHeight - 1}px`;
     }
 	
     render() {
