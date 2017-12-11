@@ -1,4 +1,5 @@
 import {SET_IS_SEED} from "../actions"
+import {generateSetterReducer} from "../utilities/Helpers";
 
-export default (state = false, action) => action.type === SET_IS_SEED ? action.payload : state
+export default generateSetterReducer(SET_IS_SEED, false);
 
