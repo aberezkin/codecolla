@@ -1,10 +1,6 @@
-import {ADD_PEER, REMOVE_PEER, SET_PEER_ID, ADD_ALL_TEXT} from "../actions/index";
-import { combineReducers } from "redux";
-import {generateSetterReducer} from '../utilities/Helpers'
+import {ADD_PEER, REMOVE_PEER} from "../actions/index";
 
-const idReducer = generateSetterReducer(SET_PEER_ID, '')
-
-function connectionsReducer(state = [], action) {
+function peersReducer(state = [], action) {
     switch (action.type) {
         case ADD_PEER:
             return [...state, action.payload];
@@ -15,7 +11,4 @@ function connectionsReducer(state = [], action) {
     }
 }
 
-export default combineReducers({
-    id: idReducer,
-    connections: connectionsReducer,
-});
+export default peersReducer;

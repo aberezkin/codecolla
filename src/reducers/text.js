@@ -1,5 +1,5 @@
 import {List, Map} from 'immutable';
-import {REMOVE_LINE, INSERT_LINE, SET_LINE, SET_TEXT, GET_ALL_TEXT} from "../actions/index";
+import {REMOVE_LINE, INSERT_LINE, SET_LINE, SET_TEXT} from "../actions/index";
 
 function textReducer(state = List(), action) {
     switch (action.type) {
