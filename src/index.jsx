@@ -10,8 +10,9 @@ import peersMiddleware from "./middleware/peer";
 import multi from 'redux-multi';
 import text from './middleware/text';
 import chat from './middleware/chat';
+import cursor from './middleware/cursor';
 
-const store = createStore(reducers, applyMiddleware(peersMiddleware, text, chat, multi, logger));
+const store = createStore(reducers, applyMiddleware(peersMiddleware, text, chat, multi, cursor, logger));
 
 ReactDOM.render(
     <Provider store={store}>

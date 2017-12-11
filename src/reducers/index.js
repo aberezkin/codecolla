@@ -5,6 +5,7 @@ import editorPreferences from './editor-preferences';
 import peers from './peer';
 import text from './text';
 import chat from './chat';
+import cursors from './cursor';
 
 export default combineReducers({
     isSeed,
@@ -13,4 +14,5 @@ export default combineReducers({
     peers,
     text,
     chat,
+    cursors
 });

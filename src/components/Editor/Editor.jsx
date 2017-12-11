@@ -19,6 +19,10 @@ class Editor extends Component {
         this.isCursorTransfer = true;
     }
 
+    componentDidMount() {
+        this.setState({markerIds: []});
+    }
+
     emitEditEvent(e) {
         if (e.action === EDIT_INSERT) {
             this.props.onInsert(e);
@@ -34,13 +38,20 @@ class Editor extends Component {
     }
 
     onCursorChange() {
-        // TODO: broadcast some kind of cursorChange action
+        this.props.moveCursor(this.editor.getCursorPosition());
     }
 
     onLoad(ed) {
         this.editor = ed;
         this.editor.session.setNewLineMode("unix");
         this.editor.selection.on('changeCursor', this.onCursorChange);
+    }
+
+    componentWillReceiveProps({cursors}) {
+        if (this.props.cursors != cursors) {
+            this.state.markerIds.forEach(cursor => this.editor.session.removeMarker(cursor));
+            this.setState({markerIds: cursors.map(cursor => generateCursorMarker(this.editor.session, cursor).id)});
+        }
     }
 
     render() {
@@ -55,6 +66,11 @@ class Editor extends Component {
                 onChange={this.onChange}
                 name="UNIQUE_ID_OF_DIV"
                 editorProps={{$blockScrolling: 'Infinity'}}
+                commands={[{   
+                  name: 'commandCtrlZ',
+                  bindKey: {win: 'Ctrl-z', mac: 'Command-z', linux: 'Ctrl-z'},
+                  exec: () => { console.log('Ctrl-z')} 
+                }]}
             />
         );
     }
