@@ -1,18 +1,24 @@
 import React, {Component} from 'react';
-import './SubMenu.styl';
 
 export const SUB_MENU_CLASSNAME = 'SubMenu';
 
 class SubMenu extends Component {
     constructor(props) {
         super(props);
+        this.renderMenuItem = this.renderMenuItem.bind(this);
+    }
+    renderMenuItem(child) {
+        return React.cloneElement(child, {
+            isMenuBarActive: this.props.isActive, //is MenuBar 'opened'
+            isMenuItemRoot: false,                //is element on top
+            onSelect: this.props.onSelect,        //callback forall commands
+        });
     }
     render() {
         return (
-            <div className={`${SUB_MENU_CLASSNAME}`}>
-                <div className='label'>{this.props.label}</div>
-                {this.props.children}
-            </div>
+            <ul className={`${SUB_MENU_CLASSNAME}`}>
+                {React.Children.map(this.props.children, this.renderMenuItem)}
+            </ul>
         )
     }
 }
