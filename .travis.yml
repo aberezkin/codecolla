@@ -19,4 +19,4 @@ cache:
     - "node_modules"
 script:
   - yarn build:prod
-  - yarn test
+  - yarn test:coveralls

@@ -7,6 +7,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "test:coveralls": "yarn test:coverage && cat ./coverage/lcov.info | coveralls",
     "create-react-app": "create-react-app",
     "build": "webpack",
     "build:prod": "NODE_ENV=production webpack -p",
@@ -20,7 +21,16 @@
     "moduleNameMapper": {
       "\\.(styl)$": "<rootDir>/node_modules/jest-css-modules"
     },
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/utilities/*",
+      "!src/components/**/index.js",
+      "!src/index.jsx",
+      "!src/reducers/index.js"
+    ]
   },
   "author": "",
   "license": "ISC",
@@ -56,6 +66,7 @@
     "babel-jest": "^21.2.0",
     "babel-plugin-transform-es2015-destructuring": "^6.23.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "coveralls": "^3.0.0",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
     "enzyme-to-json": "^3.2.2",
