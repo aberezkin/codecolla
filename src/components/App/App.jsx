@@ -21,7 +21,7 @@ export default class App extends Component {
         this.style = {
             wrapper : {
                 width: '100%',
-                height : getPageHeight() - 42 + 'px',
+                height : getPageHeight() - 44 + 'px',
             },
         };
 
