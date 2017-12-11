@@ -51,7 +51,7 @@ class Chat extends Component {
                         minRows={1}
                         maxRows={5}
                     />
-                    <div className="SendButton" onClick={this.sendMessage}>\></div>
+                    <div className="SendButton" onClick={this.sendMessage}><span>\></span></div>
                 </div>
             </div>
         )
