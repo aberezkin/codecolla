@@ -23,12 +23,7 @@ class ListSelector extends Component {
                 <span className="pointer"
                       style={{borderTop: `.33em solid ${this.props.textColor}`}}
                 />
-                <select onChange={this.changeValue.bind(this)}
-                        style={{
-                            color: this.props.textColor,
-                            backgroundColor: this.props.backgroundColor,
-                        }}
-                >
+                <select onChange={this.changeValue.bind(this)}>
                     {
                         lodashMap(this.props.options, (value, key) => (<option value={key} key={key}>{value}</option>))
                     }

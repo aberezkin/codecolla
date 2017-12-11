@@ -48,7 +48,9 @@ exports[`chat component should render chat 1`] = `
       className="SendButton"
       onClick={[Function]}
     >
-      \\&gt;
+      <span>
+        \\&gt;
+      </span>
     </div>
   </div>
 </div>
