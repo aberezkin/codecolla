@@ -1,5 +1,5 @@
-import {ADD_MESSAGE, BROADCAST_ACTIONS, SEND_MESSAGE} from "../actions/index";
-import middleware from './chat'
+import {ADD_MESSAGE, BROADCAST_ACTIONS, SEND_MESSAGE} from "../../actions/index";
+import middleware from '../chat'
 
 const create = () => {
     const store = {

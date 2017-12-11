@@ -1,5 +1,5 @@
-import reducer from './peer';
-import {ADD_PEER, REMOVE_PEER} from "../actions/index";
+import reducer from '../peer';
+import {ADD_PEER, REMOVE_PEER} from "../../actions/index";
 
 const connectionsReducer = reducer.__get__('peersReducer');
 

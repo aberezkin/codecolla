@@ -1,4 +1,4 @@
-import middleware from './text';
+import middleware from '../text';
 import {Map} from 'immutable';
 
 const insertTextToAtom = middleware.__get__('insertTextToAtom');

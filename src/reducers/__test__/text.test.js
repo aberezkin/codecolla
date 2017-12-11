@@ -1,5 +1,5 @@
-import reducer from './text';
-import {INSERT_LINE, REMOVE_LINE, SET_LINE, SET_TEXT} from "../actions/index";
+import reducer from '../text';
+import {INSERT_LINE, REMOVE_LINE, SET_LINE, SET_TEXT} from "../../actions/index";
 import {Map, List} from 'immutable';
 
 describe('text reducer', () => {

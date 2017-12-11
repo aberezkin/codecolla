@@ -1,5 +1,5 @@
-import reducer from './is-seed';
-import {SET_IS_SEED} from "../actions/index";
+import reducer from '../is-seed';
+import {SET_IS_SEED} from "../../actions/index";
 
 describe('is seed reducer', () => {
     it('should return the initial state', () => {

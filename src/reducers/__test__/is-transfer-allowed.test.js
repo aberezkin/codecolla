@@ -1,5 +1,5 @@
-import reducer from './is-transfer-allowed';
-import {SET_IS_TRANSFER_ALLOWED} from "../actions/index";
+import reducer from '../is-transfer-allowed';
+import {SET_IS_TRANSFER_ALLOWED} from "../../actions/index";
 
 describe('is transfer allowed reducer', () => {
     it('should return the initial state', () => {

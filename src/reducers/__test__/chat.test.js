@@ -1,5 +1,5 @@
-import reducer from './chat';
-import {ADD_MESSAGE} from "../actions/index";
+import reducer from '../chat';
+import {ADD_MESSAGE} from "../../actions/index";
 
 const messages = reducer.__get__('messages');
 
