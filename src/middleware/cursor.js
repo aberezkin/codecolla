@@ -6,7 +6,6 @@ const cursorMiddleware = store => next => action => {
         case MOVE_CURSOR:
             action = setCursor(action.payload);
             store.dispatch(broadcastActions([action]));
-            //next(action);
             break;
         default: next(action);
     }

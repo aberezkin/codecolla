@@ -4,7 +4,7 @@ import {generateSetterReducer} from '../utilities/Helpers'
 
 const idReducer = generateSetterReducer(SET_PEER_ID, '')
 
-function connectionReducer(state = [], action) {
+function connectionsReducer(state = [], action) {
     switch (action.type) {
         case ADD_PEER:
             return [...state, action.payload];
@@ -17,5 +17,5 @@ function connectionReducer(state = [], action) {
 
 export default combineReducers({
     id: idReducer,
-    connections: connectionReducer,
+    connections: connectionsReducer,
 });

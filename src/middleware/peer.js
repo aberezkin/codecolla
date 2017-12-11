@@ -1,7 +1,7 @@
 import '../utilities/Peerjs.js';
 
 import {ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_DATA, GET_ALL_TEXT,
-    BROADCAST_DATA_FOR_PEER, INIT_PEER, removePeer, setPeerId, sendAllText, broadcastActions} from "../actions/index";
+    BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer, setPeerId, sendAllText, broadcastActions} from "../actions/index";
 import {CHAT_MESSAGE, DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION} from "../utilities/ChangeEvent"
 import {SET_CURSOR} from "../actions/index"
 import ChangeEvent from "../utilities/ChangeEvent";
@@ -13,7 +13,6 @@ export const DATA_TRANSFER = 'data';
 export const PEER_ERROR = 'error';
 
 let peer = new Peer({key: 'e0twf5gs81lzbyb9'});
-var PeerID = '';
 
 function eventifyConnection(connection, isSeed, dispatch) {
     connection.on(CONNECTION_OPEN, () => {
@@ -53,9 +52,6 @@ function eventifyConnection(connection, isSeed, dispatch) {
                 dispatch(addPeer(peer.connect(firstEvent.data)));
                 break;
             }
-            case GET_ALL_TEXT:
-                dispatch(eventArray);
-                break;
             default: {
                 dispatch(eventArray);
             }
@@ -93,17 +89,12 @@ const peersMiddleware = store => next => action => {
                 store.dispatch)));
             break;
         case BROADCAST_DATA:
-            store.getState().peers.connections.forEach(conn => {
-                console.log(conn.peer);
-                conn.send(JSON.stringify(action.payload))
-            });
+            store.getState().peers.connections.forEach(conn => conn.send(JSON.stringify(action.payload)));
             break;
-        case BROADCAST_DATA_FOR_PEER:
-            store.getState().peers.connections.forEach(conn => {
-                if (conn.peer === action.payload.id) {
-                    conn.send(JSON.stringify(action.payload.text));
-                }
-            });
+        case BROADCAST_DATA_TO_PEER:
+            store.getState().peers.connections
+                .find(conn => conn.peer === action.payload.id)
+                .send(JSON.stringify(action.payload.broadcastedAction));
             break;
         default: next(action)
     }

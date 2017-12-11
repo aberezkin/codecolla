@@ -5,8 +5,6 @@ function createAction(type, payload = undefined) {
     return { type, payload }
 }
 
-export const GET_ALL_TEXT = 'GET ALL TEXT';
-
 export const SEND_ALL_TEXT = 'SENT ALL TEXT';
 export function sendAllText(peerId) {
     return createAction(SEND_ALL_TEXT, peerId);
@@ -92,9 +90,9 @@ export function broadcastActions(data) {
     return createAction(BROADCAST_DATA, data);
 }
 
-export const BROADCAST_DATA_FOR_PEER = 'BROADCAST DATA FOR PEER';
-export function broadcastActionsForPeer(data) {
-    return createAction(BROADCAST_DATA_FOR_PEER, data);
+export const BROADCAST_DATA_TO_PEER = 'BROADCAST DATA FOR PEER';
+export function broadcastActionsToPeer(data) {
+    return createAction(BROADCAST_DATA_TO_PEER, data);
 }
 
 export const INSERT_EVENT = 'INSERT_EVENT';

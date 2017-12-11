@@ -11,8 +11,6 @@ function textReducer(state = List(), action) {
             return state.insert(action.payload.line, Map(action.payload.atom));
         case REMOVE_LINE:
             return state.delete(action.payload);
-        case GET_ALL_TEXT:
-            return state.set(action.payload.line, Map(action.payload.atom));
         default: return state;
     }
 }

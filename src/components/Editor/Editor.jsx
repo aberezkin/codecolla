@@ -38,7 +38,6 @@ class Editor extends Component {
     }
 
     onCursorChange() {
-        // TODO: broadcast some kind of cursorChange action
         this.props.moveCursor(this.editor.getCursorPosition());
     }
 
