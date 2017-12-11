@@ -12,6 +12,16 @@
     "build:prod": "NODE_ENV=production webpack -p",
     "build:watch": "webpack --watch"
   },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/config/raf.shim.js",
+      "<rootDir>/config/jest.setup.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(styl)$": "<rootDir>/node_modules/jest-css-modules"
+    },
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -24,6 +34,7 @@
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
     "immutable": "^3.8.2",
+    "jest-css-modules": "^1.1.0",
     "lodash": "^4.17.4",
     "lodash.map": "^4.6.0",
     "prop-types": "^15.6.0",
@@ -50,6 +61,7 @@
     "enzyme-to-json": "^3.2.2",
     "jest": "^21.2.1",
     "optimize-js-plugin": "0.0.4",
+    "raf": "^3.4.0",
     "react-test-renderer": "^16.2.0",
     "webpack": "^3.8.1",
     "webpack-merge": "^4.1.0"

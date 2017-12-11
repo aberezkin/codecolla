@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`message component should render message component 1`] = `
+<div
+  className="Message"
+>
+  <div
+    className="author"
+    style={
+      Object {
+        "color": "black",
+      }
+    }
+  >
+    me
+  </div>
+  <div
+    className="content"
+  >
+    Hello
+  </div>
+  <div
+    className="date"
+  >
+    '23:01:54'
+  </div>
+</div>
+`;
