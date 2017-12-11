@@ -10,7 +10,7 @@ class SubMenu extends Component {
     render() {
         return (
             <div className={`${SUB_MENU_CLASSNAME}`}>
-                <span className='label'>{this.props.label}</span>
+                <div className='label'>{this.props.label}</div>
                 {this.props.children}
             </div>
         )
