@@ -50,7 +50,7 @@ class StatusBar extends Component {
 
     render() {
         return (
-            <div className={`${STATUS_BAR_CLASSNAME} +  ace-${this.state.theme}`} style={this.props.style}>
+            <div className={`${STATUS_BAR_CLASSNAME}`} style={this.props.style}>
                 <div className="Left">
                     <Connector />
                 </div>
