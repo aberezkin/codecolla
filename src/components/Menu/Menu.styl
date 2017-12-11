@@ -1,0 +1,30 @@
+.menu-wrapper
+  background inherit
+  color inherit
+  border-bottom 1px solid black
+  height 22px
+  width 100%
+
+.MenuBar
+  display flex
+  background inherit
+  color inherit
+  font-family sans-serif
+  width fit-content
+  position relative
+  cursor default
+  user-select none
+  > *
+    padding 1px 4px
+    height 100%
+  .MenuItem
+    list-style none
+    background inherit
+  .SubMenu
+    background inherit
+    visibility hidden
+    position absolute
+    z-index 6
+    border 1px solid black
+    li, ul
+      margin 2px 5px

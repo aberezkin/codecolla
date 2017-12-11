@@ -6,6 +6,8 @@ import Chat from '../Chat';
 import '../../utilities/BraceConfigs';
 import './App.styl';
 import {STATUS_BAR_CLASSNAME} from "../StatusBar/StatusBar";
+import {MENU_BAR_CLASSNAME} from "../MenuBar/MenuBar";
+import Menu from "../Menu";
 
 const defaultValue =
 `function hello() {
@@ -19,7 +21,7 @@ export default class App extends Component {
         this.style = {
             wrapper : {
                 width: '100%',
-                height : getPageHeight() - 21 + 'px',
+                height : getPageHeight() - 44 + 'px',
             },
         };
 
@@ -34,12 +36,14 @@ export default class App extends Component {
     static resize() {
         let wrapper = document.querySelectorAll(`.${App.name()} .wrapper`)[0];
         let statusBar = document.querySelectorAll(`.${App.name()} .${STATUS_BAR_CLASSNAME}`)[0];
-        wrapper.style.height = `${getPageHeight() - statusBar.offsetHeight}px`;
+        let menuBar = document.querySelectorAll(`.${App.name()} .${MENU_BAR_CLASSNAME}`)[0];
+        wrapper.style.height = `${getPageHeight() - statusBar.offsetHeight - menuBar.offsetHeight}px`;
     }
 	
     render() {
         return (
             <div className={`${App.name()} ace-${this.props.theme}`}>
+                <Menu style={this.style.menu} />
                 <div className={'wrapper'} style={this.style.wrapper}>
                     <Editor ref={(editor) => { this.editorRef = editor; }}/>
                     <Chat/>
