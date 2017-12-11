@@ -69,6 +69,36 @@ const textMiddleware = store => next => action => {
             store.dispatch(broadcastActions(actions));
             next(generateRemoveActions(store.getState().text, action.payload));
             break;
+        case SET_LINE:
+            const time = store.getState().text.get(action.payload.line).time;
+            const line = store.getState().text.get(action.payload.line);
+            if (action.payload.atom.time <= time) {
+                store.dispatch(broadcastActions(line));
+                break;
+            } else if ((action.payload.atom.time === time) && 
+                (store.getState().peers.id > action.payload.atom.peer)) {
+                store.dispatch(broadcastActions(line));
+                break;
+            }
+            next(action);
+            break;
+        case SEND_ALL_TEXT:
+            //Need some modifications.
+            let sendArr = store.getState().text.map((atom, i) => {
+                return {
+                    type: SET_LINE,
+                    payload: {
+                        line: i,
+                        atom: atom
+                    }
+                }
+            });
+            actions = {
+                id: action.payload,
+                broadcastedAction: sendArr
+            }
+            store.dispatch(broadcastActionsToPeer(actions));
+            break;
         default: next(action);
     }
 };
