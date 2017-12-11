@@ -28,11 +28,6 @@ function eventifyConnection(connection, isSeed, dispatch) {
 
         // TODO: Send ONLY redux actions and just dispatch them
         switch (firstEvent.action) {
-            case CHAT_MESSAGE: {
-                // TODO: handle chat message
-                console.log(connection.peer + ": " + firstEvent.text);
-                break;
-            }
             case DELETE_CURSOR:
             case MOVE_CURSOR:
             case SET_CURSOR:
