@@ -7,7 +7,7 @@ import '../../utilities/BraceConfigs';
 import './App.styl';
 import {STATUS_BAR_CLASSNAME} from "../StatusBar/StatusBar";
 import {MENU_BAR_CLASSNAME} from "../MenuBar/MenuBar";
-import MenuBar from "../MenuBar";
+import Menu from "../Menu";
 
 const defaultValue =
 `function hello() {
@@ -43,7 +43,7 @@ export default class App extends Component {
     render() {
         return (
             <div className={`${App.name()} ace-${this.props.theme}`}>
-                <MenuBar style={this.style.menuBar} />
+                <Menu style={this.style.menu} />
                 <div className={'wrapper'} style={this.style.wrapper}>
                     <Editor ref={(editor) => { this.editorRef = editor; }}/>
                     <Chat/>
