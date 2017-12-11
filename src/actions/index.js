@@ -1,5 +1,4 @@
 import {generateAtom} from "../utilities/Helpers";
-import {EDIT_INSERT, EDIT_REMOVE} from "../components/Editor/Editor";
 
 function createAction(type, payload = undefined) {
     return { type, payload }
@@ -55,9 +54,11 @@ export function removePeer(connection) {
     return createAction(REMOVE_PEER, connection);
 }
 
-export const BROADCAST_DATA = 'BROADCAST DATA';
-export function broadcastActions(data) {
-    return createAction(BROADCAST_DATA, data);
+export const BROADCAST_ACTIONS = 'BROADCAST ACTIONS';
+export function broadcastActions(actions) {
+    if (!Array.isArray(actions))
+        throw new Error('Expected actions to be an array');
+    return createAction(BROADCAST_ACTIONS, actions);
 }
 
 export const INSERT_EVENT = 'INSERT_EVENT';
@@ -77,16 +78,22 @@ export function setText(text) {
 
 export const SET_LINE = 'SET LINE';
 export function setLine(line, atom) {
+    if (typeof line !== 'number' || line < 0)
+        throw new Error('Expected line to be a non negative number');
     return createAction(SET_LINE, {line, atom})
 }
 
 export const INSERT_LINE = 'INSERT LINE';
 export function insertLine(line, atom) {
+    if (typeof line !== 'number' || line < 0)
+        throw new Error('Expected line to be a non negative number');
     return createAction(INSERT_LINE, {line, atom})
 }
 
 export const REMOVE_LINE = 'REMOVE LINE';
 export function removeLine(line) {
+    if (typeof line !== 'number' || line < 0)
+        throw new Error('Expected line to be a non negative number');
     return createAction(REMOVE_LINE, line);
 }
 

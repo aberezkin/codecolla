@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`chat component should render chat 1`] = `
+<div
+  className="Chat"
+  tabIndex="0"
+>
+  <div
+    className="MessageBox"
+  >
+    <Message
+      author="me"
+      color="black"
+      content="Hello!"
+      date="3:51:35 PM"
+      key="0"
+    />
+    <Message
+      author="you"
+      color="black"
+      content="Hi!"
+      date="3:51:35 PM"
+      key="1"
+    />
+    <Message
+      author="me"
+      color="black"
+      content="How are you?"
+      date="3:51:35 PM"
+      key="2"
+    />
+  </div>
+  <div
+    className="InputBox"
+  >
+    <TextareaAutosize
+      className="InputArea"
+      maxRows={5}
+      minRows={1}
+      onChange={[Function]}
+      onHeightChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Write message..."
+      useCacheForDOMMeasurements={false}
+      value=""
+    />
+    <div
+      className="SendButton"
+      onClick={[Function]}
+    >
+      \\&gt;
+    </div>
+  </div>
+</div>
+`;

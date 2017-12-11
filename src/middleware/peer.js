@@ -1,6 +1,6 @@
 import '../utilities/Peerjs.js';
 
-import {ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_DATA, INIT_PEER, removePeer} from "../actions/index";
+import {ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS, INIT_PEER, removePeer} from "../actions/index";
 import {CHAT_MESSAGE, DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION} from "../utilities/ChangeEvent"
 import ChangeEvent from "../utilities/ChangeEvent";
 
@@ -72,7 +72,7 @@ const peersMiddleware = store => next => action => {
                 store.getState().isSeed,
                 store.dispatch)));
             break;
-        case BROADCAST_DATA:
+        case BROADCAST_ACTIONS:
             store.getState().peers.forEach(conn => conn.send(JSON.stringify(action.payload)));
             break;
         default: next(action)
