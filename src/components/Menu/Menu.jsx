@@ -16,9 +16,11 @@ class Menu extends Component {
                             <MenuItem title={'New'} command={'menu-new'}/>
                             <MenuItem title={'Open...'} command={'menu-open'}/>
                             <MenuItem title={'Open URL'} command={'menu-open-url'}/>
+                            <Separator />
                             <MenuItem title={'Save as...'} command={'menu-save-as'}/>
-                            <MenuItem title={'Settings'} command={'menu-settings'}/>
                             <MenuItem title={'Save all'} command={'menu-save-all'}/>
+                            <Separator />
+                            <MenuItem title={'Settings'} command={'menu-settings'}/>
                         </SubMenu>
                     </MenuItem>
                     <MenuItem  title={'Edit'} command={'menu-edit'}>
