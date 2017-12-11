@@ -5,6 +5,7 @@ import {addPeer, initPeer, setText} from "../../actions/index";
 const mapStateToProps = (state) => {
     return {
         isSeed: state.isSeed,
+        theme: state.editorPreferences.theme,
     }
 };
 

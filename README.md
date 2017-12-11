@@ -1,4 +1,5 @@
-# Codecolla
+# Codecolla [![Build Status](https://travis-ci.org/aberezkin/codecolla.svg?branch=11-travis-ci)](https://travis-ci.org/aberezkin/codecolla) [![Coverage Status](https://coveralls.io/repos/github/aberezkin/codecolla/badge.svg?branch=master)](https://coveralls.io/github/aberezkin/codecolla?branch=master)
+
 
 This is an online editor for real time collaboration on your coding projects.
 
