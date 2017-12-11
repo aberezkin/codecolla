@@ -1,11 +1,9 @@
 import {Map} from 'immutable';
 
 export function getPageHeight () {
-    let body = document.body,
-        html = document.documentElement;
+    let html = document.documentElement;
 
-    return Math.max(body.scrollHeight, body.offsetHeight,
-        html.clientHeight, html.scrollHeight, html.offsetHeight);
+    return html.clientHeight;
 }
 
 export function generateLineId() {
