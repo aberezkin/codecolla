@@ -14,24 +14,29 @@ class Chat extends Component {
             textareaValue: '',
         };
     }
+
     sendMessage() {
+        if (this.state.textareaValue === '') return;
+
         let elem = {
             author: 'test',
             content: this.state.textareaValue,
             date: (new Date()).toLocaleTimeString(),
         };
-        this.setState({
-            textareaValue : '',
-        });
+
+        this.setState({textareaValue : ''});
+
         this.props.onMessage(elem);
     }
+
     onKeyDown(event) {
-        if (event.keyCode == 13 && event.ctrlKey && this.state.textareaValue !== '')
+        if (event.keyCode === 13 && event.ctrlKey && this.state.textareaValue !== '')
             this.sendMessage();
     }
+
     render() {
         return (
-            <div className={`${CHAT_CLASSNAME}`} onKeyDown={this.onKeyDown} tabIndex="0">
+            <div className={`${CHAT_CLASSNAME}`} tabIndex="0">
                 <div className="MessageBox">
                     {
                         this.props.messages.map((object, index) =>
@@ -48,6 +53,7 @@ class Chat extends Component {
                         placeholder={"Write message..."}
                         value={this.state.textareaValue}
                         onChange={event => this.setState({textareaValue: event.target.value})}
+                        onKeyDown={this.onKeyDown}
                         minRows={1}
                         maxRows={5}
                     />
