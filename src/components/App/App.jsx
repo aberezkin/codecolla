@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {getPageHeight} from "../../utilities/Helpers";
 import Editor from '../Editor';
 import StatusBar from '../StatusBar';
+import Chat from '../Chat';
 import '../../utilities/BraceConfigs';
 import './App.styl';
 import {STATUS_BAR_CLASSNAME} from "../StatusBar/StatusBar";
@@ -18,7 +19,7 @@ export default class App extends Component {
         this.style = {
             wrapper : {
                 width: '100%',
-                height : getPageHeight() - 20 + 'px',
+                height : getPageHeight() - 21 + 'px',
             },
         };
 
@@ -38,9 +39,10 @@ export default class App extends Component {
 	
     render() {
         return (
-            <div className={App.name()}>
+            <div className={`${App.name()} ace-${this.props.theme}`}>
                 <div className={'wrapper'} style={this.style.wrapper}>
                     <Editor ref={(editor) => { this.editorRef = editor; }}/>
+                    <Chat/>
                 </div>
                 <StatusBar style={this.style.statusBar} />
             </div>

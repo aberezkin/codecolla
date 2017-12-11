@@ -1,43 +1,12 @@
 import {generateAtom} from "../utilities/Helpers";
-import {EDIT_INSERT, EDIT_REMOVE} from "../components/Editor/Editor";
 
 function createAction(type, payload = undefined) {
     return { type, payload }
 }
 
-export const SEND_ALL_TEXT = 'SENT ALL TEXT';
-export function sendAllText(peerId) {
-    return createAction(SEND_ALL_TEXT, peerId);
-}
-
-export const SET_PEER_ID = 'SET PEER ID';
-export function setPeerId(id) {
-    return createAction(SET_PEER_ID, id);
-}
-
-export const MOVE_CURSOR = 'MOVE CURSOR';
-export function moveCursor(id, pos) {
-    return createAction(MOVE_CURSOR, {id, pos});
-}
-
-export const ADD_CURSOR = 'ADD CURSOR';
-export function addCursor(pos) {
-    return createAction(ADD_CURSOR, pos);
-}
-
-export const DELETE_CURSOR = 'DELETE CURSOR';
-export function deleteCursor(pos) {
-    return createAction(DELETE_CURSOR, pos);
-}
-
-export const SET_CURSOR = 'SET CURSOR';
-export function setCursor(pos) {
-    return createAction(SET_CURSOR, pos);
-}
-
 export const SET_IS_SEED = 'SET IS SEED';
 export function setIsSeed(isSeed) {
-    return createAction(SET_IS_SEED, isSeed);
+    return createAction(SET_IS_SEED, isSeed)
 }
 
 export const SET_IS_TRANSFER_ALLOWED = 'SET IS TRANSFER ALLOWED';
@@ -85,14 +54,11 @@ export function removePeer(connection) {
     return createAction(REMOVE_PEER, connection);
 }
 
-export const BROADCAST_DATA = 'BROADCAST DATA';
-export function broadcastActions(data) {
-    return createAction(BROADCAST_DATA, data);
-}
-
-export const BROADCAST_DATA_TO_PEER = 'BROADCAST DATA FOR PEER';
-export function broadcastActionsToPeer(data) {
-    return createAction(BROADCAST_DATA_TO_PEER, data);
+export const BROADCAST_ACTIONS = 'BROADCAST ACTIONS';
+export function broadcastActions(actions) {
+    if (!Array.isArray(actions))
+        throw new Error('Expected actions to be an array');
+    return createAction(BROADCAST_ACTIONS, actions);
 }
 
 export const INSERT_EVENT = 'INSERT_EVENT';
@@ -112,15 +78,31 @@ export function setText(text) {
 
 export const SET_LINE = 'SET LINE';
 export function setLine(line, atom) {
+    if (typeof line !== 'number' || line < 0)
+        throw new Error('Expected line to be a non negative number');
     return createAction(SET_LINE, {line, atom})
 }
 
 export const INSERT_LINE = 'INSERT LINE';
 export function insertLine(line, atom) {
+    if (typeof line !== 'number' || line < 0)
+        throw new Error('Expected line to be a non negative number');
     return createAction(INSERT_LINE, {line, atom})
 }
 
 export const REMOVE_LINE = 'REMOVE LINE';
 export function removeLine(line) {
+    if (typeof line !== 'number' || line < 0)
+        throw new Error('Expected line to be a non negative number');
     return createAction(REMOVE_LINE, line);
+}
+
+export const SEND_MESSAGE = 'SEND MESSAGE';
+export function sendMessage(message) {
+    return createAction(SEND_MESSAGE, message)
+}
+
+export const ADD_MESSAGE = 'ADD MESSAGE';
+export function addMessage(message) {
+    return createAction(ADD_MESSAGE, message);
 }

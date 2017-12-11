@@ -18,4 +18,5 @@ cache:
   directories:
     - "node_modules"
 script:
-  - npm run build:prod
+  - yarn build:prod
+  - yarn test:coveralls
