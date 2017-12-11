@@ -1,15 +1,5 @@
-import {connect} from 'react-redux';
-import MenuBar from './MenuBar';
-
-const mapStateToProps = state => {
-    return {
-        theme: state.editorPreferences.theme,
-    }
-};
-
-// TODO: move this to individual selectors
-const mapDispatchToProps = dispatch => {
-    return {}
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MenuBar);
+export {default as MenuBar} from './MenuBar';
+export {default as SubMenu} from './SubMenu/SubMenu';
+export {default as Checkable} from './Checkable/Checkable';
+export {default as MenuItem} from './MenuItem/MenuItem';
+export {default as Separator} from './Separator/Separator';
