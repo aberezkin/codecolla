@@ -93,6 +93,7 @@ const textMiddleware = store => next => action => {
             next(action);
             break;
         case SEND_ALL_TEXT:
+            //Need some modifications.
             let sendArr = store.getState().text.map((atom, i) => {
                 return {
                     type: SET_LINE,
