@@ -40,7 +40,7 @@ exports[`chat component should render chat 1`] = `
       onChange={[Function]}
       onHeightChange={[Function]}
       onKeyDown={[Function]}
-      placeholder="Write message..."
+      placeholder="Write your message..."
       useCacheForDOMMeasurements={false}
       value=""
     />
