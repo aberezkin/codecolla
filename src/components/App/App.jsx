@@ -43,7 +43,7 @@ export default class App extends Component {
 	
     render() {
         return (
-            <div className={`${App.name()} ace-${this.props.theme}`}>
+            <div className={`${App.name()} ace-${this.props.theme.replace(/_/g, "-")}`}>
                 <Menu style={this.style.menu} />
                 <div className={'wrapper'} style={this.style.wrapper}>
                     <Editor ref={(editor) => { this.editorRef = editor; }}/>
