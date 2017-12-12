@@ -1,22 +1,23 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-
-import Root from "./components/Root";
 import { AppContainer } from 'react-hot-loader';
+import { Provider } from 'react-redux';
+import App from "./components/App";
+import configureStore from "./store";
 
+const store = configureStore();
 
 const render = Component => {
     ReactDom.render(
         <AppContainer>
-            <Component />
+            <Provider store={store}>
+                <Component />
+            </Provider>
         </AppContainer>,
         document.getElementById('root')
     )
 };
 
-render(Root);
+render(App);
 
-// ReactDom.render(<Root />, document.getElementById('root'));
-if (module.hot) {
-    module.hot.accept('./components/Root', () => { render(Root) })
-}
+if (module.hot) module.hot.accept('./components/App', () => { render(App) });
