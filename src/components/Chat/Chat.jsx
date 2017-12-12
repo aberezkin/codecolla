@@ -50,7 +50,7 @@ class Chat extends Component {
                 <div className="InputBox">
                     <Textarea
                         className="InputArea"
-                        placeholder={"Write message..."}
+                        placeholder={"Write your message..."}
                         value={this.state.textareaValue}
                         onChange={event => this.setState({textareaValue: event.target.value})}
                         onKeyDown={this.onKeyDown}

@@ -10,7 +10,10 @@ let APP_DIR = helpers.root('src');
 module.exports = config => {
     return {
         context: BUILD_DIR,
-        entry: APP_DIR + '/index.jsx',
+        entry: [
+            'react-hot-loader/patch',
+            APP_DIR + '/index.jsx'
+        ],
         output: {
             path: BUILD_DIR,
             filename: 'bundle.js'

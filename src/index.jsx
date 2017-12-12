@@ -1,22 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import {createStore, applyMiddleware} from 'redux';
-import reducers from './reducers';
-import App from './components/App' ;
-import logger from "./middleware/logger";
-import './index.styl';
-import peersMiddleware from "./middleware/peer";
-import multi from 'redux-multi';
-import text from './middleware/text';
-import chat from './middleware/chat';
+import ReactDom from 'react-dom';
 
-const store = createStore(reducers, applyMiddleware(peersMiddleware, text, chat, multi, logger));
+import Root from "./components/Root";
+import { AppContainer } from 'react-hot-loader';
 
-ReactDOM.render(
-    <Provider store={store}>
-        <App />        
-    </Provider>,
-    document.getElementById('root')
-);
 
+const render = Component => {
+    ReactDom.render(
+        <AppContainer>
+            <Component />
+        </AppContainer>,
+        document.getElementById('root')
+    )
+};
+
+render(Root);
+
+// ReactDom.render(<Root />, document.getElementById('root'));
+if (module.hot) {
+    module.hot.accept('./components/Root', () => { render(Root) })
+}
