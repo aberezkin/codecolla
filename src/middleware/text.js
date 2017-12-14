@@ -84,7 +84,7 @@ const textMiddleware = store => next => action => {
         case SET_LINE:
             const time = store.getState().text.get(action.payload.line).time;
             const line = store.getState().text.get(action.payload.line);
-            if (action.payload.atom.time <= time) {
+            if (action.payload.atom.time < time) {
                 store.dispatch(broadcastActions(line));
                 break;
             } else if ((action.payload.atom.time === time) && 

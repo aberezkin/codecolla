@@ -1,7 +1,7 @@
 import reducer from '../peer';
 import {ADD_PEER, REMOVE_PEER} from "../../actions/index";
 
-const connectionsReducer = reducer.__get__('peersReducer');
+const connectionsReducer = reducer.__get__('connections');
 
 describe('connections reducer', () => {
     let connections = [
