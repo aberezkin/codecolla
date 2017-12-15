@@ -42,16 +42,20 @@ export default class App extends Component {
     }
 	
     render() {
+        let height = getPageHeight() - 21;
+        if (this.props.isStatusBarVisible)
+            height -= 21;
         return (
             <div className={`${App.name()} ace-${this.props.theme.replace(/_/g, "-")}`}>
                 <Menu style={this.style.menu} />
-                <div className={'wrapper'} style={this.style.wrapper}>
-                    <Editor ref={(editor) => { this.editorRef = editor; }}/>
+                <div className={'wrapper'} style={{...this.style.wrapper, height: height+'px'}}>
+                    <Editor ref={(editor) => { this.editorRef = editor; }}
+                            height={height+'px'}/>
                     <Chat/>
                 </div>
                 <StatusBar style={this.style.statusBar} />
             </div>
-        )
+        );
     }
 }
 

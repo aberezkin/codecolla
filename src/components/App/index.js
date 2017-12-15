@@ -6,6 +6,7 @@ const mapStateToProps = (state) => {
     return {
         isSeed: state.isSeed,
         theme: state.editorPreferences.theme,
+        isStatusBarVisible: state.statusBar.isVisible
     }
 };
 
