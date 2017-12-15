@@ -1,17 +1,25 @@
 import React, {Component} from 'react';
 import {MenuBar, Checkable, MenuItem, Separator, SubMenu} from '../MenuBar';
-
+import {TOGGLE_STATUS_BAR} from "../../actions";
 import './Menu.styl';
 
 class Menu extends Component {
     constructor(props) {
         super(props);
+        this.onMenuOptionHandler = this.onMenuOptionHandler.bind(this);
     }
+
+    onMenuOptionHandler(command) {
+        if (command === '')
+            return;
+        this.props.onMenuOptionHandler(command);
+    }
+
     render() {
         return (
             <div className={'menu-wrapper'}>
-                <MenuBar style={this.props.style}>
-                    <MenuItem  title={'File'} command={'menu-file'}>
+                <MenuBar onSelect={this.onMenuOptionHandler} style={this.props.style}>
+                    <MenuItem  title={'File'}>
                         <SubMenu>
                             <MenuItem title={'New'} command={'menu-new'}/>
                             <MenuItem title={'Open...'} command={'menu-open'}/>
@@ -23,27 +31,28 @@ class Menu extends Component {
                             <MenuItem title={'Settings'} command={'menu-settings'}/>
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem  title={'Edit'} command={'menu-edit'}>
+                    <MenuItem  title={'Edit'}>
                         <SubMenu>
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem  title={'View'} command={'menu-view'}>
+                    <MenuItem  title={'View'}>
+                        <SubMenu>
+                            <Checkable title={'Status bar'} command={TOGGLE_STATUS_BAR}/>
+                        </SubMenu>
+                    </MenuItem>
+                    <MenuItem  title={'Navigate'}>
                         <SubMenu>
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem  title={'Navigate'} command={'menu-navigate'}>
+                    <MenuItem  title={'Refactor'}>
                         <SubMenu>
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem  title={'Refactor'} command={'menu-refactor'}>
+                    <MenuItem  title={'Tools'}>
                         <SubMenu>
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem  title={'Tools'} command={'menu-tools'}>
-                        <SubMenu>
-                        </SubMenu>
-                    </MenuItem>
-                    <MenuItem  title={'Help'} command={'menu-help'}>
+                    <MenuItem  title={'Help'}>
                         <SubMenu>
                         </SubMenu>
                     </MenuItem>

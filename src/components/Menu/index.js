@@ -1,13 +1,12 @@
 import {connect} from "react-redux";
 import Menu from "./Menu";
-
-const mapStateToProps = state => {
-    return {}
-};
+import {handleMenuCommand} from "../../actions/index";
 
 // TODO: move this to individual selectors
 const mapDispatchToProps = dispatch => {
-    return {}
+    return {
+        onMenuOptionHandler: (command) => dispatch(handleMenuCommand(command)),
+    }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default connect(null, mapDispatchToProps)(Menu);

@@ -106,3 +106,9 @@ export const ADD_MESSAGE = 'ADD MESSAGE';
 export function addMessage(message) {
     return createAction(ADD_MESSAGE, message);
 }
+
+export function handleMenuCommand(command) {
+    return createAction(command, false);
+}
+
+export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
