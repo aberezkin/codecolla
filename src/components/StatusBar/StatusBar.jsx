@@ -49,39 +49,44 @@ class StatusBar extends Component {
     }
 
     render() {
-        return (
-            <div className={`${STATUS_BAR_CLASSNAME}`} style={this.props.style}>
-                <div className="Left">
-                    <Connector />
+        if (this.props.isVisible)
+            return (
+                <div className={`${STATUS_BAR_CLASSNAME}`} style={this.props.style}>
+                    <div className="Left">
+                        <Connector />
+                    </div>
+                    <div className="Right">
+                        <LinefeedSelector
+                            selectedOption={this.props.linefeed}
+                            onChange={this.props.setLinefeed}
+                            textColor={this.state.textColor}
+                            backgroundColor={this.state.backgroundColor}
+                        />
+                        <EncodingSelector
+                            selectedOption={this.props.encoding}
+                            onChange={this.props.setEncoding}
+                            textColor={this.state.textColor}
+                            backgroundColor={this.state.backgroundColor}
+                        />
+                        <LanguageSelector
+                            selectedOption={this.props.language}
+                            onChange={this.props.setLanguage}
+                            textColor={this.state.textColor}
+                            backgroundColor={this.state.backgroundColor}
+                        />
+                        <ThemeSelector
+                            selectedOption={this.props.theme}
+                            onChange={this.changeTheme}
+                            textColor={this.state.textColor}
+                            backgroundColor={this.state.backgroundColor}
+                        />
+                    </div>
                 </div>
-                <div className="Right">
-                    <LinefeedSelector
-                        selectedOption={this.props.linefeed}
-                        onChange={this.props.setLinefeed}
-                        textColor={this.state.textColor}
-                        backgroundColor={this.state.backgroundColor}
-                    />
-                    <EncodingSelector
-                        selectedOption={this.props.encoding}
-                        onChange={this.props.setEncoding}
-                        textColor={this.state.textColor}
-                        backgroundColor={this.state.backgroundColor}
-                    />
-                    <LanguageSelector
-                        selectedOption={this.props.language}
-                        onChange={this.props.setLanguage}
-                        textColor={this.state.textColor}
-                        backgroundColor={this.state.backgroundColor}
-                    />
-                    <ThemeSelector
-                        selectedOption={this.props.theme}
-                        onChange={this.changeTheme}
-                        textColor={this.state.textColor}
-                        backgroundColor={this.state.backgroundColor}
-                    />
-                </div>
-            </div>
-        )
+            );
+        else
+            return (
+                <div className={`${STATUS_BAR_CLASSNAME}`} style={{visibility: 'hidden', border: 'none'}}></div>
+            );
     }
 }
 
@@ -89,6 +94,7 @@ StatusBar.defaultProps = {
     style: {
         width: '100%',
         height: '20px',
+        visibility: 'visible',
     }
 };
 
