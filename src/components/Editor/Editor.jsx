@@ -49,7 +49,7 @@ class Editor extends Component {
                 onLoad={this.onLoad}
                 mode={this.props.language}
                 theme={this.props.theme}
-                width={'100%'}
+                width={this.props.width}
                 height={this.props.height}
                 value={this.props.text}
                 onChange={this.onChange}
@@ -64,6 +64,7 @@ Editor.defaultProps = {
     mode : 'text',
     theme: 'github',
     value: '//code is a new God',
+    width: '100%',
     height: '100%',
 };
 
