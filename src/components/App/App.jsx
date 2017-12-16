@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {getPageHeight} from "../../utilities/Helpers";
+import {getPageHeight, getPageWidth} from "../../utilities/Helpers";
 import Editor from '../Editor';
 import StatusBar from '../StatusBar';
 import Chat from '../Chat';
@@ -45,12 +45,16 @@ export default class App extends Component {
         let height = getPageHeight() - 21;
         if (this.props.isStatusBarVisible)
             height -= 21;
+        let width = getPageWidth();
+        if (this.props.isChatVisible)
+            width -= 250;
         return (
             <div className={`${App.name()} ace-${this.props.theme.replace(/_/g, "-")}`}>
                 <Menu style={this.style.menu} />
                 <div className={'wrapper'} style={{...this.style.wrapper, height: height+'px'}}>
                     <Editor ref={(editor) => { this.editorRef = editor; }}
-                            height={height+'px'}/>
+                            height={height+'px'}
+                            width={width+'px'}/>
                     <Chat/>
                 </div>
                 <StatusBar style={this.style.statusBar} />
