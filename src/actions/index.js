@@ -112,3 +112,4 @@ export function handleMenuCommand(command) {
 }
 
 export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
+export const TOGGLE_CHAT = 'TOGGLE CHAT';
