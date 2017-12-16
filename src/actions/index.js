@@ -108,7 +108,15 @@ export function removeEvent(event) {
 
 export const SET_TEXT = 'SET TEXT';
 export function setText(text) {
-    return createAction(SET_TEXT, text.split('\n').map(line => generateAtom(line, 1)));
+    let  payload; 
+    if (typeof text === 'string')
+        payload = text.split('\n').map(line => generateAtom(line, 1));
+    else if (Array.isArray(text))
+        payload = text;
+    else
+        throw new Error('Expected string of array as an argument');
+    
+    return createAction(SET_TEXT, payload);
 }
 
 export const SET_LINE = 'SET LINE';

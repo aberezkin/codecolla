@@ -1,6 +1,6 @@
 import {GET_ALL_TEXT, broadcastActions, broadcastActionsToPeer, 
     INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
-    SET_LINE, SEND_ALL_TEXT} from "../actions/index";
+    SET_LINE, SEND_ALL_TEXT, SET_TEXT} from "../actions/index";
 import {generateLineId} from "../utilities/Helpers";
 
 function getNewTimeForAtom(atom) {
@@ -96,18 +96,13 @@ const textMiddleware = store => next => action => {
             break;
         case SEND_ALL_TEXT:
             //Need some modifications.
-            let sendArr = store.getState().text.map((atom, i) => {
-                return {
-                    type: SET_LINE,
-                    payload: {
-                        line: i,
-                        atom: atom
-                    }
-                }
-            });
+            let setTextAction = {
+                type: SET_TEXT,
+                payload: store.getState().text
+            }
             actions = {
                 id: action.payload,
-                broadcastedAction: sendArr
+                broadcastedAction: [setTextAction]
             }
             store.dispatch(broadcastActionsToPeer(actions));
             break;
