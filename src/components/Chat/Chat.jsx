@@ -35,36 +35,32 @@ class Chat extends Component {
     }
 
     render() {
-        if (this.props.isVisible)
-            return (
-                <div className={`${CHAT_CLASSNAME}`} tabIndex="0">
-                    <div className="MessageBox">
-                        {
-                            this.props.messages.map((object, index) =>
-                                (<Message
-                                    key={index}
-                                    author={object.author}
-                                    content={object.content}
-                                    date={object.date}/>))
-                        }
-                    </div>
-                    <div className="InputBox">
-                        <Textarea
-                            className="InputArea"
-                            placeholder={"Write your message..."}
-                            value={this.state.textareaValue}
-                            onChange={event => this.setState({textareaValue: event.target.value})}
-                            onKeyDown={this.onKeyDown}
-                            minRows={1}
-                            maxRows={5}
-                        />
-                        <div className="SendButton" onClick={this.sendMessage}><span>\></span></div>
-                    </div>
+        return (
+            <div className={`${CHAT_CLASSNAME}`} tabIndex="0" style={(!this.props.isVisible)? {visibility: 'hidden', display: 'none'} : {}}>
+                <div className="MessageBox">
+                    {
+                        this.props.messages.map((object, index) =>
+                            (<Message
+                                key={index}
+                                author={object.author}
+                                content={object.content}
+                                date={object.date}/>))
+                    }
                 </div>
-            )
-        else return (
-            <div className={`${CHAT_CLASSNAME}`} tabIndex="0" style={{visibility: 'hidden', border: 'none', display: 'none'}}></div>
-        )
+                <div className="InputBox">
+                    <Textarea
+                        className="InputArea"
+                        placeholder={"Write your message..."}
+                        value={this.state.textareaValue}
+                        onChange={event => this.setState({textareaValue: event.target.value})}
+                        onKeyDown={this.onKeyDown}
+                        minRows={1}
+                        maxRows={5}
+                    />
+                    <div className="SendButton" onClick={this.sendMessage}><span>\></span></div>
+                </div>
+            </div>
+        );
     }
 }
 
