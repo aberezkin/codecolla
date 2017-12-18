@@ -1,9 +1,10 @@
 import reducer from './reducers';
 import middleware from './middleware';
-import {createStore} from 'redux';
+import {createStore, compose} from 'redux';
 
 const configureStore = () => {
-    const store = createStore(reducer, middleware);
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    const store = createStore(reducer, composeEnhancers(middleware));
 
     if (module.hot) module.hot.accept('./reducers', () => store.replaceReducer(reducer));
 
