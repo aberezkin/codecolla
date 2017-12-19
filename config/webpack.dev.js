@@ -17,5 +17,8 @@ module.exports = config => webpackMerge(commonConfig({env: ENV}), {
     devtool: 'cheap-module-eval-source-map',
     output: {
         path: BUILD_DIR,
+    },
+    devServer: {
+        historyApiFallback: true,
     }
 });
