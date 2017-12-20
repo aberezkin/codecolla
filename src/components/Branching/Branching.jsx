@@ -9,6 +9,9 @@ const text =
     console.log('Hello, World!');
 }`;
 
+// TODO: This component was reacted just to avoid merge conflicts with current PRs.
+// TODO: Specifically https://github.com/aberezkin/codecolla/pull/42
+// TODO: Move all this logic to App component and logic from App component somewhere else.
 export default class Branching extends Component {
     componentDidMount() {
         this.props.initPeer();
