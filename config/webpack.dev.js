@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.common');
@@ -19,6 +20,11 @@ module.exports = config => webpackMerge(commonConfig({env: ENV}), {
         path: BUILD_DIR,
     },
     devServer: {
+        hot: true,
+        inline: true,
         historyApiFallback: true,
-    }
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+    ]
 });
