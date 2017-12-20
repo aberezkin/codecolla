@@ -9,12 +9,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        initPeer: () => dispatch(initPeer()),
-        addPeer: (connection) => dispatch(addPeer(connection)),
-        setText: (text) => dispatch(setText(text))
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps)(App)

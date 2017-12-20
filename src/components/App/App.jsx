@@ -7,11 +7,6 @@ import '../../utilities/BraceConfigs';
 import './App.styl';
 import {STATUS_BAR_CLASSNAME} from "../StatusBar/StatusBar";
 
-const defaultValue =
-`function hello() {
-    console.log('Hello, World!');
-}`;
-
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -22,9 +17,6 @@ export default class App extends Component {
                 height : getPageHeight() - 21 + 'px',
             },
         };
-
-        this.props.initPeer();
-        this.props.setText(defaultValue);
     }
 
     static name() {
