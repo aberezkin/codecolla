@@ -17,6 +17,7 @@ let peer = new Peer({key: 'e0twf5gs81lzbyb9'});
 
 function eventifyConnection(connection, isSeed, dispatch) {
     connection.on(CONNECTION_OPEN, () => {
+        // TODO: migrate this to dispatch
         if (isSeed) this.broadcastEvent(ChangeEvent.getAddPeerEvent(connection.peer));
     });
 
@@ -61,7 +62,8 @@ function eventifyConnection(connection, isSeed, dispatch) {
     return connection;
 }
 
-const peersMiddleware = store => next => action => {
+// Making peer injectable here to make it mockable and the function testable
+const peersMiddleware = peer => store => next => action => {
     switch (action.type) {
         case INIT_PEER:
             peer.on(CONNECTION_EVENT, connection => store.dispatch(addPeer(connection)));
@@ -84,4 +86,4 @@ const peersMiddleware = store => next => action => {
     }
 };
 
-export default peersMiddleware;
+export default peersMiddleware(peer);
