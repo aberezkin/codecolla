@@ -10,10 +10,13 @@ module.exports = {
         expect: false,
         document: false,
         window: false,
+        Peer: false
     },
     rules: {
         "indent": ["error", 4, { SwitchCase: 1 }],
         "no-underscore-dangle": ["warn"],
         "curly": ["error", "multi"],
+        "react/jsx-indent": ["error", 4],
+        "object-curly-newline": ["error", { "consistent": true }]
     },
 };
