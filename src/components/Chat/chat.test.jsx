@@ -21,9 +21,9 @@ const setup = (propOverrides) => {
 describe('chat component', () => {
     it('should render chat', () => {
         const messages = [
-            { author: 'me', content: 'Hello!', date: new Date(1513954393141) },
-            { author: 'you', content: 'Hi!', date: new Date(1513954393241) },
-            { author: 'me', content: 'How are you?', date: new Date(1513954394141) },
+            { author: 'me', content: 'Hello!', date: new Date('2017-12-22T14:53:13.141Z') },
+            { author: 'you', content: 'Hi!', date: new Date('2017-12-22T14:53:13.241Z') },
+            { author: 'me', content: 'How are you?', date: new Date('2017-12-22T14:53:14.141Z') },
         ];
 
         const { wrapper } = setup({ messages });

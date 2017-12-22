@@ -7,7 +7,7 @@ describe('message component', () => {
             <Message
                 author="me"
                 content="Hello"
-                date={new Date(1513954395141)}
+                date={new Date('2017-12-22T14:53:13.141Z')}
             />
         ));
 
