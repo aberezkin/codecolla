@@ -1,5 +1,5 @@
-import {ADD_MESSAGE, TOGGLE_CHAT} from "../actions";
-import {combineReducers} from 'redux';
+import { ADD_MESSAGE, TOGGLE_CHAT } from '../actions';
+import { combineReducers } from 'redux';
 
 const messages = (state = [], action) => {
     switch (action.type) {
@@ -18,6 +18,6 @@ const isVisible = (state = false, action) => {
             return !state;
         default: return state;
     }
-}
+};
 
-export default combineReducers({messages, isVisible});
+export default combineReducers({ messages, isVisible });
