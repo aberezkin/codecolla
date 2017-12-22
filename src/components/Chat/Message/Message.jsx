@@ -1,26 +1,20 @@
-import React, {Component} from 'react';
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import './Message.styl';
 
-class Message extends Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (
-            <div className="Message">
-                <div className="author" style={{color: this.props.color}}>{this.props.author}</div>
-                <div className="content">{this.props.content}</div>
-                <div className="date">{this.props.date}</div>
-            </div>
-        )
-    }
-}
+const Message = ({ color, author, content, date }) => (
+    <div className="Message">
+        <div className="author" style={{ color }}>{author}</div>
+        <div className="content">{content}</div>
+        <div className="date">{date}</div>
+    </div>
+);
 
 Message.propTypes = {
     author: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
+    color: PropTypes.string,
 };
 
 Message.defaultProps = {

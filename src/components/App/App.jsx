@@ -36,7 +36,7 @@ export default class App extends Component {
         let statusBar = document.querySelectorAll(`.${App.name()} .${STATUS_BAR_CLASSNAME}`)[0];
         wrapper.style.height = `${getPageHeight() - statusBar.offsetHeight}px`;
     }
-	
+
     render() {
         return (
             <div className={`${App.name()} ace-${this.props.theme.replace(/_/g, "-")}`}>
