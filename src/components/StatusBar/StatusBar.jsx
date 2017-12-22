@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './StatusBar.styl';
-import LinefeedSelector from './LinefeedSelector/LinefeedSelector';
-import LanguageSelector from './LanguageSelector/LanguageSelector';
-import EncodingSelector from './EncodingSelector/EncodingSelector';
-import ThemeSelector from './ThemeSelector/ThemeSelector';
-
+import languages from '../../utilities/HighlightLanguages';
+import themes from '../../utilities/ColorSchemes';
 import Connector from '../Connector';
+import ListSelector from '../ListSelector/ListSelector';
 
 export const STATUS_BAR_CLASSNAME = 'StatusBar';
 
@@ -23,6 +21,10 @@ class StatusBar extends Component {
         styleDiv.setAttribute('id', StatusBar.styleId());
         document.body.insertBefore(styleDiv, document.body.firstChild);
         styleDiv.setAttribute('class', props.theme);
+
+        this.state = {
+            textColor: styleDiv.color,
+        };
     }
 
     changeTheme(value) {
@@ -35,7 +37,6 @@ class StatusBar extends Component {
 
         this.setState({
             textColor: styleDiv.color,
-            backgroundColor: styleDiv.backgroundColor,
         });
     }
 
@@ -49,29 +50,29 @@ class StatusBar extends Component {
                     <Connector />
                 </div>
                 <div className="Right">
-                    <LinefeedSelector
-                        selectedOption={this.props.linefeed}
+                    <ListSelector
+                        options={['CRLF', 'LF', 'CR']}
+                        default={this.props.linefeed}
                         onChange={this.props.setLinefeed}
                         textColor={this.state.textColor}
-                        backgroundColor={this.state.backgroundColor}
                     />
-                    <EncodingSelector
-                        selectedOption={this.props.encoding}
+                    <ListSelector
+                        options={['UTF-8', 'CP-866', 'CP-1255']}
+                        default={this.props.encoding}
                         onChange={this.props.setEncoding}
                         textColor={this.state.textColor}
-                        backgroundColor={this.state.backgroundColor}
                     />
-                    <LanguageSelector
-                        selectedOption={this.props.language}
+                    <ListSelector
+                        options={languages}
+                        default={this.props.language}
                         onChange={this.props.setLanguage}
                         textColor={this.state.textColor}
-                        backgroundColor={this.state.backgroundColor}
                     />
-                    <ThemeSelector
-                        selectedOption={this.props.theme}
+                    <ListSelector
+                        options={themes}
+                        default={this.props.theme}
                         onChange={this.changeTheme}
                         textColor={this.state.textColor}
-                        backgroundColor={this.state.backgroundColor}
                     />
                 </div>
             </div>
