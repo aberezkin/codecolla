@@ -14,7 +14,10 @@ class MenuItem extends Component {
         this.unbindCloseHandlers = this.unbindCloseHandlers.bind(this);
         this.onSelect = this.onSelect.bind(this);
         this.onDocumentClick = this.onDocumentClick.bind(this);
-        this.state = { open: false };
+        this.state = {
+            open: false,
+            title_style: {},
+        };
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -31,13 +34,25 @@ class MenuItem extends Component {
     onClick(event) {
         event.preventDefault();
         if (this.props.isTopLevel && !this.state.open)
-            this.setState({ open: true });
+            this.setState({
+                open: true,
+                title_style: {
+                    backgroundColor: 'lightblue',
+                    color: 'white',
+                },
+            });
         this.props.onSelect(this.props.command);
     }
 
     onMouseOver() {
         if (!this.props.isMenuBarActive)
             return;
+        this.setState({
+            title_style: {
+                backgroundColor: 'lightblue',
+                color: 'white',
+            },
+        });
         if (this.props.children !== undefined)
             this.setState({ open: true });
     }
@@ -45,6 +60,7 @@ class MenuItem extends Component {
     onMouseOut(event) {
         if (!this.props.isMenuBarActive)
             return;
+        this.setState({ title_style: {} });
         if (!ReactDOM.findDOMNode(this).contains(event.relatedTarget))
             this.setState({ open: false });
     }
@@ -58,13 +74,13 @@ class MenuItem extends Component {
     }
 
     onDocumentClick() {
-        this.setState({ open: false });
+        this.setState({ open: false, title_style: {} });
     }
 
     render() {
         return (
             <li className='MenuItem' onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
-                <span className='title' onClick={this.onClick}>{this.props.title}</span>
+                <span className='title' onClick={this.onClick} style={this.state.title_style}>{this.props.title}</span>
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </li>
         );
@@ -73,7 +89,7 @@ class MenuItem extends Component {
     renderMenuItem(child) {
         if (this.state.open) {
             return React.cloneElement(child, {
-                isMenuBarActive: this.props.isMenuBarActive,
+                isMenuBarActive: this.state.open,
                 onSelect: this.onSelect, //callback for all commands
             });
         }
@@ -81,7 +97,7 @@ class MenuItem extends Component {
 
     onSelect(command) {
         this.props.onSelect(command);
-        this.setState({ open: false });
+        this.setState({ open: false, title_style: {} });
     }
 }
 
