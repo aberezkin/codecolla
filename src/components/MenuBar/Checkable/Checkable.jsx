@@ -8,18 +8,18 @@ class Checkable extends Component {
         this.onSelect = this.onSelect.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
-        this.state = { title_style: {} };
+        this.state = { titleStyle: {} };
     }
 
     onClick(event) {
         event.preventDefault();
-        this.setState({ title_style: {} });
+        this.setState({ titleStyle: {} });
         this.props.onSelect(this.props.command);
     }
 
     onMouseOver() {
         this.setState({
-            title_style: {
+            titleStyle: {
                 backgroundColor: 'lightblue',
                 color: 'white',
             },
@@ -27,15 +27,19 @@ class Checkable extends Component {
     }
 
     onMouseOut() {
-        this.setState({ title_style: {} });
+        this.setState({ titleStyle: {} });
     }
 
     render() {
         return (
             <li className='Checkable'>
-                <span className='title'
-                      onClick={this.onClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}
-                      style={this.state.title_style}>{this.props.title}</span>
+                <span
+                    className='title'
+                    onClick={this.onClick}
+                    onMouseOver={this.onMouseOver}
+                    onMouseOut={this.onMouseOut}
+                    style={this.state.titleStyle}
+                >{this.props.title}</span>
             </li>
         );
     }

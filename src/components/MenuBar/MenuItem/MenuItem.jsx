@@ -16,7 +16,7 @@ class MenuItem extends Component {
         this.onDocumentClick = this.onDocumentClick.bind(this);
         this.state = {
             open: false,
-            title_style: {},
+            titleStyle: {},
         };
     }
 
@@ -36,7 +36,7 @@ class MenuItem extends Component {
         if (this.props.isTopLevel && !this.state.open)
             this.setState({
                 open: true,
-                title_style: {
+                titleStyle: {
                     backgroundColor: 'lightblue',
                     color: 'white',
                 },
@@ -48,7 +48,7 @@ class MenuItem extends Component {
         if (!this.props.isMenuBarActive)
             return;
         this.setState({
-            title_style: {
+            titleStyle: {
                 backgroundColor: 'lightblue',
                 color: 'white',
             },
@@ -60,7 +60,7 @@ class MenuItem extends Component {
     onMouseOut(event) {
         if (!this.props.isMenuBarActive)
             return;
-        this.setState({ title_style: {} });
+        this.setState({ titleStyle: {} });
         if (!ReactDOM.findDOMNode(this).contains(event.relatedTarget))
             this.setState({ open: false });
     }
@@ -74,13 +74,17 @@ class MenuItem extends Component {
     }
 
     onDocumentClick() {
-        this.setState({ open: false, title_style: {} });
+        this.setState({ open: false, titleStyle: {} });
     }
 
     render() {
         return (
             <li className='MenuItem' onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
-                <span className='title' onClick={this.onClick} style={this.state.title_style}>{this.props.title}</span>
+                <span
+                    className='title'
+                    onClick={this.onClick}
+                    style={this.state.titleStyle}
+                >{this.props.title}</span>
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </li>
         );
@@ -97,7 +101,7 @@ class MenuItem extends Component {
 
     onSelect(command) {
         this.props.onSelect(command);
-        this.setState({ open: false, title_style: {} });
+        this.setState({ open: false, titleStyle: {} });
     }
 }
 
