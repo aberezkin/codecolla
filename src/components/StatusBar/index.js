@@ -8,6 +8,7 @@ const mapStateToProps = state => {
         language: state.editorPreferences.language,
         linefeed: state.editorPreferences.linefeed,
         encoding: state.editorPreferences.encoding,
+        isVisible: state.statusBar.isVisible,
     }
 };
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import './StatusBar.styl';
 import LinefeedSelector from './LinefeedSelector/LinefeedSelector';
 import LanguageSelector from './LanguageSelector/LanguageSelector';
@@ -24,7 +24,7 @@ class StatusBar extends Component {
         this.state = {
             theme : props.theme,
             textColor: style.color,
-            backgroundColor: style.backgroundColor
+            backgroundColor: style.backgroundColor,
         };
     }
 
@@ -50,7 +50,8 @@ class StatusBar extends Component {
 
     render() {
         return (
-            <div className={`${STATUS_BAR_CLASSNAME}`} style={this.props.style}>
+            <div className={`${STATUS_BAR_CLASSNAME}`}
+                 style={{ display: (!this.props.isVisible) ? 'none' : '', ...this.props.style }}>
                 <div className="Left">
                     <Connector />
                 </div>
@@ -81,7 +82,7 @@ class StatusBar extends Component {
                     />
                 </div>
             </div>
-        )
+        );
     }
 }
 
@@ -89,7 +90,7 @@ StatusBar.defaultProps = {
     style: {
         width: '100%',
         height: '20px',
-    }
+    },
 };
 
 export default StatusBar;

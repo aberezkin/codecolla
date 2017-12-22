@@ -106,3 +106,16 @@ export const ADD_MESSAGE = 'ADD MESSAGE';
 export function addMessage(message) {
     return createAction(ADD_MESSAGE, message);
 }
+
+export function handleMenuCommand(command) {
+    return createAction(command, false);
+}
+
+export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
+export const TOGGLE_CHAT = 'TOGGLE CHAT';
+export const CREATE_NEW = 'CREATE NEW';
+export const OPEN_SMTH = 'OPEN SMTH';
+export const OPEN_URL = 'OPEN URL';
+export const SAVE_AS = 'SAVE AS';
+export const SAVE_ALL = 'SAVE ALL';
+export const OPEN_SETTINGS = 'OPEN SETTINGS';
