@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
@@ -14,7 +14,7 @@ class MenuItem extends Component {
         this.unbindCloseHandlers = this.unbindCloseHandlers.bind(this);
         this.onSelect = this.onSelect.bind(this);
         this.onDocumentClick = this.onDocumentClick.bind(this);
-        this.state = {open: false};
+        this.state = { open: false };
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -39,14 +39,14 @@ class MenuItem extends Component {
         if (!this.props.isMenuBarActive)
             return;
         if (this.props.children !== undefined)
-            this.setState({open: true});
+            this.setState({ open: true });
     }
 
     onMouseOut(event) {
         if (!this.props.isMenuBarActive)
             return;
         if (!ReactDOM.findDOMNode(this).contains(event.relatedTarget))
-            this.setState({open: false});
+            this.setState({ open: false });
     }
 
     bindCloseHandlers() {
@@ -58,7 +58,7 @@ class MenuItem extends Component {
     }
 
     onDocumentClick(event) {
-        this.setState({open: false});
+        this.setState({ open: false });
     }
 
     render() {
@@ -67,20 +67,20 @@ class MenuItem extends Component {
                 <span className='title' onClick={this.onClick}>{this.props.title}</span>
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </li>
-        )
+        );
     }
 
     renderMenuItem(child) {
         if (this.state.open)
             return React.cloneElement(child, {
-                isMenuBarActive : this.props.isMenuBarActive,
+                isMenuBarActive: this.props.isMenuBarActive,
                 onSelect: this.onSelect,        //callback forall commands
             });
     }
 
     onSelect(command) {
         this.props.onSelect(command);
-        this.setState({open: false});
+        this.setState({ open: false });
     }
 }
 

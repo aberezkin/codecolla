@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 export const MENU_BAR_CLASSNAME = 'MenuBar';
 
@@ -10,16 +10,14 @@ class MenuBar extends Component {
         this.unbindSetInactiveHandler = this.unbindSetInactiveHandler.bind(this);
         this.onClick = this.onClick.bind(this);
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
-        this.state = {isActive: false};
+        this.state = { isActive: false };
     }
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.isActive && !prevState.isActive) {
-            this.bindSetInactiveHandler()
-        }
 
-        else if (prevState.isActive && !this.state.isActive) {
-            this.unbindSetInactiveHandler()
-        }
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.isActive && !prevState.isActive)
+            this.bindSetInactiveHandler();
+        else if (prevState.isActive && !this.state.isActive)
+            this.unbindSetInactiveHandler();
     }
 
     renderMenuItem(child) {
@@ -39,11 +37,11 @@ class MenuBar extends Component {
     }
 
     handleDocumentClick(event) {
-        this.setState({isActive: false});
+        this.setState({ isActive: false });
     }
 
     onClick(event) {
-        this.setState({isActive: !this.state.isActive});
+        this.setState({ isActive: !this.state.isActive });
     }
 
     render() {
@@ -51,7 +49,7 @@ class MenuBar extends Component {
             <ul className={`${MENU_BAR_CLASSNAME}`} onClick={this.onClick}>
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </ul>
-        )
+        );
     }
 }
 
