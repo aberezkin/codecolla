@@ -14,15 +14,15 @@ class StatusBar extends Component {
         super(props);
         this.changeTheme = this.changeTheme.bind(this);
 
-        let styleDiv = document.createElement('div');
+        const styleDiv = document.createElement('div');
         styleDiv.setAttribute('id', StatusBar.styleId());
         document.body.insertBefore(styleDiv, document.body.firstChild);
         styleDiv.setAttribute('class', props.theme);
 
-        let style = getComputedStyle(styleDiv);
+        const style = getComputedStyle(styleDiv);
 
         this.state = {
-            theme : props.theme,
+            theme: props.theme,
             textColor: style.color,
             backgroundColor: style.backgroundColor,
         };
@@ -35,23 +35,25 @@ class StatusBar extends Component {
     changeTheme(value) {
         this.props.setTheme(value);
 
-        let styleName = value.replace(/_/g, "-");
+        const styleName = value.replace(/_/g, '-');
 
-        let styleDiv = document.getElementById(StatusBar.styleId());
+        const styleDiv = document.getElementById(StatusBar.styleId());
         styleDiv.setAttribute('class', `ace-${styleName}`);
-        let style = getComputedStyle(styleDiv);
+        const style = getComputedStyle(styleDiv);
 
         this.setState({
             theme: styleName,
             textColor: style.color,
-            backgroundColor: style.backgroundColor
+            backgroundColor: style.backgroundColor,
         });
     }
 
     render() {
         return (
-            <div className={`${STATUS_BAR_CLASSNAME}`}
-                 style={{ display: (!this.props.isVisible) ? 'none' : '', ...this.props.style }}>
+            <div
+                className={`${STATUS_BAR_CLASSNAME}`}
+                style={{ display: (!this.props.isVisible) ? 'none' : '', ...this.props.style }}
+            >
                 <div className="Left">
                     <Connector />
                 </div>

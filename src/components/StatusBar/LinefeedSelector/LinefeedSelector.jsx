@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './LinefeedSelector.styl';
-import ListSelector from '../../ListSelector/ListSelector'
+import ListSelector from '../../ListSelector/ListSelector';
 
 
 class LinefeedSelector extends Component {
@@ -8,7 +8,7 @@ class LinefeedSelector extends Component {
         super(props);
         this.name = 'LinefeedSelector';
         this.options = ['CRLF', 'LF', 'CR'];
-        this.selectedOption = this.options.findIndex((elem) => {return elem === props.selectedOption;});
+        this.selectedOption = this.options.findIndex(elem => elem === props.selectedOption);
     }
 
     render() {
@@ -21,12 +21,12 @@ class LinefeedSelector extends Component {
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}
             />
-        )
+        );
     }
 }
 
 LinefeedSelector.defaultProps = {
-    selectedOption : 'LF',
+    selectedOption: 'LF',
     textColor: 'black',
     backgroundColor: 'white',
 };

@@ -63,20 +63,19 @@ class MenuItem extends Component {
 
     render() {
         return (
-            <li className='MenuItem' onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
-                <span className='title' onClick={this.onClick}>{this.props.title}</span>
+            <li className="MenuItem" onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
+                <span className="title" onClick={this.onClick}>{this.props.title}</span>
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </li>
         );
     }
 
     renderMenuItem(child) {
-        if (this.state.open) {
+        if (this.state.open)
             return React.cloneElement(child, {
                 isMenuBarActive: this.props.isMenuBarActive,
-                onSelect: this.onSelect, //callback for all commands
+                onSelect: this.onSelect, // callback for all commands
             });
-        }
     }
 
     onSelect(command) {

@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import AceEditor from 'react-ace';
 import ChangeEvent from '../../utilities/ChangeEvent';
 import './Editor.styl';
-import {generateCursorMarker} from "../../utilities/Helpers";
+import { generateCursorMarker } from '../../utilities/Helpers';
 
 const EDIT_INSERT = 'insert';
 const EDIT_REMOVE = 'remove';
@@ -20,17 +20,16 @@ class Editor extends Component {
     }
 
     emitEditEvent(e) {
-        if (e.action === EDIT_INSERT) {
+        if (e.action === EDIT_INSERT)
             this.props.onInsert(e);
-        }
-        if (e.action === EDIT_REMOVE) {
+
+        if (e.action === EDIT_REMOVE)
             this.props.onRemove(e);
-        }
     }
-    
-	onChange(newValue, newEvent) {
+
+    onChange(newValue, newEvent) {
         this.emitEditEvent(ChangeEvent.getEditEvent(newEvent));
-		if (this.props.onChange) this.props.onChange(newValue, newEvent);
+        if (this.props.onChange) this.props.onChange(newValue, newEvent);
     }
 
     onCursorChange() {
@@ -39,7 +38,7 @@ class Editor extends Component {
 
     onLoad(ed) {
         this.editor = ed;
-        this.editor.session.setNewLineMode("unix");
+        this.editor.session.setNewLineMode('unix');
         this.editor.selection.on('changeCursor', this.onCursorChange);
     }
 
@@ -54,14 +53,14 @@ class Editor extends Component {
                 value={this.props.text}
                 onChange={this.onChange}
                 name="UNIQUE_ID_OF_DIV"
-                editorProps={{$blockScrolling: 'Infinity'}}
+                editorProps={{ $blockScrolling: 'Infinity' }}
             />
         );
     }
 }
 
 Editor.defaultProps = {
-    mode : 'text',
+    mode: 'text',
     theme: 'github',
     value: '//code is a new God',
     width: '100%',

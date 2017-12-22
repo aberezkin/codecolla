@@ -23,9 +23,9 @@ class MenuBar extends Component {
 
     renderMenuItem(child) {
         return React.cloneElement(child, {
-            isMenuBarActive: this.state.isActive, //is MenuBar 'opened'
-            isTopLevel: true, //is element on top
-            onSelect: this.props.onSelect, //callback for all commands
+            isMenuBarActive: this.state.isActive, // is MenuBar 'opened'
+            isTopLevel: true, // is element on top
+            onSelect: this.props.onSelect, // callback for all commands
         });
     }
 

@@ -66,10 +66,12 @@ export default class App extends Component {
         return (
             <div className={`${APP_CLASSNAME} ace-${this.props.theme.replace(/_/g, '-')}`}>
                 <Menu />
-                <div className={'wrapper'} style={this.state.wrapper}>
-                    <Editor ref={(editor) => { this.editorRef = editor; }}
-                            height={this.state.editor.height}
-                            width={this.state.editor.width}/>
+                <div className="wrapper" style={this.state.wrapper}>
+                    <Editor
+                        ref={(editor) => { this.editorRef = editor; }}
+                        height={this.state.editor.height}
+                        width={this.state.editor.width}
+                    />
                     <Chat />
                 </div>
                 <StatusBar />

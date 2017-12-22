@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import lodashMap from 'lodash.map'
+import lodashMap from 'lodash.map';
 import './ListSelector.styl';
 
 class ListSelector extends Component {
     constructor(props) {
         super(props);
         this.changeValue = this.changeValue.bind(this);
-        this.state = {active: this.props.options[this.props.active]};
+        this.state = { active: this.props.options[this.props.active] };
     }
 
     changeValue(event) {
-        this.setState({active: this.props.options[event.target.value]});
+        this.setState({ active: this.props.options[event.target.value] });
 
         if (this.props.onChange) this.props.onChange(this.props.options[event.target.value]);
     }
@@ -20,8 +20,9 @@ class ListSelector extends Component {
         return (
             <div className={`ListSelector ${this.props.className}`}>
                 <span className="selected">{this.state.active}</span>
-                <span className="pointer"
-                      style={{borderTop: `.33em solid ${this.props.textColor}`}}
+                <span
+                    className="pointer"
+                    style={{ borderTop: `.33em solid ${this.props.textColor}` }}
                 />
                 <select onChange={this.changeValue.bind(this)}>
                     {
@@ -29,14 +30,14 @@ class ListSelector extends Component {
                     }
                 </select>
             </div>
-        )
+        );
     }
 }
 
 ListSelector.propTypes = {
-    options:   PropTypes.array.isRequired, //all selectable options
-    active:    PropTypes.any.isRequired,//selected option
-    onChange:  PropTypes.func.isRequired,  //onChangeListener
+    options: PropTypes.array.isRequired, // all selectable options
+    active: PropTypes.any.isRequired, // selected option
+    onChange: PropTypes.func.isRequired, // onChangeListener
 };
 
 ListSelector.defaultProps = {

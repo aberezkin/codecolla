@@ -15,8 +15,8 @@ class Checkable extends Component {
 
     render() {
         return (
-            <li className='Checkable'>
-                <span className='title' onClick={this.onClick}>{this.props.title}</span>
+            <li className="Checkable">
+                <span className="title" onClick={this.onClick}>{this.props.title}</span>
             </li>
         );
     }

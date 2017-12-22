@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './EncodingSelector.styl';
-import ListSelector from '../../ListSelector/ListSelector'
+import ListSelector from '../../ListSelector/ListSelector';
 
 
 class EncodingSelector extends Component {
@@ -8,7 +8,7 @@ class EncodingSelector extends Component {
         super(props);
         this.name = 'EncodingSelector';
         this.options = ['UTF-8', 'CP-866', 'CP-1255'];
-        this.selectedOption = this.options.findIndex((elem) => {return elem === props.selectedOption;});
+        this.selectedOption = this.options.findIndex(elem => elem === props.selectedOption);
     }
 
     render() {
@@ -21,12 +21,12 @@ class EncodingSelector extends Component {
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}
             />
-        )
+        );
     }
 }
 
 EncodingSelector.defaultProps = {
-    selectedOption : 'UTF-8',
+    selectedOption: 'UTF-8',
     textColor: 'black',
     backgroundColor: 'white',
 };

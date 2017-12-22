@@ -10,9 +10,9 @@ class SubMenu extends Component {
 
     renderMenuItem(child) {
         return React.cloneElement(child, {
-            isMenuBarActive: this.props.isActive, //is MenuBar 'opened'
-            isMenuItemRoot: false, //is element on top
-            onSelect: this.props.onSelect, //callback for all commands
+            isMenuBarActive: this.props.isActive, // is MenuBar 'opened'
+            isMenuItemRoot: false, // is element on top
+            onSelect: this.props.onSelect, // callback for all commands
         });
     }
 

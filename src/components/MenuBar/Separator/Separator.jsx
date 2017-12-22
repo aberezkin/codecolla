@@ -6,7 +6,7 @@ class Separator extends Component {
     }
 
     render() {
-        return (<li className='Separator'></li>);
+        return (<li className="Separator" />);
     }
 }
 

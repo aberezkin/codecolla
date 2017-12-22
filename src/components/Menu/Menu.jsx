@@ -26,45 +26,41 @@ class Menu extends Component {
 
     render() {
         return (
-            <div className={'menu-wrapper'}>
+            <div className="menu-wrapper">
                 <MenuBar onSelect={this.onMenuOptionHandler} style={this.props.style}>
-                    <MenuItem title={'File'}>
+                    <MenuItem title="File">
                         <SubMenu>
-                            <MenuItem title={'New'} command={CREATE_NEW}/>
-                            <MenuItem title={'Open...'} command={OPEN_SMTH}/>
-                            <MenuItem title={'Open URL'} command={OPEN_URL}/>
+                            <MenuItem title="New" command={CREATE_NEW} />
+                            <MenuItem title="Open..." command={OPEN_SMTH} />
+                            <MenuItem title="Open URL" command={OPEN_URL} />
                             <Separator />
-                            <MenuItem title={'Save as...'} command={SAVE_AS}/>
-                            <MenuItem title={'Save all'} command={SAVE_ALL}/>
+                            <MenuItem title="Save as..." command={SAVE_AS} />
+                            <MenuItem title="Save all" command={SAVE_ALL} />
                             <Separator />
-                            <MenuItem title={'Settings'} command={OPEN_SETTINGS}/>
+                            <MenuItem title="Settings" command={OPEN_SETTINGS} />
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem title={'Edit'}>
+                    <MenuItem title="Edit">
+                        <SubMenu />
+                    </MenuItem>
+                    <MenuItem title="View">
                         <SubMenu>
+                            <Checkable title="Status bar" command={TOGGLE_STATUS_BAR} />
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem title={'View'}>
+                    <MenuItem title="Navigate">
+                        <SubMenu />
+                    </MenuItem>
+                    <MenuItem title="Refactor">
+                        <SubMenu />
+                    </MenuItem>
+                    <MenuItem title="Tools">
                         <SubMenu>
-                            <Checkable title={'Status bar'} command={TOGGLE_STATUS_BAR}/>
+                            <MenuItem title="Chat" command={TOGGLE_CHAT} />
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem title={'Navigate'}>
-                        <SubMenu>
-                        </SubMenu>
-                    </MenuItem>
-                    <MenuItem title={'Refactor'}>
-                        <SubMenu>
-                        </SubMenu>
-                    </MenuItem>
-                    <MenuItem title={'Tools'}>
-                        <SubMenu>
-                            <MenuItem title={'Chat'} command={TOGGLE_CHAT}/>
-                        </SubMenu>
-                    </MenuItem>
-                    <MenuItem title={'Help'}>
-                        <SubMenu>
-                        </SubMenu>
+                    <MenuItem title="Help">
+                        <SubMenu />
                     </MenuItem>
                 </MenuBar>
             </div>
