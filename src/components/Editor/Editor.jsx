@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import AceEditor from 'react-ace';
+import PropTypes from 'prop-types';
 import ChangeEvent from '../../utilities/ChangeEvent';
 import './Editor.styl';
-import {generateCursorMarker} from "../../utilities/Helpers";
 
 const EDIT_INSERT = 'insert';
 const EDIT_REMOVE = 'remove';
@@ -19,29 +19,29 @@ class Editor extends Component {
         this.isCursorTransfer = true;
     }
 
-    emitEditEvent(e) {
-        if (e.action === EDIT_INSERT) {
-            this.props.onInsert(e);
-        }
-        if (e.action === EDIT_REMOVE) {
-            this.props.onRemove(e);
-        }
-    }
-    
-	onChange(newValue, newEvent) {
+    onChange(newValue, newEvent) {
         this.emitEditEvent(ChangeEvent.getEditEvent(newEvent));
-		if (this.props.onChange) this.props.onChange(newValue, newEvent);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     onCursorChange() {
         // TODO: broadcast some kind of cursorChange action
     }
 
     onLoad(ed) {
         this.editor = ed;
-        this.editor.session.setNewLineMode("unix");
+        this.editor.session.setNewLineMode('unix');
         this.editor.selection.on('changeCursor', this.onCursorChange);
     }
+
+    emitEditEvent(e) {
+        if (e.action === EDIT_INSERT)
+            this.props.onInsert(e);
+
+        if (e.action === EDIT_REMOVE)
+            this.props.onRemove(e);
+    }
+
 
     render() {
         return (
@@ -54,16 +54,26 @@ class Editor extends Component {
                 value={this.props.text}
                 onChange={this.onChange}
                 name="UNIQUE_ID_OF_DIV"
-                editorProps={{$blockScrolling: 'Infinity'}}
+                editorProps={{ $blockScrolling: 'Infinity' }}
             />
         );
     }
 }
 
+Editor.propTypes = {
+    onInsert: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    language: PropTypes.string,
+    theme: PropTypes.string,
+    text: PropTypes.string,
+    width: PropTypes.string,
+    height: PropTypes.string,
+};
+
 Editor.defaultProps = {
-    mode : 'text',
+    language: 'text',
     theme: 'github',
-    value: '//code is a new God',
+    text: '//code is a new God',
     width: '100%',
     height: '100%',
 };

@@ -1,26 +1,26 @@
 import reducer from '../peer';
-import {ADD_PEER, REMOVE_PEER} from "../../actions/index";
+import { ADD_PEER, REMOVE_PEER } from '../../actions/index';
 
 const connectionsReducer = reducer.__get__('peersReducer');
 
 describe('connections reducer', () => {
-    let connections = [
-        {peer: '1', connection: 'mock'},
-        {peer: '2', connection: 'mock'},
-        {peer: '3', connection: 'mock'}
+    const connections = [
+        { peer: '1', connection: 'mock' },
+        { peer: '2', connection: 'mock' },
+        { peer: '3', connection: 'mock' },
     ];
 
     it('should return initial value', () => {
-        let initialState = connectionsReducer(undefined, {});
+        const initialState = connectionsReducer(undefined, {});
 
         expect(initialState).toBeInstanceOf(Array);
         expect(initialState.length).toBe(0);
     });
 
     it(`should handle ${ADD_PEER} action`, () => {
-        let newPeer = {peer: 'a', connection: 'mock'};
-        let action = {type: ADD_PEER, payload: newPeer};
-        let newState = connectionsReducer(connections, action);
+        const newPeer = { peer: 'a', connection: 'mock' };
+        const action = { type: ADD_PEER, payload: newPeer };
+        const newState = connectionsReducer(connections, action);
 
         expect(newState).toBeInstanceOf(Array);
         expect(newState.length).toBe(connections.length + 1);
@@ -29,8 +29,8 @@ describe('connections reducer', () => {
     });
 
     it(`should handle ${REMOVE_PEER} action`, () => {
-        let action = {type: REMOVE_PEER, payload: connections[1]};
-        let newState = connectionsReducer(connections, action);
+        const action = { type: REMOVE_PEER, payload: connections[1] };
+        const newState = connectionsReducer(connections, action);
 
         expect(newState).toBeInstanceOf(Array);
         expect(newState.length).toBe(connections.length - 1);

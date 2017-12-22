@@ -1,10 +1,11 @@
 import React from 'react';
 import Chat from './Chat';
 
-const setup = propOverrides => {
+const setup = (propOverrides) => {
     const props = {
         messages: [],
         onMessage: jest.fn(),
+        isVisible: true,
         ...propOverrides,
     };
 
@@ -20,9 +21,9 @@ const setup = propOverrides => {
 describe('chat component', () => {
     it('should render chat', () => {
         const messages = [
-            { author: 'me', content: 'Hello!', date: '3:51:35 PM' },
-            { author: 'you', content: 'Hi!', date: '3:51:35 PM' },
-            { author: 'me', content: 'How are you?', date: '3:51:35 PM' }
+            { author: 'me', content: 'Hello!', date: new Date('2017-12-22T14:53:13.141Z') },
+            { author: 'you', content: 'Hi!', date: new Date('2017-12-22T14:53:13.241Z') },
+            { author: 'me', content: 'How are you?', date: new Date('2017-12-22T14:53:14.141Z') },
         ];
 
         const { wrapper } = setup({ messages });
@@ -31,7 +32,7 @@ describe('chat component', () => {
     });
 
     it('should send message when textarea value is empty on send button click', () => {
-        const { props, send, wrapper } = setup();
+        const { props, send } = setup();
         send.simulate('click');
         expect(props.onMessage).not.toHaveBeenCalled();
     });

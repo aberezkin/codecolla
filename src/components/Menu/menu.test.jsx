@@ -1,9 +1,9 @@
 import React from 'react';
 import { MenuBar, MenuItem, SubMenu, Checkable } from '../MenuBar';
 
-const setup = propChildren => {
+const setup = (propChildren) => {
     const props = {
-        children: [<MenuItem key={0} title={'Test'} command={'test'} />],
+        children: [<MenuItem key={0} title="Test" command="test" />],
         onSelect: jest.fn(),
         ...propChildren,
     };
@@ -30,7 +30,7 @@ describe('menu component', () => {
     it('check rendering of MenuItem', () => {
         const { wrapper } = setup();
 
-        expect(wrapper.contains([<MenuItem title={'Test'} command={'test'} />])).toBeTruthy();
+        expect(wrapper.contains([<MenuItem title="Test" command="test" />])).toBeTruthy();
     });
 
     it('should call onSelect when click MenuItem "test"', () => {
@@ -41,7 +41,7 @@ describe('menu component', () => {
     });
 
     it('should not call onSelect when click MenuItem without command', () => {
-        const children = [<MenuItem title={'Test'} key={0}/>];
+        const children = [<MenuItem title={'Test'} key={0} />];
 
         const { onSelect, wrapper } = setup({ children });
 
@@ -51,9 +51,9 @@ describe('menu component', () => {
 
     it('should not call onSelect when click Checkable without command', () => {
         const children = [
-            <MenuItem title={'Test'} key={0}>
+            <MenuItem title="Test" key={0}>
                 <SubMenu>
-                    <Checkable title={'Checkable-test'}/>
+                    <Checkable title="Checkable-test" />
                 </SubMenu>
             </MenuItem>,
         ];

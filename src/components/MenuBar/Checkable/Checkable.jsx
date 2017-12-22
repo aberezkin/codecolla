@@ -31,31 +31,36 @@ class Checkable extends Component {
         this.setState({ titleStyle: {} });
     }
 
-    render() {
-        return (
-            <li className='Checkable'>
-                <span
-                    className='title'
-                    onClick={this.onClick}
-                    onMouseOver={this.onMouseOver}
-                    onMouseOut={this.onMouseOut}
-                    style={this.state.titleStyle}
-                >{this.props.title}</span>
-            </li>
-        );
-    }
-
     onSelect(command) {
         this.props.onSelect(command);
     }
-}
 
-Checkable.defaultProps = {
-    command: '',
-};
+    render() {
+        return (
+            <li className="Checkable">
+                <span
+                    tabIndex="0"
+                    role="button"
+                    className="title"
+                    onClick={this.onClick}
+                    style={this.state.titleStyle}
+                >
+                    {this.props.title}
+                </span>
+            </li>
+        );
+    }
+}
 
 Checkable.propTypes = {
     title: PropTypes.string.isRequired,
+    command: PropTypes.string,
+    onSelect: PropTypes.func,
+};
+
+Checkable.defaultProps = {
+    onSelect() {},
+    command: '',
 };
 
 export default Checkable;

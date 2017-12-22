@@ -1,5 +1,5 @@
-import { ADD_MESSAGE, TOGGLE_CHAT } from '../actions';
 import { combineReducers } from 'redux';
+import { ADD_MESSAGE, TOGGLE_CHAT } from '../actions';
 
 const messages = (state = [], action) => {
     switch (action.type) {

@@ -1,4 +1,4 @@
-import {ADD_PEER, REMOVE_PEER} from "../actions/index";
+import { ADD_PEER, REMOVE_PEER } from '../actions/index';
 
 function peersReducer(state = [], action) {
     switch (action.type) {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getPageHeight, getPageWidth } from '../../utilities/Helpers';
 import Editor from '../Editor';
 import StatusBar from '../StatusBar';
@@ -61,15 +62,17 @@ export default class App extends Component {
             },
         });
     }
-	
+
     render() {
         return (
             <div className={`${APP_CLASSNAME} ace-${this.props.theme.replace(/_/g, '-')}`}>
                 <Menu />
-                <div className={'wrapper'} style={this.state.wrapper}>
-                    <Editor ref={(editor) => { this.editorRef = editor; }}
-                            height={this.state.editor.height}
-                            width={this.state.editor.width}/>
+                <div className="wrapper" style={this.state.wrapper}>
+                    <Editor
+                        ref={(editor) => { this.editorRef = editor; }}
+                        height={this.state.editor.height}
+                        width={this.state.editor.width}
+                    />
                     <Chat />
                 </div>
                 <StatusBar />
@@ -77,3 +80,11 @@ export default class App extends Component {
         );
     }
 }
+
+App.propTypes = {
+    initPeer: PropTypes.func.isRequired,
+    setText: PropTypes.func.isRequired,
+    isStatusBarVisible: PropTypes.bool.isRequired,
+    isChatVisible: PropTypes.bool.isRequired,
+    theme: PropTypes.string.isRequired,
+};

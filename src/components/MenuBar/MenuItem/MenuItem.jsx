@@ -54,7 +54,7 @@ class MenuItem extends Component {
                 color: 'white',
             },
         });
-        if (this.props.children !== undefined)
+        if (this.props.children !== [])
             this.setState({ open: true });
     }
 
@@ -66,6 +66,15 @@ class MenuItem extends Component {
             this.setState({ open: false });
     }
 
+    onDocumentClick() {
+        this.setState({ open: false, titleStyle: {}  });
+    }
+
+    onSelect(command) {
+        this.props.onSelect(command);
+        this.setState({ open: false, titleStyle: {} });
+    }
+
     bindCloseHandlers() {
         document.addEventListener('click', this.onDocumentClick, false);
     }
@@ -74,44 +83,54 @@ class MenuItem extends Component {
         document.removeEventListener('click', this.onDocumentClick);
     }
 
-    onDocumentClick() {
-        this.setState({ open: false, titleStyle: {} });
+    renderMenuItem(child) {
+        if (this.state.open)
+            return React.cloneElement(child, {
+                isMenuBarActive: this.props.isMenuBarActive,
+                onSelect: this.onSelect, // callback for all commands
+            });
     }
 
     render() {
         return (
-            <li className='MenuItem' onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
+            <li
+                className="MenuItem"
+                onMouseOver={this.onMouseOver}
+                onFocus={this.onMouseOver}
+                onMouseOut={this.onMouseOut}
+                onBlur={this.onMouseOut}
+            >
                 <span
-                    className='title'
-                    onClick={this.onClick}
+                    tabIndex="0"
+                    role="button"
+                    className="title"
                     style={this.state.titleStyle}
-                >{this.props.title}</span>
+                    onClick={this.onClick}
+                >
+                    {this.props.title}
+                </span>
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </li>
         );
     }
-
-    renderMenuItem(child) {
-        if (this.state.open) {
-            return React.cloneElement(child, {
-                isMenuBarActive: this.state.open,
-                onSelect: this.onSelect, //callback for all commands
-            });
-        }
-    }
-
-    onSelect(command) {
-        this.props.onSelect(command);
-        this.setState({ open: false, titleStyle: {} });
-    }
 }
-
-MenuItem.defaultProps = {
-    command: '',
-};
 
 MenuItem.propTypes = {
     title: PropTypes.string.isRequired,
+    command: PropTypes.string,
+    isTopLevel: PropTypes.bool,
+    isMenuBarActive: PropTypes.bool,
+    onSelect: PropTypes.func,
+    children: PropTypes.node,
 };
+
+MenuItem.defaultProps = {
+    isTopLevel: false,
+    isMenuBarActive: false,
+    onSelect() {},
+    command: '',
+    children: [],
+};
+
 
 export default MenuItem;
