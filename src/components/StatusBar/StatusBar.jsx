@@ -90,7 +90,6 @@ StatusBar.defaultProps = {
     style: {
         width: '100%',
         height: '20px',
-        visibility: 'visible',
     }
 };
 
