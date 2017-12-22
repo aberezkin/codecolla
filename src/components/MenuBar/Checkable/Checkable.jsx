@@ -6,11 +6,29 @@ class Checkable extends Component {
         super(props);
         this.onClick = this.onClick.bind(this);
         this.onSelect = this.onSelect.bind(this);
+        this.onMouseOver = this.onMouseOver.bind(this);
+        this.onMouseOut = this.onMouseOut.bind(this);
+        this.state = { titleStyle: {} };
     }
 
     onClick(event) {
         event.preventDefault();
-        this.props.onSelect(this.props.command);
+        this.setState({ titleStyle: {} });
+        if (this.props.command !== '')
+            this.props.onSelect(this.props.command);
+    }
+
+    onMouseOver() {
+        this.setState({
+            titleStyle: {
+                backgroundColor: 'lightblue',
+                color: 'white',
+            },
+        });
+    }
+
+    onMouseOut() {
+        this.setState({ titleStyle: {} });
     }
 
     onSelect(command) {
@@ -25,6 +43,7 @@ class Checkable extends Component {
                     role="button"
                     className="title"
                     onClick={this.onClick}
+                    style={this.state.titleStyle}
                 >
                     {this.props.title}
                 </span>
@@ -35,12 +54,13 @@ class Checkable extends Component {
 
 Checkable.propTypes = {
     title: PropTypes.string.isRequired,
-    command: PropTypes.string.isRequired,
+    command: PropTypes.string,
     onSelect: PropTypes.func,
 };
 
-Checkable.defaultTypes = {
+Checkable.defaultProps = {
     onSelect() {},
+    command: '',
 };
 
 export default Checkable;

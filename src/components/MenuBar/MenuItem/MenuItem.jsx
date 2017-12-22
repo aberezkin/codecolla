@@ -14,7 +14,10 @@ class MenuItem extends Component {
         this.unbindCloseHandlers = this.unbindCloseHandlers.bind(this);
         this.onSelect = this.onSelect.bind(this);
         this.onDocumentClick = this.onDocumentClick.bind(this);
-        this.state = { open: false };
+        this.state = {
+            open: false,
+            titleStyle: {},
+        };
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -31,13 +34,26 @@ class MenuItem extends Component {
     onClick(event) {
         event.preventDefault();
         if (this.props.isTopLevel && !this.state.open)
-            this.setState({ open: true });
-        this.props.onSelect(this.props.command);
+            this.setState({
+                open: true,
+                titleStyle: {
+                    backgroundColor: 'lightblue',
+                    color: 'white',
+                },
+            });
+        if (this.props.command !== '')
+            this.props.onSelect(this.props.command);
     }
 
     onMouseOver() {
         if (!this.props.isMenuBarActive)
             return;
+        this.setState({
+            titleStyle: {
+                backgroundColor: 'lightblue',
+                color: 'white',
+            },
+        });
         if (this.props.children !== [])
             this.setState({ open: true });
     }
@@ -45,18 +61,18 @@ class MenuItem extends Component {
     onMouseOut(event) {
         if (!this.props.isMenuBarActive)
             return;
-        // eslint-disable-next-line react/no-find-dom-node
+        this.setState({ titleStyle: {} });
         if (!ReactDOM.findDOMNode(this).contains(event.relatedTarget))
             this.setState({ open: false });
     }
 
     onDocumentClick() {
-        this.setState({ open: false });
+        this.setState({ open: false, titleStyle: {}  });
     }
 
     onSelect(command) {
         this.props.onSelect(command);
-        this.setState({ open: false });
+        this.setState({ open: false, titleStyle: {} });
     }
 
     bindCloseHandlers() {
@@ -88,6 +104,7 @@ class MenuItem extends Component {
                     tabIndex="0"
                     role="button"
                     className="title"
+                    style={this.state.titleStyle}
                     onClick={this.onClick}
                 >
                     {this.props.title}

@@ -27,6 +27,7 @@ exports[`menu component render MenuBar 1`] = `
           className="title"
           onClick={[Function]}
           role="button"
+          style={Object {}}
           tabIndex="0"
         >
           Test

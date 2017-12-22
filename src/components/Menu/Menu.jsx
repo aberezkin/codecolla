@@ -20,8 +20,6 @@ class Menu extends Component {
     }
 
     onMenuOptionHandler(command) {
-        if (command === '')
-            return;
         this.props.onMenuOptionHandler(command);
     }
 
