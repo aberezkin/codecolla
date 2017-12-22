@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './Connector.styl';
 
-export default class Connector extends Component {
+class Connector extends Component {
     static name() {
         return 'Connector';
     }
@@ -41,3 +42,11 @@ export default class Connector extends Component {
         );
     }
 }
+
+
+Connector.propTypes = {
+    connectToPeer: PropTypes.func.isRequired,
+    seedChange: PropTypes.func.isRequired,
+};
+
+export default Connector;
