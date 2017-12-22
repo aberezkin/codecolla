@@ -18,12 +18,16 @@ exports[`menu component render MenuBar 1`] = `
     >
       <li
         className="MenuItem"
+        onBlur={[Function]}
+        onFocus={[Function]}
         onMouseOut={[Function]}
         onMouseOver={[Function]}
       >
         <span
           className="title"
           onClick={[Function]}
+          role="button"
+          tabIndex="0"
         >
           Test
         </span>
