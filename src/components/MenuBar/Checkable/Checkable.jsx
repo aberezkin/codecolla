@@ -35,9 +35,12 @@ class Checkable extends Component {
 
 Checkable.propTypes = {
     title: PropTypes.string.isRequired,
-    onSelect: PropTypes.func.isRequired,
     command: PropTypes.string.isRequired,
+    onSelect: PropTypes.func,
 };
 
+Checkable.defaultTypes = {
+    onSelect() {},
+};
 
 export default Checkable;

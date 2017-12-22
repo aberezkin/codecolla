@@ -28,9 +28,15 @@ class SubMenu extends Component {
 }
 
 SubMenu.propTypes = {
-    children: PropTypes.node.isRequired,
-    isActive: PropTypes.bool.isRequired,
-    onSelect: PropTypes.func.isRequired,
+    children: PropTypes.node,
+    isActive: PropTypes.bool,
+    onSelect: PropTypes.func,
+};
+
+SubMenu.defaultProps = {
+    isActive: false,
+    onSelect() {},
+    children: [],
 };
 
 export default SubMenu;

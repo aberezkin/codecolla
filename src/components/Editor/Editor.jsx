@@ -21,7 +21,6 @@ class Editor extends Component {
 
     onChange(newValue, newEvent) {
         this.emitEditEvent(ChangeEvent.getEditEvent(newEvent));
-        if (this.props.onChange) this.props.onChange(newValue, newEvent);
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -62,7 +61,6 @@ class Editor extends Component {
 }
 
 Editor.propTypes = {
-    onChange: PropTypes.func.isRequired,
     onInsert: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     language: PropTypes.string,

@@ -7,13 +7,12 @@ class ListSelector extends Component {
     constructor(props) {
         super(props);
         this.changeValue = this.changeValue.bind(this);
-        this.state = { active: this.props.options[this.props.active] };
+        this.state = { active: props.default };
     }
 
     changeValue(event) {
         this.setState({ active: this.props.options[event.target.value] });
-
-        if (this.props.onChange) this.props.onChange(this.props.options[event.target.value]);
+        this.props.onChange(this.props.options[event.target.value]);
     }
 
     render() {
@@ -40,7 +39,7 @@ class ListSelector extends Component {
 
 ListSelector.propTypes = {
     options: PropTypes.arrayOf(PropTypes.string).isRequired, // all selectable options
-    active: PropTypes.string().isRequired, // selected option
+    default: PropTypes.string.isRequired, // selected option
     onChange: PropTypes.func.isRequired, // onChangeListener
     textColor: PropTypes.string,
 };

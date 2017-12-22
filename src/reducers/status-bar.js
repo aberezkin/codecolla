@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { TOGGLE_STATUS_BAR } from '../actions';
 
-const isVisible = (state = {}, action) => {
+const isVisible = (state = true, action) => {
     switch (action.type) {
         case TOGGLE_STATUS_BAR:
             return !state;

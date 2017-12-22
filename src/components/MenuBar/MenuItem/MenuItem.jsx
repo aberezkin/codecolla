@@ -100,14 +100,18 @@ class MenuItem extends Component {
 
 MenuItem.propTypes = {
     title: PropTypes.string.isRequired,
-    command: PropTypes.string.isRequired,
-    isTopLevel: PropTypes.bool.isRequired,
-    isMenuBarActive: PropTypes.bool.isRequired,
-    onSelect: PropTypes.func.isRequired,
+    command: PropTypes.string,
+    isTopLevel: PropTypes.bool,
+    isMenuBarActive: PropTypes.bool,
+    onSelect: PropTypes.func,
     children: PropTypes.node,
 };
 
 MenuItem.defaultProps = {
+    isTopLevel: false,
+    isMenuBarActive: false,
+    onSelect() {},
+    command: '',
     children: [],
 };
 
