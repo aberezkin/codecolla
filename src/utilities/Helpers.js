@@ -7,9 +7,8 @@ export function getPageHeight() {
 export function generateLineId() {
     let ID = '';
     // ASCII 33 - 126
-    for (let i = 0; i < 15; i += 1) {
+    for (let i = 0; i < 15; i += 1)
         ID += String.fromCharCode((Math.floor(Math.random() * (127 - 33)) + 33));
-    }
 
     return ID;
 }
