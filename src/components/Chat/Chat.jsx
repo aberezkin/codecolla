@@ -37,7 +37,10 @@ class Chat extends Component {
 
     render() {
         return (
-            <div className={`${CHAT_CLASSNAME}`}>
+            <div
+                className={CHAT_CLASSNAME}
+                style={{ display: (!this.props.isVisible) ? 'none' : '' }}
+            >
                 <div className="MessageBox">
                     {
                         this.props.messages.map(message => (
@@ -53,7 +56,7 @@ class Chat extends Component {
                 <div className="InputBox">
                     <Textarea
                         className="InputArea"
-                        placeholder="Write your message..."
+                        placeholder='Write your message...'
                         value={this.state.textareaValue}
                         onChange={event => this.setState({ textareaValue: event.target.value })}
                         onKeyDown={this.onKeyDown}
@@ -78,6 +81,7 @@ class Chat extends Component {
 
 Chat.propTypes = {
     messages: PropTypes.arrayOf(PropTypes.object),
+    isVisible: PropTypes.bool.isRequired,
     onMessage: PropTypes.func,
 };
 

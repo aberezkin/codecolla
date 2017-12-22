@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`menu component render MenuBar 1`] = `
+<MenuBar
+  onSelect={[Function]}
+>
+  <ul
+    className="MenuBar"
+    onClick={[Function]}
+  >
+    <MenuItem
+      command="test"
+      isMenuBarActive={false}
+      isTopLevel={true}
+      key=".$0"
+      onSelect={[Function]}
+      title="Test"
+    >
+      <li
+        className="MenuItem"
+        onMouseOut={[Function]}
+        onMouseOver={[Function]}
+      >
+        <span
+          className="title"
+          onClick={[Function]}
+        >
+          Test
+        </span>
+      </li>
+    </MenuItem>
+  </ul>
+</MenuBar>
+`;

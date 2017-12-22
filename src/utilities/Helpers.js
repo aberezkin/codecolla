@@ -4,6 +4,10 @@ export function getPageHeight() {
     return document.documentElement.clientHeight;
 }
 
+export function getPageWidth() {
+    return document.documentElement.clientWidth;
+}
+
 export function generateLineId() {
     let ID = '';
     // ASCII 33 - 126

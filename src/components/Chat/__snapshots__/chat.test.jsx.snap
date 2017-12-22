@@ -3,6 +3,11 @@
 exports[`chat component should render chat 1`] = `
 <div
   className="Chat"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
   tabIndex="0"
 >
   <div

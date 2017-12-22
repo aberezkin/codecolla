@@ -8,7 +8,7 @@ const setup = (propOverrides) => {
         ...propOverrides,
     };
 
-    const wrapper = shallow(<Chat {...props} />);
+    const wrapper = shallow((<Chat {...props} />));
 
     return {
         props,
@@ -22,7 +22,7 @@ describe('chat component', () => {
         const messages = [
             { author: 'me', content: 'Hello!', date: '3:51:35 PM' },
             { author: 'you', content: 'Hi!', date: '3:51:35 PM' },
-            { author: 'me', content: 'How are you?', date: '3:51:35 PM' },
+            { author: 'me', content: 'How are you?', date: '3:51:35 PM' }
         ];
 
         const { wrapper } = setup({ messages });
