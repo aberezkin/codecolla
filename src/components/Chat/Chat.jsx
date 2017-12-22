@@ -36,7 +36,8 @@ class Chat extends Component {
 
     render() {
         return (
-            <div className={`${CHAT_CLASSNAME}`} tabIndex="0" style={(!this.props.isVisible)? {visibility: 'hidden', display: 'none'} : {}}>
+            <div className={`${CHAT_CLASSNAME}`} tabIndex="0"
+                 style={{ display: (!this.props.isVisible) ? 'none' : '' }}>
                 <div className="MessageBox">
                     {
                         this.props.messages.map((object, index) =>
