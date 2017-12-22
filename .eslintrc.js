@@ -13,6 +13,7 @@ module.exports = {
     },
     rules: {
         "indent": ["error", 4, { SwitchCase: 1 }],
-        "no-underscore-dangle": ["warn"]
+        "no-underscore-dangle": ["warn"],
+        "curly": ["error", "multi"],
     },
 };
