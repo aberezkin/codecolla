@@ -24,6 +24,7 @@ exports[`menu component render MenuBar 1`] = `
         <span
           className="title"
           onClick={[Function]}
+          style={Object {}}
         >
           Test
         </span>
