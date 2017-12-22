@@ -12,7 +12,7 @@ const messages = (state = [], action) => {
     }
 };
 
-const isVisible = (state = {}, action) => {
+const isVisible = (state = false, action) => {
     switch (action.type) {
         case TOGGLE_CHAT:
             return !state;
