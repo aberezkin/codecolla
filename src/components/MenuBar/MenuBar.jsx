@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export const MENU_BAR_CLASSNAME = 'MenuBar';
 
@@ -23,8 +24,8 @@ class MenuBar extends Component {
     renderMenuItem(child) {
         return React.cloneElement(child, {
             isMenuBarActive: this.state.isActive, //is MenuBar 'opened'
-            isTopLevel: true,                     //is element on top
-            onSelect: this.props.onSelect,        //callback forall commands
+            isTopLevel: true, //is element on top
+            onSelect: this.props.onSelect, //callback for all commands
         });
     }
 
@@ -36,27 +37,25 @@ class MenuBar extends Component {
         document.removeEventListener('click', this.handleDocumentClick);
     }
 
-    handleDocumentClick(event) {
+    handleDocumentClick() {
         this.setState({ isActive: false });
     }
 
-    onClick(event) {
+    onClick() {
         this.setState({ isActive: !this.state.isActive });
     }
 
     render() {
         return (
-            <ul className={`${MENU_BAR_CLASSNAME}`} onClick={this.onClick}>
+            <ul className={MENU_BAR_CLASSNAME} onClick={this.onClick}>
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </ul>
         );
     }
 }
 
-MenuBar.defaultProps = {
-    onSelect: (command) => {
-        console.log(command);
-    },
+MenuBar.propTypes = {
+    onSelect: PropTypes.func.isRequired,
 };
 
 export default MenuBar;
