@@ -14,7 +14,8 @@ class Checkable extends Component {
     onClick(event) {
         event.preventDefault();
         this.setState({ titleStyle: {} });
-        this.props.onSelect(this.props.command);
+        if (this.props.command !== '')
+            this.props.onSelect(this.props.command);
     }
 
     onMouseOver() {

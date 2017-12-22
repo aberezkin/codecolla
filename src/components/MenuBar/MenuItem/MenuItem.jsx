@@ -41,7 +41,8 @@ class MenuItem extends Component {
                     color: 'white',
                 },
             });
-        this.props.onSelect(this.props.command);
+        if (this.props.command !== '')
+            this.props.onSelect(this.props.command);
     }
 
     onMouseOver() {
