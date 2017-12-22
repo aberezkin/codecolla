@@ -18,6 +18,8 @@ module.exports = {
         "curly": ["error", "multi"],
         "react/jsx-indent": ["error", 4],
         "react/jsx-indent-props": ["error", 4],
-        "object-curly-newline": ["error", { "consistent": true }]
+        "object-curly-newline": ["error", { "consistent": true }],
+        "jsx-a11y/click-events-have-key-events": ["none"],
+        "jsx-a11y/mouse-events-have-key-events": ["none"],
     },
 };

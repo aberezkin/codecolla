@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { MenuBar, Checkable, MenuItem, Separator, SubMenu } from '../MenuBar';
 import {
     TOGGLE_STATUS_BAR,
@@ -67,6 +68,11 @@ class Menu extends Component {
         );
     }
 }
+
+Menu.propTypes = {
+    onMenuOptionHandler: PropTypes.func.isRequired,
+    style: PropTypes.objectOf(PropTypes.string),
+};
 
 Menu.defaultProps = {
     style: {

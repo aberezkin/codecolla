@@ -21,12 +21,12 @@ class MenuBar extends Component {
             this.unbindSetInactiveHandler();
     }
 
-    renderMenuItem(child) {
-        return React.cloneElement(child, {
-            isMenuBarActive: this.state.isActive, // is MenuBar 'opened'
-            isTopLevel: true, // is element on top
-            onSelect: this.props.onSelect, // callback for all commands
-        });
+    onClick() {
+        this.setState({ isActive: !this.state.isActive });
+    }
+
+    handleDocumentClick() {
+        this.setState({ isActive: false });
     }
 
     bindSetInactiveHandler() {
@@ -37,13 +37,14 @@ class MenuBar extends Component {
         document.removeEventListener('click', this.handleDocumentClick);
     }
 
-    handleDocumentClick() {
-        this.setState({ isActive: false });
+    renderMenuItem(child) {
+        return React.cloneElement(child, {
+            isMenuBarActive: this.state.isActive, // is MenuBar 'opened'
+            isTopLevel: true, // is element on top
+            onSelect: this.props.onSelect, // callback for all commands
+        });
     }
 
-    onClick() {
-        this.setState({ isActive: !this.state.isActive });
-    }
 
     render() {
         return (
@@ -55,7 +56,12 @@ class MenuBar extends Component {
 }
 
 MenuBar.propTypes = {
+    children: PropTypes.node,
     onSelect: PropTypes.func.isRequired,
+};
+
+MenuBar.defaultProps = {
+    children: [],
 };
 
 export default MenuBar;

@@ -18,15 +18,19 @@ class ListSelector extends Component {
 
     render() {
         return (
-            <div className={`ListSelector ${this.props.className}`}>
+            <div className="ListSelector">
                 <span className="selected">{this.state.active}</span>
+
                 <span
                     className="pointer"
                     style={{ borderTop: `.33em solid ${this.props.textColor}` }}
                 />
-                <select onChange={this.changeValue.bind(this)}>
+                <select onChange={this.changeValue}>
                     {
-                        lodashMap(this.props.options, (value, key) => (<option value={key} key={key}>{value}</option>))
+                        lodashMap(
+                            this.props.options,
+                            (value, key) => (<option value={key} key={key}>{value}</option>),
+                        )
                     }
                 </select>
             </div>
@@ -35,14 +39,14 @@ class ListSelector extends Component {
 }
 
 ListSelector.propTypes = {
-    options: PropTypes.array.isRequired, // all selectable options
-    active: PropTypes.any.isRequired, // selected option
+    options: PropTypes.arrayOf(PropTypes.string).isRequired, // all selectable options
+    active: PropTypes.string().isRequired, // selected option
     onChange: PropTypes.func.isRequired, // onChangeListener
+    textColor: PropTypes.string,
 };
 
 ListSelector.defaultProps = {
     textColor: 'black',
-    backgroundColor: 'white',
 };
 
 export default ListSelector;

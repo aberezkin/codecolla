@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export const SUB_MENU_CLASSNAME = 'SubMenu';
 
@@ -19,14 +20,17 @@ class SubMenu extends Component {
     render() {
         return (
             <ul className={`${SUB_MENU_CLASSNAME}`}>
+
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </ul>
         );
     }
 }
 
-SubMenu.defaultProps = {
-    label: 'test',
+SubMenu.propTypes = {
+    children: PropTypes.node.isRequired,
+    isActive: PropTypes.bool.isRequired,
+    onSelect: PropTypes.func.isRequired,
 };
 
 export default SubMenu;

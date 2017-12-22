@@ -38,15 +38,25 @@ class MenuItem extends Component {
     onMouseOver() {
         if (!this.props.isMenuBarActive)
             return;
-        if (this.props.children !== undefined)
+        if (this.props.children !== [])
             this.setState({ open: true });
     }
 
     onMouseOut(event) {
         if (!this.props.isMenuBarActive)
             return;
+        // eslint-disable-next-line react/no-find-dom-node
         if (!ReactDOM.findDOMNode(this).contains(event.relatedTarget))
             this.setState({ open: false });
+    }
+
+    onDocumentClick() {
+        this.setState({ open: false });
+    }
+
+    onSelect(command) {
+        this.props.onSelect(command);
+        this.setState({ open: false });
     }
 
     bindCloseHandlers() {
@@ -57,19 +67,6 @@ class MenuItem extends Component {
         document.removeEventListener('click', this.onDocumentClick);
     }
 
-    onDocumentClick() {
-        this.setState({ open: false });
-    }
-
-    render() {
-        return (
-            <li className="MenuItem" onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
-                <span className="title" onClick={this.onClick}>{this.props.title}</span>
-                {React.Children.map(this.props.children, this.renderMenuItem)}
-            </li>
-        );
-    }
-
     renderMenuItem(child) {
         if (this.state.open)
             return React.cloneElement(child, {
@@ -78,18 +75,41 @@ class MenuItem extends Component {
             });
     }
 
-    onSelect(command) {
-        this.props.onSelect(command);
-        this.setState({ open: false });
+    render() {
+        return (
+            <li
+                className="MenuItem"
+                onMouseOver={this.onMouseOver}
+                onFocus={this.onMouseOver}
+                onMouseOut={this.onMouseOut}
+                onBlur={this.onMouseOut}
+            >
+                <span
+                    tabIndex="0"
+                    role="button"
+                    className="title"
+                    onClick={this.onClick}
+                >
+                    {this.props.title}
+                </span>
+                {React.Children.map(this.props.children, this.renderMenuItem)}
+            </li>
+        );
     }
 }
 
-MenuItem.defaultProps = {
-    command: '',
-};
-
 MenuItem.propTypes = {
     title: PropTypes.string.isRequired,
+    command: PropTypes.string.isRequired,
+    isTopLevel: PropTypes.bool.isRequired,
+    isMenuBarActive: PropTypes.bool.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    children: PropTypes.node,
 };
+
+MenuItem.defaultProps = {
+    children: [],
+};
+
 
 export default MenuItem;

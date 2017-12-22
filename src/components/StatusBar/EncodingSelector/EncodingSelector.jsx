@@ -14,7 +14,6 @@ class EncodingSelector extends Component {
     render() {
         return (
             <ListSelector
-                className={this.name}
                 options={this.options}
                 active={this.selectedOption}
                 onChange={this.props.onChange}

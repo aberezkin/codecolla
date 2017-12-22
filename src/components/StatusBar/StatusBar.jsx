@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './StatusBar.styl';
 import LinefeedSelector from './LinefeedSelector/LinefeedSelector';
 import LanguageSelector from './LanguageSelector/LanguageSelector';
@@ -10,6 +11,10 @@ import Connector from '../Connector';
 export const STATUS_BAR_CLASSNAME = 'StatusBar';
 
 class StatusBar extends Component {
+    static styleId() {
+        return 'StatusBarStyle';
+    }
+
     constructor(props) {
         super(props);
         this.changeTheme = this.changeTheme.bind(this);
@@ -18,18 +23,6 @@ class StatusBar extends Component {
         styleDiv.setAttribute('id', StatusBar.styleId());
         document.body.insertBefore(styleDiv, document.body.firstChild);
         styleDiv.setAttribute('class', props.theme);
-
-        const style = getComputedStyle(styleDiv);
-
-        this.state = {
-            theme: props.theme,
-            textColor: style.color,
-            backgroundColor: style.backgroundColor,
-        };
-    }
-
-    static styleId() {
-        return 'StatusBarStyle';
     }
 
     changeTheme(value) {
@@ -39,12 +32,10 @@ class StatusBar extends Component {
 
         const styleDiv = document.getElementById(StatusBar.styleId());
         styleDiv.setAttribute('class', `ace-${styleName}`);
-        const style = getComputedStyle(styleDiv);
 
         this.setState({
-            theme: styleName,
-            textColor: style.color,
-            backgroundColor: style.backgroundColor,
+            textColor: styleDiv.color,
+            backgroundColor: styleDiv.backgroundColor,
         });
     }
 
@@ -88,7 +79,21 @@ class StatusBar extends Component {
     }
 }
 
+StatusBar.propTypes = {
+    linefeed: PropTypes.string.isRequired,
+    encoding: PropTypes.string.isRequired,
+    language: PropTypes.string.isRequired,
+    theme: PropTypes.string.isRequired,
+    setLinefeed: PropTypes.func.isRequired,
+    setEncoding: PropTypes.func.isRequired,
+    setLanguage: PropTypes.func.isRequired,
+    setTheme: PropTypes.func.isRequired,
+    isVisible: PropTypes.bool,
+    style: PropTypes.objectOf(PropTypes.string),
+};
+
 StatusBar.defaultProps = {
+    isVisible: true,
     style: {
         width: '100%',
         height: '20px',

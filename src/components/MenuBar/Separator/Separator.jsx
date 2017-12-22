@@ -1,13 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Separator extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (<li className="Separator" />);
-    }
-}
+const Separator = () => (<li className="Separator" />);
 
 export default Separator;
