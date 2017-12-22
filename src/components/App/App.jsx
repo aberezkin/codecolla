@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getPageHeight, getPageWidth } from '../../utilities/Helpers';
 import Editor from '../Editor';
 import StatusBar from '../StatusBar';
@@ -79,3 +80,11 @@ export default class App extends Component {
         );
     }
 }
+
+App.propTypes = {
+    initPeer: PropTypes.func.isRequired,
+    setText: PropTypes.func.isRequired,
+    isStatusBarVisible: PropTypes.bool.isRequired,
+    isChatVisible: PropTypes.bool.isRequired,
+    theme: PropTypes.string.isRequired,
+};
