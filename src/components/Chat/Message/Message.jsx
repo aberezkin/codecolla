@@ -6,14 +6,14 @@ const Message = ({ color, author, content, date }) => (
     <div className="Message">
         <div className="author" style={{ color }}>{author}</div>
         <div className="content">{content}</div>
-        <div className="date">{date}</div>
+        <div className="date">{date.toLocaleTimeString()}</div>
     </div>
 );
 
 Message.propTypes = {
     author: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-    date: PropTypes.string.isRequired,
+    date: PropTypes.instanceOf(Date).isRequired,
     color: PropTypes.string,
 };
 

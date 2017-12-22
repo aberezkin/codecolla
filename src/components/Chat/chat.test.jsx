@@ -5,6 +5,7 @@ const setup = (propOverrides) => {
     const props = {
         messages: [],
         onMessage: jest.fn(),
+        isVisible: true,
         ...propOverrides,
     };
 
@@ -20,9 +21,9 @@ const setup = (propOverrides) => {
 describe('chat component', () => {
     it('should render chat', () => {
         const messages = [
-            { author: 'me', content: 'Hello!', date: '3:51:35 PM' },
-            { author: 'you', content: 'Hi!', date: '3:51:35 PM' },
-            { author: 'me', content: 'How are you?', date: '3:51:35 PM' }
+            { author: 'me', content: 'Hello!', date: new Date(1513954393141) },
+            { author: 'you', content: 'Hi!', date: new Date(1513954393241) },
+            { author: 'me', content: 'How are you?', date: new Date(1513954394141) },
         ];
 
         const { wrapper } = setup({ messages });

@@ -27,7 +27,7 @@ class Chat extends Component {
         const elem = {
             author: 'test',
             content: this.state.textareaValue,
-            date: (new Date()).toLocaleTimeString(),
+            date: new Date(),
         };
 
         this.setState({ textareaValue: '' });
@@ -45,7 +45,7 @@ class Chat extends Component {
                     {
                         this.props.messages.map(message => (
                             <Message
-                                key={message.date}
+                                key={message.date.getTime()}
                                 author={message.author}
                                 content={message.content}
                                 date={message.date}
@@ -56,7 +56,7 @@ class Chat extends Component {
                 <div className="InputBox">
                     <Textarea
                         className="InputArea"
-                        placeholder='Write your message...'
+                        placeholder="Write your message..."
                         value={this.state.textareaValue}
                         onChange={event => this.setState({ textareaValue: event.target.value })}
                         onKeyDown={this.onKeyDown}

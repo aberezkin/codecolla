@@ -22,7 +22,7 @@ exports[`message component should render message 1`] = `
   <div
     className="date"
   >
-    '23:01:54'
+    12:53:15 AM
   </div>
 </div>
 `;
