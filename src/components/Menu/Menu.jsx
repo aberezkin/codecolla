@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {MenuBar, Checkable, MenuItem, Separator, SubMenu} from '../MenuBar';
-import {TOGGLE_STATUS_BAR, TOGGLE_CHAT} from "../../actions";
+import React, { Component } from 'react';
+import { MenuBar, Checkable, MenuItem, Separator, SubMenu } from '../MenuBar';
+import { TOGGLE_STATUS_BAR, TOGGLE_CHAT } from '../../actions';
 import './Menu.styl';
 
 class Menu extends Component {
@@ -59,10 +59,9 @@ class Menu extends Component {
                     </MenuItem>
                 </MenuBar>
             </div>
-        )
+        );
     }
 }
-
 
 Menu.defaultProps = {
     style: {
