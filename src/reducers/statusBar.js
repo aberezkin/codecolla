@@ -1,5 +1,5 @@
-import {combineReducers} from 'redux'
-import {TOGGLE_STATUS_BAR} from "../actions";
+import { combineReducers } from 'redux';
+import { TOGGLE_STATUS_BAR } from '../actions';
 
 const isVisible = (state = {}, action) => {
     switch (action.type) {
@@ -9,4 +9,4 @@ const isVisible = (state = {}, action) => {
     }
 };
 
-export default combineReducers({isVisible});
+export default combineReducers({ isVisible });
