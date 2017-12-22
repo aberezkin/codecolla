@@ -18,7 +18,7 @@ class Checkable extends Component {
             <li className='Checkable'>
                 <span className='title' onClick={this.onClick}>{this.props.title}</span>
             </li>
-        )
+        );
     }
 
     onSelect(command) {

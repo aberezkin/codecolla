@@ -39,16 +39,17 @@ export default class App extends Component {
         this.props.setText(defaultValue);
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         if (prevProps.isStatusBarVisible !== this.props.isStatusBarVisible ||
             prevProps.isChatVisible !== this.props.isChatVisible)
             this.resize();
     }
 
     resize() {
-        let statusBar = document.querySelector(`.${APP_CLASSNAME} .${STATUS_BAR_CLASSNAME}`);
-        let menuBar = document.querySelector(`.${APP_CLASSNAME} .${MENU_BAR_CLASSNAME}`);
-        let chat = document.querySelector(`.${APP_CLASSNAME} .${CHAT_CLASSNAME}`);
+        const statusBar = document.querySelector(`.${APP_CLASSNAME} .${STATUS_BAR_CLASSNAME}`);
+        const menuBar = document.querySelector(`.${APP_CLASSNAME} .${MENU_BAR_CLASSNAME}`);
+        const chat = document.querySelector(`.${APP_CLASSNAME} .${CHAT_CLASSNAME}`);
+
         this.setState({
             wrapper: {
                 height: `${getPageHeight() - statusBar.offsetHeight - menuBar.offsetHeight - 1}px`,

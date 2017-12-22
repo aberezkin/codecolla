@@ -28,7 +28,7 @@ class Menu extends Component {
         return (
             <div className={'menu-wrapper'}>
                 <MenuBar onSelect={this.onMenuOptionHandler} style={this.props.style}>
-                    <MenuItem  title={'File'}>
+                    <MenuItem title={'File'}>
                         <SubMenu>
                             <MenuItem title={'New'} command={CREATE_NEW}/>
                             <MenuItem title={'Open...'} command={OPEN_SMTH}/>
@@ -40,29 +40,29 @@ class Menu extends Component {
                             <MenuItem title={'Settings'} command={OPEN_SETTINGS}/>
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem  title={'Edit'}>
+                    <MenuItem title={'Edit'}>
                         <SubMenu>
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem  title={'View'}>
+                    <MenuItem title={'View'}>
                         <SubMenu>
                             <Checkable title={'Status bar'} command={TOGGLE_STATUS_BAR}/>
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem  title={'Navigate'}>
+                    <MenuItem title={'Navigate'}>
                         <SubMenu>
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem  title={'Refactor'}>
+                    <MenuItem title={'Refactor'}>
                         <SubMenu>
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem  title={'Tools'}>
+                    <MenuItem title={'Tools'}>
                         <SubMenu>
                             <MenuItem title={'Chat'} command={TOGGLE_CHAT}/>
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem  title={'Help'}>
+                    <MenuItem title={'Help'}>
                         <SubMenu>
                         </SubMenu>
                     </MenuItem>

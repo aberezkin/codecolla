@@ -31,11 +31,11 @@ class MenuItem extends Component {
     onClick(event) {
         event.preventDefault();
         if (this.props.isTopLevel && !this.state.open)
-            this.setState({open: true});
+            this.setState({ open: true });
         this.props.onSelect(this.props.command);
     }
 
-    onMouseOver(event) {
+    onMouseOver() {
         if (!this.props.isMenuBarActive)
             return;
         if (this.props.children !== undefined)
@@ -57,7 +57,7 @@ class MenuItem extends Component {
         document.removeEventListener('click', this.onDocumentClick);
     }
 
-    onDocumentClick(event) {
+    onDocumentClick() {
         this.setState({ open: false });
     }
 
@@ -74,7 +74,7 @@ class MenuItem extends Component {
         if (this.state.open)
             return React.cloneElement(child, {
                 isMenuBarActive: this.props.isMenuBarActive,
-                onSelect: this.onSelect,        //callback forall commands
+                onSelect: this.onSelect, //callback for all commands
             });
     }
 
