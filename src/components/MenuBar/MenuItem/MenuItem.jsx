@@ -18,11 +18,10 @@ class MenuItem extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.open && !prevState.open) {
+        if (this.state.open && !prevState.open)
             this.bindCloseHandlers();
-        } else if (prevState.open && !this.state.open) {
+        else if (prevState.open && !this.state.open)
             this.unbindCloseHandlers();
-        }
     }
 
     componentWillUnmount() {
@@ -72,11 +71,12 @@ class MenuItem extends Component {
     }
 
     renderMenuItem(child) {
-        if (this.state.open)
+        if (this.state.open) {
             return React.cloneElement(child, {
                 isMenuBarActive: this.props.isMenuBarActive,
                 onSelect: this.onSelect, //callback for all commands
             });
+        }
     }
 
     onSelect(command) {
