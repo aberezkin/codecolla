@@ -9,6 +9,7 @@ module.exports = {
         it: false,
         expect: false,
         document: false,
+        window: false,
     },
     rules: {
         indent: ["error", 4]
