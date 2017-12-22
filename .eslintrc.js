@@ -12,6 +12,7 @@ module.exports = {
         window: false,
     },
     rules: {
-        indent: ["error", 4]
-    }
+        "indent": ["error", 4, { SwitchCase: 1 }],
+        "no-underscore-dangle": ["warn"]
+    },
 };

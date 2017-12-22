@@ -1,5 +1,5 @@
-import {ADD_MESSAGE} from "../actions";
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
+import { ADD_MESSAGE } from '../actions';
 
 const messages = (state = [], action) => {
     switch (action.type) {
@@ -12,4 +12,4 @@ const messages = (state = [], action) => {
     }
 };
 
-export default combineReducers({messages});
+export default combineReducers({ messages });
