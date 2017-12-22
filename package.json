@@ -25,11 +25,13 @@
       "enzyme-to-json/serializer"
     ],
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
+      "src/*/**/*.{js,jsx}",
       "!src/utilities/*",
       "!src/components/**/index.js",
+      "!src/reducers/index.js",
+      "!src/middleware/logger.js",
       "!src/index.jsx",
-      "!src/reducers/index.js"
+      "!src/store.js"
     ]
   },
   "author": "",
