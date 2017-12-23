@@ -97,7 +97,7 @@ class MenuItem extends Component {
         return (
             <li
                 ref={(node) => { this.node = node; }}
-                className={`MenuItem ${length > 0 ? 'submenu' : ''}`}
+                className={`MenuItem${length > 0 ? ' submenu' : ''}`}
                 onMouseOver={this.onMouseOver}
                 onFocus={this.onMouseOver}
                 onMouseOut={this.onMouseOut}
