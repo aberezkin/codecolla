@@ -41,3 +41,17 @@
 .SubMenu .SubMenu
   top -1px
   left 100%
+.MenuItem, .SubMenu, .Checkable, .Separator
+  list-style none
+.SubMenu > .MenuItem.submenu
+  > .title:after
+    display block
+    content " "
+    float right
+    width 5px
+    height 0
+    border-color transparent
+    border-style solid
+    border-left-color #cccccc
+    margin-top 5px
+    margin-right -10px
