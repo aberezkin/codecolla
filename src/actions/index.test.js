@@ -1,17 +1,21 @@
-import {SET_IS_SEED, SET_LINEFEED, SET_IS_TRANSFER_ALLOWED, SET_ENCODING, SET_LANGUAGE, SET_THEME, INIT_PEER,
-    ADD_PEER_FROM_ID, ADD_PEER, REMOVE_PEER, BROADCAST_ACTIONS, INSERT_EVENT, REMOVE_EVENT, REMOVE_LINE,
-    SEND_MESSAGE, ADD_MESSAGE, SET_LINE, SET_TEXT, INSERT_LINE, setIsSeed, setIsTransferAllowed, setLinefeed, setEncoding,
-    setLanguage, setTheme, addPeer, addPeerFromId, removePeer, insertEvent, removeEvent, removeLine, sendMessage,
-    addMessage, broadcastActions, initPeer, setLine, setText, insertLine} from "./index";
+import { SET_IS_SEED, SET_LINEFEED, SET_IS_TRANSFER_ALLOWED,
+    SET_ENCODING, SET_LANGUAGE, SET_THEME, INIT_PEER,
+    ADD_PEER_FROM_ID, ADD_PEER, REMOVE_PEER, BROADCAST_ACTIONS,
+    INSERT_EVENT, REMOVE_EVENT, REMOVE_LINE,
+    SEND_MESSAGE, ADD_MESSAGE, SET_LINE, SET_TEXT, INSERT_LINE, setIsSeed,
+    setIsTransferAllowed, setLinefeed, setEncoding,
+    setLanguage, setTheme, addPeer, addPeerFromId, removePeer,
+    insertEvent, removeEvent, removeLine, sendMessage,
+    addMessage, broadcastActions, initPeer, setLine, setText, insertLine } from './index';
 
 const testSyncActionCreator = (actionCreator, payload, expectedValue) => {
     it(`should create ${expectedValue.type} action`, () => {
         expect(actionCreator(payload)).toEqual(expectedValue);
-    })
+    });
 };
 
 const testPayloadActionCreator = (actionCreator, type, payload) =>
-    testSyncActionCreator(actionCreator, payload, {type, payload});
+    testSyncActionCreator(actionCreator, payload, { type, payload });
 
 describe('simple payload action creators', () => {
     testPayloadActionCreator(setIsSeed, SET_IS_SEED, false);
@@ -26,17 +30,17 @@ describe('simple payload action creators', () => {
     testPayloadActionCreator(setLanguage, SET_LANGUAGE, 'scala');
     testPayloadActionCreator(setTheme, SET_THEME, 'monokai');
     testPayloadActionCreator(setTheme, SET_THEME, 'cobalt');
-    testPayloadActionCreator(addPeer, ADD_PEER, {connection: 'mock'});
+    testPayloadActionCreator(addPeer, ADD_PEER, { connection: 'mock' });
     testPayloadActionCreator(addPeerFromId, ADD_PEER_FROM_ID, 'peerid');
-    testPayloadActionCreator(removePeer, REMOVE_PEER, {connection: 'mock'});
-    testPayloadActionCreator(insertEvent, INSERT_EVENT, {event: 'mock'});
-    testPayloadActionCreator(removeEvent, REMOVE_EVENT, {event: 'mock'});
+    testPayloadActionCreator(removePeer, REMOVE_PEER, { connection: 'mock' });
+    testPayloadActionCreator(insertEvent, INSERT_EVENT, { event: 'mock' });
+    testPayloadActionCreator(removeEvent, REMOVE_EVENT, { event: 'mock' });
     testPayloadActionCreator(removeLine, REMOVE_LINE, 4);
-    testPayloadActionCreator(sendMessage, SEND_MESSAGE, {message: 'mock'});
-    testPayloadActionCreator(addMessage, ADD_MESSAGE, {message: 'mock'});
+    testPayloadActionCreator(sendMessage, SEND_MESSAGE, { message: 'mock' });
+    testPayloadActionCreator(addMessage, ADD_MESSAGE, { message: 'mock' });
     testPayloadActionCreator(broadcastActions, BROADCAST_ACTIONS, [removeLine(4)]);
 
-    testSyncActionCreator(initPeer, null, {type: INIT_PEER});
+    testSyncActionCreator(initPeer, null, { type: INIT_PEER });
 });
 
 describe('set text action', () => {
@@ -59,11 +63,11 @@ describe('several arguments actions', () => {
             type: SET_LINE,
             payload: {
                 line: 3,
-                atom: {atom: 'mock'}
-            }
+                atom: { atom: 'mock' },
+            },
         };
 
-        expect(setLine(3, {atom: 'mock'})).toEqual(expectedValue);
+        expect(setLine(3, { atom: 'mock' })).toEqual(expectedValue);
     });
 
     it(`should create ${INSERT_LINE} action`, () => {
@@ -71,24 +75,24 @@ describe('several arguments actions', () => {
             type: INSERT_LINE,
             payload: {
                 line: 3,
-                atom: {atom: 'mock'}
-            }
+                atom: { atom: 'mock' },
+            },
         };
 
-        expect(insertLine(3, {atom: 'mock'})).toEqual(expectedValue);
+        expect(insertLine(3, { atom: 'mock' })).toEqual(expectedValue);
     });
 });
 
 describe('throws from action creators', () => {
-    it(`should throw an error when "actions" is not array in broadcastActions`, () => {
+    it('should throw an error when "actions" is not array in broadcastActions', () => {
         expect(() => broadcastActions(removeLine(4))).toThrow();
     });
 
     it('should throw an error when "line" is not a number in atomic actions', () => {
         expect(() => removeLine('4')).toThrow();
-        expect(() => insertLine('4', {atom: 'mock'})).toThrow();
-        expect(() => setLine('4', {atom: 'mock'})).toThrow();
-    })
+        expect(() => insertLine('4', { atom: 'mock' })).toThrow();
+        expect(() => setLine('4', { atom: 'mock' })).toThrow();
+    });
 });
 
 // TODO: test SET_TEXT action creator

@@ -1,7 +1,7 @@
-import {generateAtom} from "../utilities/Helpers";
+import { generateAtom } from '../utilities/Helpers';
 
 function createAction(type, payload = undefined) {
-    return { type, payload }
+    return { type, payload };
 }
 
 export const SEND_ALL_TEXT = 'SENT ALL TEXT';
@@ -36,7 +36,7 @@ export function setCursor(pos) {
 
 export const SET_IS_SEED = 'SET IS SEED';
 export function setIsSeed(isSeed) {
-    return createAction(SET_IS_SEED, isSeed)
+    return createAction(SET_IS_SEED, isSeed);
 }
 
 export const SET_IS_TRANSFER_ALLOWED = 'SET IS TRANSFER ALLOWED';
@@ -44,7 +44,7 @@ export function setIsTransferAllowed(isTransferAllowed) {
     return createAction(SET_IS_TRANSFER_ALLOWED, isTransferAllowed);
 }
 
-export const SET_THEME    = 'SET THEME';
+export const SET_THEME = 'SET THEME';
 export function setTheme(theme) {
     return createAction(SET_THEME, theme);
 }
@@ -123,14 +123,14 @@ export const SET_LINE = 'SET LINE';
 export function setLine(line, atom) {
     if (typeof line !== 'number' || line < 0)
         throw new Error('Expected line to be a non negative number');
-    return createAction(SET_LINE, {line, atom})
+    return createAction(SET_LINE, { line, atom });
 }
 
 export const INSERT_LINE = 'INSERT LINE';
 export function insertLine(line, atom) {
     if (typeof line !== 'number' || line < 0)
         throw new Error('Expected line to be a non negative number');
-    return createAction(INSERT_LINE, {line, atom})
+    return createAction(INSERT_LINE, { line, atom });
 }
 
 export const REMOVE_LINE = 'REMOVE LINE';
@@ -142,10 +142,23 @@ export function removeLine(line) {
 
 export const SEND_MESSAGE = 'SEND MESSAGE';
 export function sendMessage(message) {
-    return createAction(SEND_MESSAGE, message)
+    return createAction(SEND_MESSAGE, message);
 }
 
 export const ADD_MESSAGE = 'ADD MESSAGE';
 export function addMessage(message) {
     return createAction(ADD_MESSAGE, message);
 }
+
+export function handleMenuCommand(command) {
+    return createAction(command, false);
+}
+
+export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
+export const TOGGLE_CHAT = 'TOGGLE CHAT';
+export const CREATE_NEW = 'CREATE NEW';
+export const OPEN_SMTH = 'OPEN SMTH';
+export const OPEN_URL = 'OPEN URL';
+export const SAVE_AS = 'SAVE AS';
+export const SAVE_ALL = 'SAVE ALL';
+export const OPEN_SETTINGS = 'OPEN SETTINGS';

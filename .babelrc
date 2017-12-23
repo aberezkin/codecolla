@@ -1,8 +1,15 @@
 {
-	"presets": ["es2015", "react"],
-	"plugins": ["transform-object-rest-spread", "transform-es2015-destructuring"],
+	"presets": [["es2015", { "modules": false }], "react"],
+	"plugins": [
+		"transform-object-rest-spread",
+		"transform-es2015-destructuring",
+	],
 	"env": {
+		"development": {
+			"plugins": ["react-hot-loader/babel"]
+		},
 		"test": {
+			"presets": ["es2015", "react"],
 			"plugins": ["rewire"]
 		}
 	}

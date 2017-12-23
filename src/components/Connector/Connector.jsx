@@ -1,7 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './Connector.styl';
 
-export default class Connector extends Component {
+class Connector extends Component {
+    static name() {
+        return 'Connector';
+    }
+
     constructor(props) {
         super(props);
 
@@ -11,26 +16,37 @@ export default class Connector extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(evt) {  
+    handleChange(evt) {
         this.addPeer = evt.target.value;
     }
 
-    static name() {
-        return 'Connector';
-    }
-
     render() {
-        return(
+        return (
             <div className={Connector.name()}>
-               <input type="text" id="rid"
+                <input
+                    type="text"
+                    id="rid"
                     placeholder="Someone else's id"
-                    onChange={this.handleChange}/>
-               <button onClick={() => this.props.connectToPeer(this.addPeer)}>
+                    onChange={this.handleChange}
+                />
+                <button onClick={() => this.props.connectToPeer(this.addPeer)}>
                     Connect
-               </button>
-               <input type="checkbox" id="cb" name="admin"
-                    onChange={this.props.seedChange} />
+                </button>
+                <input
+                    type="checkbox"
+                    id="cb"
+                    name="admin"
+                    onChange={this.props.seedChange}
+                />
             </div>
         );
     }
 }
+
+
+Connector.propTypes = {
+    connectToPeer: PropTypes.func.isRequired,
+    seedChange: PropTypes.func.isRequired,
+};
+
+export default Connector;
