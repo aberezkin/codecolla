@@ -3,6 +3,7 @@
 exports[`chat component should render chat 1`] = `
 <div
   className="Chat"
+  style={Object {}}
 >
   <div
     className="MessageBox"

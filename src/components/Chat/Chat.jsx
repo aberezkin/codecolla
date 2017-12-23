@@ -77,11 +77,13 @@ class Chat extends Component {
 }
 
 Chat.propTypes = {
+    style: PropTypes.object,
     messages: PropTypes.arrayOf(PropTypes.object),
     onMessage: PropTypes.func,
 };
 
 Chat.defaultProps = {
+    style: {},
     messages: [],
     onMessage: () => { },
 };
