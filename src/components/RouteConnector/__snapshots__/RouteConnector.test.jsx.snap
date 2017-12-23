@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`route connector should render connecting message 1`] = `
+<div
+  className="route-connector"
+>
+  <h1>
+    Connecting to peer: 
+    random-id
+  </h1>
+  <h1>
+    spinner...
+  </h1>
+</div>
+`;
+
+exports[`route connector should render correct peer id 1`] = `
+<div
+  className="route-connector"
+>
+  <h1>
+    Connecting to peer: 
+    other-id
+  </h1>
+  <h1>
+    spinner...
+  </h1>
+</div>
+`;

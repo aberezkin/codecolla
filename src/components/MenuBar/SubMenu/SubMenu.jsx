@@ -34,7 +34,7 @@ SubMenu.propTypes = {
 };
 
 SubMenu.defaultProps = {
-    isActive: false,
+    isMenuBarActive: false,
     onSelect() {},
     children: [],
 };

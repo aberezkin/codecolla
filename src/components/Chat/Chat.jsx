@@ -83,9 +83,7 @@ Chat.propTypes = {
 
 Chat.defaultProps = {
     messages: [],
-    onMessage: (content) => {
-        console.log(content);
-    },
+    onMessage: () => { },
 };
 
 export default Chat;

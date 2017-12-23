@@ -4,6 +4,11 @@ function createAction(type, payload = undefined) {
     return { type, payload };
 }
 
+export const SET_PEER_ID = 'SET PEER ID';
+export function setPeerId(id) {
+    return createAction(SET_PEER_ID, id);
+}
+
 export const SET_IS_SEED = 'SET IS SEED';
 export function setIsSeed(isSeed) {
     return createAction(SET_IS_SEED, isSeed);

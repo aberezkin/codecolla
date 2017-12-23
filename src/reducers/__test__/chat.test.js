@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import reducer from '../chat';
 import { ADD_MESSAGE } from '../../actions/index';
 
