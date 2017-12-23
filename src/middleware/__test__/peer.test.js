@@ -1,13 +1,14 @@
-import middleware, {CONNECTION_CLOSE, CONNECTION_EVENT, CONNECTION_OPEN, DATA_TRANSFER, PEER_ERROR} from '../peer';
+/* eslint-disable no-underscore-dangle */
+import middleware, { CONNECTION_CLOSE, CONNECTION_EVENT, CONNECTION_OPEN, DATA_TRANSFER, PEER_ERROR } from '../peer';
 import {
-    ADD_PEER, ADD_PEER_FROM_ID, addPeer, addPeerFromId, BROADCAST_ACTIONS, broadcastActions, INIT_PEER, initPeer,
-    removePeer, setLine, setPeerId
-} from "../../actions/index";
+    ADD_PEER, ADD_PEER_FROM_ID, addPeer, addPeerFromId,
+    BROADCAST_ACTIONS, broadcastActions, initPeer, removePeer, setPeerId,
+} from '../../actions/index';
 
 class ConnectionMock {
     constructor() {
         this.listeners = {};
-        this.connect = jest.fn((id) => new ConnectionMock());
+        this.connect = jest.fn(() => new ConnectionMock());
         this.send = jest.fn();
     }
 
@@ -24,28 +25,28 @@ class ConnectionMock {
 
     isEventified() {
         const listeners = this.listeners;
-        return null != (listeners[CONNECTION_OPEN] && listeners[DATA_TRANSFER]    &&
-                listeners[PEER_ERROR]      && listeners[CONNECTION_CLOSE])
+        return (listeners[CONNECTION_OPEN] && listeners[DATA_TRANSFER] &&
+                listeners[PEER_ERROR] && listeners[CONNECTION_CLOSE]) !== undefined;
     }
 }
 
 const eventifyConnection = middleware.__get__('eventifyConnection');
 
 describe('eventifyConnection test', () => {
-    const setup = isSeed => {
+    const setup = (isSeed) => {
         let connection = new ConnectionMock();
 
-        let dispatch = jest.fn();
+        const dispatch = jest.fn();
         connection = eventifyConnection(connection, isSeed || false, dispatch);
 
         return {
             connection,
-            dispatch
-        }
+            dispatch,
+        };
     };
 
     it('should dispatch remove peer on disconnect', () => {
-        let {connection, dispatch} = setup();
+        const { connection, dispatch } = setup();
 
         connection.triggerCallbacks(CONNECTION_CLOSE);
 
@@ -53,7 +54,7 @@ describe('eventifyConnection test', () => {
     });
 
     it('should dispatch remove peer on error', () => {
-        let {connection, dispatch} = setup();
+        const { connection, dispatch } = setup();
 
         connection.triggerCallbacks(PEER_ERROR);
 
@@ -73,19 +74,19 @@ describe('peers middleware', () => {
         const store = {
             getState: jest.fn(() => ({
                 isSeed: false,
-                peers: { connections }
+                peers: { connections },
             })),
             dispatch: jest.fn(),
         };
 
         const next = jest.fn();
 
-        let peer = new ConnectionMock();
-        let middleware = peersMiddleware(peer);
+        const peer = new ConnectionMock();
+        const finalMiddleware = peersMiddleware(peer);
 
-        const invoke = action => middleware(store)(next)(action);
+        const invoke = action => finalMiddleware(store)(next)(action);
 
-        return {peer, store, next, invoke};
+        return { peer, store, next, invoke };
     };
 
     it(`should dispatch add peer on ${CONNECTION_EVENT}`, () => {
@@ -101,7 +102,7 @@ describe('peers middleware', () => {
         expect(store.dispatch).toHaveBeenCalledWith(addPeer(newConnection));
     });
 
-    it(`should dispatch set peer id on {CONNECTION_OPEN}`, () => {
+    it(`should dispatch set peer id on ${CONNECTION_OPEN}`, () => {
         const { peer, store, next, invoke } = setup();
         const action = initPeer();
 
@@ -124,12 +125,11 @@ describe('peers middleware', () => {
         invoke(action);
 
         expect(newConnection.isEventified()).toEqual(true);
-        expect(next).toHaveBeenCalledWith(addPeer(newConnection))
-
+        expect(next).toHaveBeenCalledWith(addPeer(newConnection));
     });
 
     it(`should modify ${ADD_PEER_FROM_ID} action and dispatch it as ${ADD_PEER}`, () => {
-        const { peer, next, invoke } = setup();
+        const { peer, invoke } = setup();
         const id = 'hello';
         const action = addPeerFromId(id);
 
@@ -154,6 +154,7 @@ describe('peers middleware', () => {
         expect(next).not.toHaveBeenCalled();
 
         const stringifiedBroadcastedActions = JSON.stringify(broadcastedActions);
-        connections.forEach(conn => expect(conn.send).toHaveBeenCalledWith(stringifiedBroadcastedActions));
+        connections
+            .forEach(conn => expect(conn.send).toHaveBeenCalledWith(stringifiedBroadcastedActions));
     });
 });

@@ -1,6 +1,6 @@
-import {ADD_PEER, REMOVE_PEER, SET_PEER_ID, ADD_ALL_TEXT} from "../actions/index";
-import { combineReducers } from "redux";
-import {generateSetterReducer} from '../utilities/Helpers'
+import { combineReducers } from 'redux';
+import { ADD_PEER, REMOVE_PEER, SET_PEER_ID } from '../actions/index';
+import { generateSetterReducer } from '../utilities/Helpers';
 
 const idReducer = generateSetterReducer(SET_PEER_ID, '');
 

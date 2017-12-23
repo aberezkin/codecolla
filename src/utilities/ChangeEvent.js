@@ -1,6 +1,6 @@
-export const ADD_CURSOR = "ADD_CURSOR";
-export const DELETE_CURSOR = "DELETE_CURSOR";
-export const MOVE_CURSOR = "MOVE_CURSOR";
+export const ADD_CURSOR = 'ADD_CURSOR';
+export const DELETE_CURSOR = 'DELETE_CURSOR';
+export const MOVE_CURSOR = 'MOVE_CURSOR';
 
 export const CHAT_MESSAGE = 'CHAT MESSAGE';
 export const PEER_ADDITION = 'PEER ADDITION ';
@@ -10,22 +10,22 @@ class ChangeEvent {
         return [{
             action: MOVE_CURSOR,
             peer: e.peer,
-            pos: e.pos
-        }]
+            pos: e.pos,
+        }];
     }
 
-    static chatMessageEvent(e) {
+    static chatMessageEvent() {
         return [{
             action: CHAT_MESSAGE,
-            text: this.event
-        }]
+            text: this.event,
+        }];
     }
 
     static getAddPeerEvent(e) {
         return [{
             action: PEER_ADDITION,
-            data: e
-        }]
+            data: e,
+        }];
     }
 
     static getEditEvent(e) {
@@ -35,8 +35,8 @@ class ChangeEvent {
             startCol: e.start.column,
             endRow: e.end.row,
             endCol: e.end.column,
-            text: e.lines
-        }
+            text: e.lines,
+        };
     }
 }
 

@@ -1,31 +1,32 @@
 import React from 'react';
 import RouteConnector from './RouteConnector';
 
-const setup = propOverrides => {
+const setup = (propOverrides) => {
     const props = {
         id: 'random-id',
         isReady: false,
         connect: jest.fn(),
+        history: { replace: jest.fn(), push: jest.fn() },
         ...propOverrides,
     };
 
-    const wrapper = shallow(<RouteConnector {...props}/>);
+    const wrapper = shallow(<RouteConnector {...props} />);
 
     return {
         props,
-        wrapper
-    }
+        wrapper,
+    };
 };
 
 describe('route connector', () => {
     it('should render connecting message', () => {
-        const {wrapper} = setup();
+        const { wrapper } = setup();
 
         expect(wrapper).toMatchSnapshot();
     });
 
     it('should render correct peer id', () => {
-        const {wrapper} = setup({id: 'other-id'});
+        const { wrapper } = setup({ id: 'other-id' });
 
         expect(wrapper).toMatchSnapshot();
     });
