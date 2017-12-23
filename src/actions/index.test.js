@@ -1,8 +1,8 @@
 import {SET_IS_SEED, SET_LINEFEED, SET_IS_TRANSFER_ALLOWED, SET_ENCODING, SET_LANGUAGE, SET_THEME, INIT_PEER,
     ADD_PEER_FROM_ID, ADD_PEER, REMOVE_PEER, BROADCAST_ACTIONS, INSERT_EVENT, REMOVE_EVENT, REMOVE_LINE,
-    SEND_MESSAGE, ADD_MESSAGE, SET_LINE, INSERT_LINE, setIsSeed, setIsTransferAllowed, setLinefeed, setEncoding,
+    SEND_MESSAGE, ADD_MESSAGE, SET_LINE, SET_TEXT, INSERT_LINE, setIsSeed, setIsTransferAllowed, setLinefeed, setEncoding,
     setLanguage, setTheme, addPeer, addPeerFromId, removePeer, insertEvent, removeEvent, removeLine, sendMessage,
-    addMessage, broadcastActions, initPeer, setLine, insertLine} from "./index";
+    addMessage, broadcastActions, initPeer, setLine, setText, insertLine} from "./index";
 
 const testSyncActionCreator = (actionCreator, payload, expectedValue) => {
     it(`should create ${expectedValue.type} action`, () => {
@@ -37,6 +37,20 @@ describe('simple payload action creators', () => {
     testPayloadActionCreator(broadcastActions, BROADCAST_ACTIONS, [removeLine(4)]);
 
     testSyncActionCreator(initPeer, null, {type: INIT_PEER});
+});
+
+describe('set text action', () => {
+    it(`should create ${SET_TEXT} action with string`, () => {
+        expect(Array.isArray(setText('first\n second').payload)).toEqual(Array.isArray([]));
+    });
+    
+    it(`should create ${SET_TEXT} action with array`, () => {
+        expect(Array.isArray(setText([]).payload)).toEqual(Array.isArray([]));
+    });
+
+    it(`should create ${SET_TEXT} action with trash`, () => {
+        expect(() => setText(1999)).toThrow();
+    });      
 });
 
 describe('several arguments actions', () => {

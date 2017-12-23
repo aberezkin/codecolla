@@ -114,7 +114,7 @@ export function setText(text) {
     else if (Array.isArray(text))
         payload = text;
     else
-        throw new Error('Expected string of array as an argument');
+        throw new Error('Expected string or array as an argument');
     
     return createAction(SET_TEXT, payload);
 }
