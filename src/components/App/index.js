@@ -4,9 +4,9 @@ import { addPeer, initPeer, setText } from '../../actions/index';
 
 const mapStateToProps = state => ({
     isSeed: state.isSeed,
-    theme: state.editorPreferences.theme,
-    isStatusBarVisible: state.statusBar.isVisible,
-    isChatVisible: state.chat.isVisible,
+    theme: state.preferences.theme,
+    isStatusBarVisible: state.preferences.isStatusBarVisible,
+    isChatVisible: state.preferences.isChatVisible,
 });
 
 const mapDispatchToProps = dispatch => ({

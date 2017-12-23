@@ -3,11 +3,6 @@
 exports[`chat component should render chat 1`] = `
 <div
   className="Chat"
-  style={
-    Object {
-      "display": "",
-    }
-  }
 >
   <div
     className="MessageBox"

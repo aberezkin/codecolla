@@ -37,10 +37,7 @@ class Chat extends Component {
 
     render() {
         return (
-            <div
-                className={CHAT_CLASSNAME}
-                style={{ display: (!this.props.isVisible) ? 'none' : '' }}
-            >
+            <div className={CHAT_CLASSNAME} style={this.props.style}>
                 <div className="MessageBox">
                     {
                         this.props.messages.map(message => (
@@ -81,7 +78,6 @@ class Chat extends Component {
 
 Chat.propTypes = {
     messages: PropTypes.arrayOf(PropTypes.object),
-    isVisible: PropTypes.bool.isRequired,
     onMessage: PropTypes.func,
 };
 
