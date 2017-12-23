@@ -15,8 +15,12 @@
   user-select none
   > *
     height 100%
+    outline none
+    user-select none
     .title
       padding 1px 4px
+      outline none
+      user-select none
   .MenuItem, .Checkable
     list-style none
     background inherit
@@ -25,6 +29,9 @@
     position absolute
     z-index 6
     border 1px solid black
+    > *
+      outline none
+      user-select none
     .SubMenu
       margin 2px 5px
     .MenuItem .title, .Checkable .title
