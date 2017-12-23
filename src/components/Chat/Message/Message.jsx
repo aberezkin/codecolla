@@ -6,7 +6,7 @@ const Message = ({ color, author, content, date }) => (
     <div className="Message">
         <div className="author" style={{ color }}>{author}</div>
         <div className="content">{content}</div>
-        <div className="date">{date.toLocaleTimeString()}</div>
+        <div className="date">{date.toLocaleTimeString('en-US', { hour12: false })}</div>
     </div>
 );
 
