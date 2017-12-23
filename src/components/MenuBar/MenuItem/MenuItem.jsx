@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
 class MenuItem extends Component {
     constructor(props) {
@@ -62,7 +61,7 @@ class MenuItem extends Component {
         if (!this.props.isMenuBarActive)
             return;
         this.setState({ titleStyle: {} });
-        if (!ReactDOM.findDOMNode(this).contains(event.relatedTarget))
+        if (!this.node.contains(event.relatedTarget))
             this.setState({ open: false });
     }
 
@@ -89,11 +88,14 @@ class MenuItem extends Component {
                 isMenuBarActive: this.props.isMenuBarActive,
                 onSelect: this.onSelect, // callback for all commands
             });
+
+        return null;
     }
 
     render() {
         return (
             <li
+                ref={(node) => { this.node = node; }}
                 className="MenuItem"
                 onMouseOver={this.onMouseOver}
                 onFocus={this.onMouseOver}

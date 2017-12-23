@@ -24,9 +24,12 @@ class ConnectionMock {
     }
 
     isEventified() {
-        const listeners = this.listeners;
-        return (listeners[CONNECTION_OPEN] && listeners[DATA_TRANSFER] &&
-                listeners[PEER_ERROR] && listeners[CONNECTION_CLOSE]) !== undefined;
+        return (
+            this.listeners[CONNECTION_OPEN] &&
+            this.listeners[DATA_TRANSFER] &&
+            this.listeners[PEER_ERROR] &&
+            this.listeners[CONNECTION_CLOSE]
+        ) !== undefined;
     }
 }
 

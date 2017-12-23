@@ -1,7 +1,7 @@
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import RouteConnector from './RouteConnector';
 import { addPeerFromId } from '../../actions/index';
-import { connect } from 'react-redux';
 
 const RouteConnectorWithRouter = withRouter(RouteConnector);
 
