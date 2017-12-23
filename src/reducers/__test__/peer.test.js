@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import reducer from '../peer';
 import { SET_PEER_ID, ADD_PEER, REMOVE_PEER } from '../../actions';
 
