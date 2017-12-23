@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { Map } from 'immutable';
 import middleware from '../text';
 

@@ -30,7 +30,7 @@ export function generateCursorMarker(session, pos) {
     marker.cursors = [pos];
     // Function keyword used purposefully this should point to marker
     /* eslint-disable no-shadow */
-    marker.update = function (html, markerLayer, session, config) {
+    marker.update = function update(html, markerLayer, session, config) {
         const start = config.firstRow;
         const end = config.lastRow;
 
@@ -55,9 +55,9 @@ export function generateCursorMarker(session, pos) {
     };
     /* eslint-enable no-shadow */
     /* eslint-disable no-underscore-dangle */
-    marker.redraw = function () { this.session._signal('changeFrontMarker'); };
+    marker.redraw = function redraw() { this.session._signal('changeFrontMarker'); };
     /* eslint-enable no-underscore-dangle */
-    marker.addCursor = function () { this.redraw(); };
+    marker.addCursor = function addCursor() { this.redraw(); };
     marker.session = session;
     marker.session.addDynamicMarker(marker, true);
     return marker;

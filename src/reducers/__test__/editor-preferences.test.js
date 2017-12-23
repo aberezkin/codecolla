@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import reducer from '../editor-preferences';
 import { SET_ENCODING, SET_LANGUAGE, SET_LINEFEED, SET_THEME } from '../../actions/index';
 

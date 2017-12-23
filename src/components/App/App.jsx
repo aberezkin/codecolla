@@ -11,11 +11,6 @@ import { MENU_BAR_CLASSNAME } from '../MenuBar/MenuBar';
 import Menu from '../Menu';
 import { CHAT_CLASSNAME } from '../Chat/Chat';
 
-const defaultValue =
-`function hello() {
-    console.log('Hello, World!');
-}`;
-
 export const APP_CLASSNAME = 'App';
 
 export default class App extends Component {
@@ -35,9 +30,6 @@ export default class App extends Component {
         };
 
         window.addEventListener('resize', this.resize, true);
-
-        this.props.initPeer();
-        this.props.setText(defaultValue);
     }
 
     componentDidUpdate(prevProps) {
@@ -82,8 +74,6 @@ export default class App extends Component {
 }
 
 App.propTypes = {
-    initPeer: PropTypes.func.isRequired,
-    setText: PropTypes.func.isRequired,
     isStatusBarVisible: PropTypes.bool.isRequired,
     isChatVisible: PropTypes.bool.isRequired,
     theme: PropTypes.string.isRequired,
