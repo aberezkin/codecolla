@@ -60,9 +60,7 @@ class Menu extends Component {
                         <SubMenu />
                     </MenuItem>
                     <MenuItem title="Tools">
-                        <SubMenu>
-                            <MenuItem title="Chat" command={TOGGLE_CHAT} />
-                        </SubMenu>
+                        <SubMenu />
                     </MenuItem>
                     <MenuItem title="Help">
                         <SubMenu />
