@@ -1,6 +1,6 @@
 import '../utilities/Peerjs';
-
-import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS, INIT_PEER, removePeer } from '../actions/index';
+import { ADD_PEER, ADD_PEER_FROM_ID,
+    addPeer, BROADCAST_ACTIONS, INIT_PEER, removePeer, setPeerId } from '../actions/index';
 import ChangeEvent, { DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
 
 export const CONNECTION_EVENT = 'connection';
@@ -9,12 +9,11 @@ export const CONNECTION_CLOSE = 'close';
 export const DATA_TRANSFER = 'data';
 export const PEER_ERROR = 'error';
 
-const peer = new Peer({ key: 'e0twf5gs81lzbyb9' });
+const localPeer = new Peer({ key: 'e0twf5gs81lzbyb9' });
 
-peer.on(CONNECTION_OPEN, id => console.log('pid: ', id));
-
-function eventifyConnection(connection, isSeed, dispatch) {
+function eventifyConnection(connection, isSeed, dispatch, peer) {
     connection.on(CONNECTION_OPEN, () => {
+        // TODO: migrate this to dispatch
         if (isSeed) this.broadcastEvent(ChangeEvent.getAddPeerEvent(connection.peer));
     });
 
@@ -56,12 +55,17 @@ function eventifyConnection(connection, isSeed, dispatch) {
     return connection;
 }
 
+// Making peer injectable here to make it mockable and the function testable
 // eslint-disable-next-line arrow-parens
-const peersMiddleware = store => next => action => {
+const peersMiddleware = peer => store => next => action => {
     switch (action.type) {
         case INIT_PEER:
             peer.on(CONNECTION_EVENT, connection => store.dispatch(addPeer(connection)));
-            next(action);
+            peer.on(CONNECTION_OPEN, (id) => {
+                // eslint-disable-next-line no-console
+                console.log('pid: ', id);
+                store.dispatch(setPeerId(id));
+            });
             break;
         case ADD_PEER_FROM_ID:
             // Just modify action before eventifying connection
@@ -73,13 +77,17 @@ const peersMiddleware = store => next => action => {
                 action.payload,
                 store.getState().isSeed,
                 store.dispatch,
+                peer,
             )));
             break;
         case BROADCAST_ACTIONS:
-            store.getState().peers.forEach(conn => conn.send(JSON.stringify(action.payload)));
+            store.getState()
+                .peers
+                .connections
+                .forEach(conn => conn.send(JSON.stringify(action.payload)));
             break;
         default: next(action);
     }
 };
 
-export default peersMiddleware;
+export default peersMiddleware(localPeer);

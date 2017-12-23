@@ -41,7 +41,7 @@ describe('menu component', () => {
     });
 
     it('should not call onSelect when click MenuItem without command', () => {
-        const children = [<MenuItem title={'Test'} key={0} />];
+        const children = [<MenuItem title="Test" key={0} />];
 
         const { onSelect, wrapper } = setup({ children });
 
@@ -67,9 +67,9 @@ describe('menu component', () => {
 
     it('should call onSelect when click Checkable "test"', () => {
         const children = [
-            <MenuItem title={'Test'} key={0}>
+            <MenuItem title="Test" key={0}>
                 <SubMenu>
-                    <Checkable title={'Checkable-test'} command={'check'}/>
+                    <Checkable title="Checkable-test" command="check" />
                 </SubMenu>
             </MenuItem>,
         ];
