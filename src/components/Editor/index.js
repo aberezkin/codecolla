@@ -6,8 +6,8 @@ const mapStateToProps = state => ({
     text: state.text.map(atom => atom.get('text'))
         .reduce((acc, line) => `${acc}\n${line}`),
     isTransferAllowed: state.isTransferAllowed,
-    theme: state.editorPreferences.theme,
-    language: state.editorPreferences.language,
+    theme: state.preferences.theme,
+    language: state.preferences.editor.language,
 });
 
 const mapDispatchToProps = dispatch => ({

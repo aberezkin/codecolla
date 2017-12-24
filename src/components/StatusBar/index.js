@@ -3,11 +3,10 @@ import { setEncoding, setLanguage, setLinefeed, setTheme } from '../../actions/i
 import StatusBar from './StatusBar';
 
 const mapStateToProps = state => ({
-    theme: state.editorPreferences.theme,
-    language: state.editorPreferences.language,
-    linefeed: state.editorPreferences.linefeed,
-    encoding: state.editorPreferences.encoding,
-    isVisible: state.statusBar.isVisible,
+    theme: state.preferences.theme,
+    language: state.preferences.editor.language,
+    linefeed: state.preferences.editor.linefeed,
+    encoding: state.preferences.editor.encoding,
 });
 
 // TODO: move this to individual selectors

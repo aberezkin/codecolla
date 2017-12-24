@@ -93,10 +93,11 @@ class MenuItem extends Component {
     }
 
     render() {
+        const length = React.Children.count(this.props.children);
         return (
             <li
                 ref={(node) => { this.node = node; }}
-                className="MenuItem"
+                className={`MenuItem${length > 0 ? ' submenu' : ''}`}
                 onMouseOver={this.onMouseOver}
                 onFocus={this.onMouseOver}
                 onMouseOut={this.onMouseOut}
