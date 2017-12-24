@@ -46,10 +46,10 @@ class Menu extends Component {
                         <SubMenu>
                             <MenuItem title="Tools">
                                 <SubMenu>
-                                    <MenuItem title="Chat" command={TOGGLE_CHAT}/>
+                                    <MenuItem title="Chat" command={TOGGLE_CHAT} />
                                 </SubMenu>
                             </MenuItem>
-                            <Separator/>
+                            <Separator />
                             <Checkable title="Status bar" command={TOGGLE_STATUS_BAR} />
                         </SubMenu>
                     </MenuItem>

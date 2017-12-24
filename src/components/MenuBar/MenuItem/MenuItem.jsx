@@ -93,7 +93,7 @@ class MenuItem extends Component {
     }
 
     render() {
-        let length = React.Children.count(this.props.children);
+        const length = React.Children.count(this.props.children);
         return (
             <li
                 ref={(node) => { this.node = node; }}

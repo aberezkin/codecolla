@@ -77,7 +77,7 @@ class Chat extends Component {
 }
 
 Chat.propTypes = {
-    style: PropTypes.object,
+    style: PropTypes.objectOf(PropTypes.string()),
     messages: PropTypes.arrayOf(PropTypes.object),
     onMessage: PropTypes.func,
 };
