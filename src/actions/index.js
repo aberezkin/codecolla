@@ -16,7 +16,7 @@ export function setPeerId(id) {
 
 export const MOVE_CURSOR = 'MOVE CURSOR';
 export function moveCursor(id, pos) {
-    return createAction(MOVE_CURSOR, {id, pos});
+    return createAction(MOVE_CURSOR, { id, pos });
 }
 
 export const ADD_CURSOR = 'ADD CURSOR';
@@ -86,10 +86,8 @@ export function removePeer(connection) {
 
 export const BROADCAST_ACTIONS = 'BROADCAST ACTIONS';
 export function broadcastActions(actions) {
-    if (!Array.isArray(actions)) {
-        console.log(actions);
+    if (!Array.isArray(actions))
         throw new Error('Expected actions to be an array');
-    }
     return createAction(BROADCAST_ACTIONS, actions);
 }
 
@@ -110,14 +108,14 @@ export function removeEvent(event) {
 
 export const SET_TEXT = 'SET TEXT';
 export function setText(text) {
-    let  payload; 
+    let payload;
     if (typeof text === 'string')
         payload = text.split('\n').map(line => generateAtom(line, 1));
     else if (Array.isArray(text))
         payload = text;
     else
         throw new Error('Expected string or array as an argument');
-    
+
     return createAction(SET_TEXT, payload);
 }
 
