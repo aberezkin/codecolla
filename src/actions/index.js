@@ -86,8 +86,10 @@ export function removePeer(connection) {
 
 export const BROADCAST_ACTIONS = 'BROADCAST ACTIONS';
 export function broadcastActions(actions) {
-    if (!Array.isArray(actions))
+    if (!Array.isArray(actions)) {
+        console.log(actions);
         throw new Error('Expected actions to be an array');
+    }
     return createAction(BROADCAST_ACTIONS, actions);
 }
 

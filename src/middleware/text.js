@@ -116,7 +116,7 @@ const textMiddleware = store => next => action => {
                 type: SET_TEXT,
                 payload: store.getState().text
             }
-            actions = {
+            let actions = {
                 id: action.payload,
                 broadcastedAction: [setTextAction]
             }

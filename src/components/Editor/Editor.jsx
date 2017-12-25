@@ -3,6 +3,7 @@ import AceEditor from 'react-ace';
 import PropTypes from 'prop-types';
 import ChangeEvent from '../../utilities/ChangeEvent';
 import './Editor.styl';
+import {generateCursorMarker} from "../../utilities/Helpers";
 
 const EDIT_INSERT = 'insert';
 const EDIT_REMOVE = 'remove';

@@ -2,17 +2,15 @@ import {connect} from 'react-redux';
 import {insertEvent, removeEvent, setIsTransferAllowed, moveCursor} from "../../actions/index";
 import Editor from "./Editor";
 
-const mapStateToProps = (state) => {
-    return {
-        text: state.text.map(atom => atom.get('text'))
-            .reduce((acc, line) => acc + '\n' + line),
-        isTransferAllowed: state.isTransferAllowed,
-        theme: state.editorPreferences.theme,
-        language: state.editorPreferences.language,
-        cursors: state.cursors,
-        peerId: state.peers.id
-    }
-};
+const mapStateToProps = state => ({
+    text: state.text.map(atom => atom.get('text'))
+        .reduce((acc, line) => `${acc}\n${line}`),
+    isTransferAllowed: state.isTransferAllowed,
+    theme: state.preferences.theme,
+    language: state.preferences.editor.language,
+    cursors: state.cursors,
+    peerId: state.peers.id,
+});
 
 const mapDispatchToProps = (dispatch) => {
     return {

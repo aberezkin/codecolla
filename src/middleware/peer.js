@@ -18,7 +18,7 @@ function eventifyConnection(connection, isSeed, dispatch, peer) {
     connection.on(CONNECTION_OPEN, () => {
         if (isSeed) {
             dispatch(sendAllText(connection.peer));
-            dispatch(broadcastActions(addPeerFromId(connection.peer))); 
+            dispatch(broadcastActions([addPeerFromId(connection.peer)]));
         }
     });
 

@@ -65,9 +65,9 @@ export default class App extends Component {
                         height={this.state.editor.height}
                         width={this.state.editor.width}
                     />
-                    <Chat />
+                    <Chat style={{ display: (this.props.isChatVisible) ? '' : 'none' }} />
                 </div>
-                <StatusBar />
+                <StatusBar style={{ display: (this.props.isStatusBarVisible) ? '' : 'none' }} />
             </div>
         );
     }
