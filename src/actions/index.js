@@ -119,3 +119,4 @@ export const OPEN_URL = 'OPEN URL';
 export const SAVE_AS = 'SAVE AS';
 export const SAVE_ALL = 'SAVE ALL';
 export const OPEN_SETTINGS = 'OPEN SETTINGS';
+export const COMPILE_CODE = "COMPILE CODE";

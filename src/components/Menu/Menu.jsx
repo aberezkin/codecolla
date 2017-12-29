@@ -10,6 +10,7 @@ import {
     SAVE_AS,
     SAVE_ALL,
     OPEN_SETTINGS,
+    COMPILE_CODE,
 } from '../../actions';
 import './Menu.styl';
 
@@ -55,6 +56,12 @@ class Menu extends Component {
                     </MenuItem>
                     <MenuItem title="Tools">
                         <SubMenu>
+                            <MenuItem title="Compile">
+                              <SubMenu>
+                                <MenuItem title="Ruby"/>
+                                <MenuItem title="C++"/>
+                              </SubMenu>
+                            </MenuItem>
                             <MenuItem title="Chat" command={TOGGLE_CHAT} />
                         </SubMenu>
                     </MenuItem>
