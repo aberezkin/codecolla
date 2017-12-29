@@ -6,6 +6,7 @@ import peers from './peer';
 import text from './text';
 import chat from './chat';
 import statusBar from './status-bar';
+import {reducer as fetchReducer} from 'react-redux-fetch';
 
 export default combineReducers({
     isSeed,
@@ -15,4 +16,5 @@ export default combineReducers({
     text,
     chat,
     statusBar,
+    fetchReducer,
 });

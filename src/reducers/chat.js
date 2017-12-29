@@ -1,5 +1,13 @@
 import { combineReducers } from 'redux';
-import { ADD_MESSAGE, TOGGLE_CHAT } from '../actions';
+import { ADD_MESSAGE, TOGGLE_CHAT, POST_FULFIL } from '../actions';
+
+var create_message = (author, text, date) => {
+    return {
+        author: author,
+        content: text,
+        date: date,
+    };
+};
 
 const messages = (state = [], action) => {
     switch (action.type) {
@@ -7,6 +15,14 @@ const messages = (state = [], action) => {
             return [
                 ...state,
                 action.payload,
+            ];
+
+        case POST_FULFIL:
+          console.log(action.value.errors)
+            return [
+                ...state,
+                create_message("Output", action.value.output, new Date()),
+                create_message("Error log", action.value.errors, new Date()),
             ];
         default: return state;
     }
