@@ -10,7 +10,7 @@ import {
     SAVE_AS,
     SAVE_ALL,
     OPEN_SETTINGS,
-    COMPILE_CODE,
+    // COMPILE_CODE,
     COMPILE_RUBY,
     COMPILE_CPP,
 } from '../../actions';
@@ -47,6 +47,12 @@ class Menu extends Component {
                     </MenuItem>
                     <MenuItem title="View">
                         <SubMenu>
+                            <MenuItem title="Tools">
+                                <SubMenu>
+                                    <MenuItem title="Chat" command={TOGGLE_CHAT} />
+                                </SubMenu>
+                            </MenuItem>
+                            <Separator />
                             <Checkable title="Status bar" command={TOGGLE_STATUS_BAR} />
                         </SubMenu>
                     </MenuItem>
@@ -59,14 +65,8 @@ class Menu extends Component {
                     <MenuItem title="Tools">
                         <SubMenu>
                             <MenuItem title="Chat" command={TOGGLE_CHAT} />
-                            <MenuItem title="Compile">
-                              <SubMenu>
-                              <MenuItem title="Ruby" command={COMPILE_CODE}/>
-                                <MenuItem title="C++" command={COMPILE_CODE}/>
-                              </SubMenu>
-                            </MenuItem>
-                            <MenuItem title="Ruby" command={COMPILE_RUBY}/>
-                            <MenuItem title="C++" command={COMPILE_CPP}/>
+                            <MenuItem title="Compile Ruby" command={COMPILE_RUBY} />
+                            <MenuItem title="Compile C++" command={COMPILE_CPP} />
 
                         </SubMenu>
                     </MenuItem>

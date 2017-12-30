@@ -1,4 +1,5 @@
-import reducer from '../editor-preferences';
+/* eslint-disable no-underscore-dangle */
+import reducer from '../preferences';
 import { SET_ENCODING, SET_LANGUAGE, SET_LINEFEED, SET_THEME } from '../../actions/index';
 
 // Using rewire to get not exported members

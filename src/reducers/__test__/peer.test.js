@@ -1,7 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 import reducer from '../peer';
-import { ADD_PEER, REMOVE_PEER } from '../../actions/index';
+import { SET_PEER_ID, ADD_PEER, REMOVE_PEER } from '../../actions';
 
-const connectionsReducer = reducer.__get__('peersReducer');
+const connectionsReducer = reducer.__get__('connectionsReducer');
+const idReducer = reducer.__get__('idReducer');
 
 describe('connections reducer', () => {
     const connections = [
@@ -39,5 +41,29 @@ describe('connections reducer', () => {
 
     it('should return same state on meaningless action', () => {
         expect(connectionsReducer(connections, {})).toBe(connections);
+    });
+});
+
+describe('peer id reducer', () => {
+    it('should return the initial state', () => {
+        expect(idReducer(undefined, {})).toBe('');
+    });
+
+    it(`should handle ${SET_PEER_ID} action with default payload`, () => {
+        expect(idReducer(null, {
+            type: SET_PEER_ID,
+            payload: 'qwerty',
+        })).toBe('qwerty');
+    });
+
+    it(`should handle ${SET_PEER_ID} action with not default payload`, () => {
+        expect(idReducer('qwerty', {
+            type: SET_PEER_ID,
+            payload: '123456',
+        })).toBe('123456');
+    });
+
+    it('should return same state on meaningless action', () => {
+        expect(idReducer('qwerty', {})).toBe('qwerty');
     });
 });

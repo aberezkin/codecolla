@@ -42,10 +42,7 @@ class StatusBar extends Component {
 
     render() {
         return (
-            <div
-                className={`${STATUS_BAR_CLASSNAME}`}
-                style={{ display: (!this.props.isVisible) ? 'none' : '', ...this.props.style }}
-            >
+            <div className={STATUS_BAR_CLASSNAME} style={this.props.style}>
                 <div className="Left">
                     <Connector />
                 </div>
@@ -89,12 +86,10 @@ StatusBar.propTypes = {
     setEncoding: PropTypes.func.isRequired,
     setLanguage: PropTypes.func.isRequired,
     setTheme: PropTypes.func.isRequired,
-    isVisible: PropTypes.bool,
     style: PropTypes.objectOf(PropTypes.string),
 };
 
 StatusBar.defaultProps = {
-    isVisible: true,
     style: {
         width: '100%',
         height: '20px',

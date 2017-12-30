@@ -1,13 +1,11 @@
 import { combineReducers } from 'redux';
-import { ADD_MESSAGE, TOGGLE_CHAT, POST_FULFIL } from '../actions';
+import { ADD_MESSAGE, POST_FULFIL } from '../actions';
 
-var create_message = (author, text, date) => {
-    return {
-        author: author,
-        content: text,
-        date: date,
-    };
-};
+const createMessage = (author, text, date) => ({
+    author,
+    content: text,
+    date,
+});
 
 const messages = (state = [], action) => {
     switch (action.type) {
@@ -18,22 +16,14 @@ const messages = (state = [], action) => {
             ];
 
         case POST_FULFIL:
-          console.log(action.value.errors)
+            console.log(action.value.errors);
             return [
                 ...state,
-                create_message("Output", action.value.output, new Date()),
-                create_message("Error log", action.value.errors, new Date()),
+                createMessage('Output', action.value.output, new Date()),
+                createMessage('Error log', action.value.errors, new Date()),
             ];
         default: return state;
     }
 };
 
-const isVisible = (state = false, action) => {
-    switch (action.type) {
-        case TOGGLE_CHAT:
-            return !state;
-        default: return state;
-    }
-};
-
-export default combineReducers({ messages, isVisible });
+export default combineReducers({ messages });

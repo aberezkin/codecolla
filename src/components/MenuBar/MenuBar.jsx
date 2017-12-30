@@ -48,7 +48,7 @@ class MenuBar extends Component {
 
     render() {
         return (
-            <ul className={MENU_BAR_CLASSNAME} onClick={this.onClick}>
+            <ul className={MENU_BAR_CLASSNAME} onClick={this.onClick} role="menu">
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </ul>
         );

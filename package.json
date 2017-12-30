@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "webpack-dev-server --hot",
+    "precommit": "lint-staged",
+    "start:dev": "webpack-dev-server",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -13,6 +14,12 @@
     "build:prod": "NODE_ENV=production webpack -p",
     "build:watch": "webpack --watch",
     "lint": "eslint --ext .js --ext .jsx src/"
+  },
+  "lint-staged": {
+    "src/*/**/*.{js,jsx}": [
+      "eslint --ext .js --ext .jsx --fix",
+      "git add"
+    ]
   },
   "jest": {
     "setupFiles": [
@@ -59,6 +66,9 @@
     "react-redux": "^5.0.6",
     "react-redux-fetch": "0.11.1",
     "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-router-prop-types": "^0.0.3",
+    "react-router-transition": "^1.1.2",
     "react-textarea-autosize": "^5.2.1",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
@@ -81,7 +91,9 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.5.1",
+    "husky": "^0.14.3",
     "jest": "^21.2.1",
+    "lint-staged": "^6.0.0",
     "optimize-js-plugin": "0.0.4",
     "raf": "^3.4.0",
     "react-test-renderer": "^16.2.0",

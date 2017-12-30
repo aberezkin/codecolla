@@ -43,6 +43,8 @@ class Checkable extends Component {
                     role="button"
                     className="title"
                     onClick={this.onClick}
+                    onMouseOver={this.onMouseOver}
+                    onMouseOut={this.onMouseOut}
                     style={this.state.titleStyle}
                 >
                     {this.props.title}
