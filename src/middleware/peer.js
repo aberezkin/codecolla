@@ -1,10 +1,9 @@
 import '../utilities/Peerjs';
-import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS, 
-    GET_ALL_TEXT, BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer,
-    setPeerId, sendAllText, broadcastActions, addPeerFromId } from '../actions/index';
-import ChangeEvent, 
-    { CHAT_MESSAGE, DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent'
-import { SET_CURSOR } from '../actions/index'
+import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS,
+    BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer,
+    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR } from '../actions/index';
+import { DELETE_CURSOR, MOVE_CURSOR,
+    ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
 
 export const CONNECTION_EVENT = 'connection';
 export const CONNECTION_OPEN = 'open';
@@ -52,7 +51,6 @@ function eventifyConnection(connection, isSeed, dispatch, peer) {
     connection.on(CONNECTION_CLOSE, () => {
         dispatch(removePeer(connection));
     });
-       
     return connection;
 }
 

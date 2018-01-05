@@ -16,7 +16,10 @@
     "lint": "eslint --ext .js --ext .jsx src/"
   },
   "lint-staged": {
-    "src/*/**/*.{js,jsx}": ["eslint --ext .js --ext .jsx --fix", "git add"]
+    "src/*/**/*.{js,jsx}": [
+      "eslint --ext .js --ext .jsx --fix",
+      "git add"
+    ]
   },
   "jest": {
     "setupFiles": [
