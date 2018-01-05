@@ -9,7 +9,8 @@ import { SET_IS_SEED, SET_LINEFEED, SET_IS_TRANSFER_ALLOWED,
     setIsTransferAllowed, setLinefeed, setEncoding,
     setLanguage, setTheme, addPeer, addPeerFromId, removePeer,
     insertEvent, removeEvent, removeLine, sendMessage,
-    addMessage, broadcastActions, initPeer, setLine, setText, insertLine } from './index';
+    addMessage, broadcastActions, initPeer, setLine, setText, insertLine,
+    handleMenuCommand } from './index';
 
 const testSyncActionCreator = (actionCreator, payload, expectedValue) => {
     it(`should create ${expectedValue.type} action`, () => {
@@ -104,6 +105,14 @@ describe('test broadcast data to peer action', () => {
     it(`should create ${BROADCAST_DATA_TO_PEER} action`, () => {
         expect(broadcastActionsToPeer('qwerty')).toEqual(eq);
     });
+});
+
+describe('test handleMenuCommand action', () => {
+    const eq = {
+        type: 'qwerty',
+        payload: false,
+    };
+    expect(handleMenuCommand('qwerty')).toEqual(eq);
 });
 
 describe('several arguments actions', () => {
