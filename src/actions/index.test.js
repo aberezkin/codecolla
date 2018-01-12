@@ -6,7 +6,8 @@ import { SET_IS_SEED, SET_LINEFEED, SET_IS_TRANSFER_ALLOWED,
     setIsTransferAllowed, setLinefeed, setEncoding,
     setLanguage, setTheme, addPeer, addPeerFromId, removePeer,
     insertEvent, removeEvent, removeLine, sendMessage,
-    addMessage, broadcastActions, initPeer, setLine, insertLine } from './index';
+    addMessage, broadcastActions, initPeer, setLine, insertLine,
+    sendCode, SEND_URL } from './index';
 
 const testSyncActionCreator = (actionCreator, payload, expectedValue) => {
     it(`should create ${expectedValue.type} action`, () => {
@@ -67,6 +68,27 @@ describe('several arguments actions', () => {
 
         expect(insertLine(3, { atom: 'mock' })).toEqual(expectedValue);
     });
+
+    const POST_REQUEST = 'react-redux-fetch/POST_REQUEST';
+    it(`should create ${POST_REQUEST} action`, () => {
+        const expectedValue = {
+            type: POST_REQUEST,
+            method: 'post',
+            resource: {
+                name: 'compileBox',
+            },
+            request: {
+                url: SEND_URL,
+                body: {
+                    code: 'puts [123]\n',
+                    language: 1,
+                    stdin: '',
+                },
+            },
+        };
+
+        expect(sendCode(1, 'puts [123]\n')).toEqual(expectedValue);
+    });
 });
 
 describe('throws from action creators', () => {
@@ -80,5 +102,6 @@ describe('throws from action creators', () => {
         expect(() => setLine('4', { atom: 'mock' })).toThrow();
     });
 });
+
 
 // TODO: test SET_TEXT action creator

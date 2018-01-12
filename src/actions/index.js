@@ -113,13 +113,14 @@ export function addMessage(message) {
     return createAction(ADD_MESSAGE, message);
 }
 
+export const SEND_URL = 'http://example.ru/compile';
 export const COMPILE_CODE = 'COMPILE CODE';
 export function sendCode(langid, text) {
     return buildActionsFromMappings([{
         resource: 'compileBox',
         method: 'post',
         request: {
-            url: 'http://example.ru/compile',
+            url: SEND_URL,
             body: {
                 language: langid,
                 code: text,
@@ -146,3 +147,4 @@ export const OPEN_SETTINGS = 'OPEN SETTINGS';
 export const COMPILE_RUBY = 'COMPILE RUBY';
 export const COMPILE_CPP = 'COMPILE CPP';
 export const POST_FULFIL = 'react-redux-fetch/POST_FULFIL';
+export const POST_REJECT = 'react-redux-fetch/POST_REJECT';

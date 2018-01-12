@@ -5,9 +5,26 @@ import {
     broadcastActions,
     TOGGLE_CHAT,
     COMPILE_CODE,
-    COMPILE_RUBY,
-    COMPILE_CPP,
 } from '../actions';
+
+const LANGS = new Map([
+    ['python', 0],
+    ['ruby', 1],
+    ['clojure', 2],
+    ['php', 3],
+    ['javascript', 4],
+    ['scala', 5],
+    ['go', 6],
+    ['c_cpp', 7],
+    ['java', 8],
+    ['VB.NET', 9],
+    ['csharp', 10],
+    ['sh', 11],
+    ['Objective-C', 12],
+    ['mysql', 13],
+    ['perl', 14],
+    ['rust', 15],
+]);
 
 const createMessage = text => ({
     author: 'compileBox',
@@ -15,23 +32,24 @@ const createMessage = text => ({
     date: new Date(),
 });
 const getText = state => state.text.toArray().map(i => i.toObject().text).join('\n');
-const getLanguage = (actionType) => {
-    switch (actionType) {
-        case COMPILE_RUBY:
-            return '1';
-        case COMPILE_CPP:
-            return '7';
-        default: return '1';
-    }
+const getLanguage = (state) => {
+    const langName = state.preferences.editor.language;
+    if (!LANGS.has(langName))
+        return -1;
+
+    return LANGS.get(langName);
 };
+
 
 export default store => next => (action) => {
     const curState = store.getState();
     switch (action.type) {
-        case COMPILE_CODE:
-        case COMPILE_RUBY:
-        case COMPILE_CPP: {
-            const language = getLanguage(action.type);
+        case COMPILE_CODE: {
+            const language = getLanguage(curState);
+            if (language < 0) {
+                next(action);
+                break;
+            }
             const text = getText(curState);
 
             const sendCodeAction = sendCode(language, text);
@@ -44,7 +62,7 @@ export default store => next => (action) => {
                 next(toggleChatAction);
             }
 
-            const addMessageAction = addMessage(createMessage('Code is sending'));
+            const addMessageAction = addMessage(createMessage('Code is sent'));
             store.dispatch(broadcastActions([addMessageAction]));
             next(addMessageAction);
             break;

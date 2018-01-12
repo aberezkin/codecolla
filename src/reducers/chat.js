@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ADD_MESSAGE, POST_FULFIL } from '../actions';
+import { ADD_MESSAGE, POST_FULFIL, POST_REJECT } from '../actions';
 
 const createMessage = (author, text, date) => ({
     author,
@@ -16,11 +16,15 @@ const messages = (state = [], action) => {
             ];
 
         case POST_FULFIL:
-            console.log(action.value.errors);
             return [
                 ...state,
                 createMessage('Output', action.value.output, new Date()),
                 createMessage('Error log', action.value.errors, new Date()),
+            ];
+        case POST_REJECT:
+            return [
+                ...state,
+                createMessage('Error', action.reason.message, new Date()),
             ];
         default: return state;
     }
