@@ -113,6 +113,7 @@ export function addMessage(message) {
     return createAction(ADD_MESSAGE, message);
 }
 
+// Reset to needed server-ip
 export const SEND_URL = 'http://example.ru/compile';
 export const COMPILE_CODE = 'COMPILE CODE';
 export function sendCode(langid, text) {

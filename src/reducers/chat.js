@@ -15,12 +15,15 @@ const messages = (state = [], action) => {
                 action.payload,
             ];
 
-        case POST_FULFIL:
+        case POST_FULFIL: {
+            const dateOutput = new Date();
+            const dateLog = new Date(dateOutput.valueOf() + 1);
             return [
                 ...state,
-                createMessage('Output', action.value.output, new Date()),
-                createMessage('Error log', action.value.errors, new Date()),
+                createMessage('Output', action.value.output, dateOutput),
+                createMessage('Error log', action.value.errors, dateLog),
             ];
+        }
         case POST_REJECT:
             return [
                 ...state,
