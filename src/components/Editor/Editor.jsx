@@ -48,9 +48,11 @@ class Editor extends Component {
     emitEditEvent(e) {
         if (e.action === EDIT_INSERT)
             this.props.onInsert(e);
+
         if (e.action === EDIT_REMOVE)
             this.props.onRemove(e);
     }
+
 
     render() {
         return (
