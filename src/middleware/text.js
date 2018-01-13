@@ -1,23 +1,15 @@
-import { broadcastActions, broadcastActionsToPeer,
-    INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
-    SET_LINE, SEND_ALL_TEXT, SET_TEXT } from '../actions/index';
+import { broadcastActions, INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine } from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
-
-
-function getNewTimeForAtom(atom) {
-    return atom.set('time', atom.get('time') + 1);
-}
 
 function insertTextToAtom(atom, pos, pasteText) {
     const oldText = atom.get('text');
-    const newText = oldText.slice(0, pos) + pasteText + oldText.slice(pos);
-    return getNewTimeForAtom(atom).set('text', newText);
+    return atom.set('text', oldText.slice(0, pos) + pasteText + oldText.slice(pos));
 }
 
 function removeTextFromAtom(atom, from = 0, to = Number.MAX_VALUE) {
     const oldText = atom.get('text');
     const newText = oldText.slice(0, from) + oldText.slice(to);
-    return getNewTimeForAtom(atom).set('text', newText);
+    return atom.set('text', newText);
 }
 
 function generateInsertActions(atoms, event) {
@@ -82,10 +74,6 @@ const textMiddleware = store => next => action => {
     switch (action.type) {
         case INSERT_EVENT: {
             const actions = generateInsertActions(store.getState().text, action.payload);
-            actions.forEach((a) => {
-                // eslint-disable-next-line no-param-reassign
-                a.payload.atom.peer = store.getState().peers.id;
-            });
             store.dispatch(broadcastActions(actions));
             next(actions);
             break;
@@ -94,33 +82,6 @@ const textMiddleware = store => next => action => {
             const actions = generateRemoveActions(store.getState().text, action.payload);
             store.dispatch(broadcastActions(actions));
             next(generateRemoveActions(store.getState().text, action.payload));
-            break;
-        }
-        case SET_LINE: {
-            const { time } = store.getState().text.get(action.payload.line);
-            const line = store.getState().text.get(action.payload.line);
-            if (action.payload.atom.time < time) {
-                store.dispatch(broadcastActions(line));
-                break;
-            } else if ((action.payload.atom.time === time) &&
-                (store.getState().peers.id > action.payload.atom.peer)) {
-                store.dispatch(broadcastActions(line));
-                break;
-            }
-            next(action);
-            break;
-        }
-        case SEND_ALL_TEXT: {
-            // Need some modifications.
-            const setTextAction = {
-                type: SET_TEXT,
-                payload: store.getState().text,
-            };
-            const actions = {
-                id: action.payload,
-                broadcastedAction: [setTextAction],
-            };
-            store.dispatch(broadcastActionsToPeer(actions));
             break;
         }
         default: next(action);

@@ -1,8 +1,7 @@
 import '../utilities/Peerjs';
-import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS,
-    BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer, SET_CURSOR,
-    setPeerId, sendAllText, broadcastActions, addPeerFromId } from '../actions';
-import { DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
+import { ADD_PEER, ADD_PEER_FROM_ID,
+    addPeer, BROADCAST_ACTIONS, INIT_PEER, removePeer, setPeerId } from '../actions/index';
+import ChangeEvent, { DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
 
 export const CONNECTION_EVENT = 'connection';
 export const CONNECTION_OPEN = 'open';
@@ -14,10 +13,8 @@ const localPeer = new Peer({ key: 'e0twf5gs81lzbyb9' });
 
 function eventifyConnection(connection, isSeed, dispatch, peer) {
     connection.on(CONNECTION_OPEN, () => {
-        if (isSeed) {
-            dispatch(sendAllText(connection.peer));
-            dispatch(broadcastActions([addPeerFromId(connection.peer)]));
-        }
+        // TODO: migrate this to dispatch
+        if (isSeed) this.broadcastEvent(ChangeEvent.getAddPeerEvent(connection.peer));
     });
 
     connection.on(DATA_TRANSFER, (data) => {
@@ -28,9 +25,13 @@ function eventifyConnection(connection, isSeed, dispatch, peer) {
         switch (firstEvent.action) {
             case DELETE_CURSOR:
             case MOVE_CURSOR:
-            case SET_CURSOR:
             case ADD_CURSOR: {
-                dispatch(eventArray);
+                // TODO: handle cursor changes messages
+                // this.cursorEventHandler({
+                //     type: unpackedEvent.action,
+                //     peerId: unpackedEvent.peer,
+                //     position: unpackedEvent.pos
+                // });
                 break;
             }
             case PEER_ADDITION: {
@@ -84,11 +85,6 @@ const peersMiddleware = peer => store => next => action => {
                 .peers
                 .connections
                 .forEach(conn => conn.send(JSON.stringify(action.payload)));
-            break;
-        case BROADCAST_DATA_TO_PEER:
-            store.getState().peers.connections
-                .find(conn => conn.peer === action.payload.id)
-                .send(JSON.stringify(action.payload.broadcastedAction));
             break;
         default: next(action);
     }

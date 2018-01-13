@@ -4,7 +4,6 @@ import isTransferAllowed from './is-transfer-allowed';
 import peers from './peer';
 import text from './text';
 import chat from './chat';
-import cursors from './cursor';
 import preferences from './preferences';
 
 export default combineReducers({
@@ -13,6 +12,5 @@ export default combineReducers({
     peers,
     text,
     chat,
-    cursors,
     preferences,
 });
