@@ -17,9 +17,6 @@ class Editor extends Component {
         this.onCursorChange = this.onCursorChange.bind(this);
 
         this.isCursorTransfer = true;
-    }
-
-    componentDidMount() {
         this.state = { markerIds: [] };
     }
 
