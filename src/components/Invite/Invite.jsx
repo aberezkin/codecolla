@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Clippy from 'react-icons/lib/go/clippy';
 import Modal from 'react-modal';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Button from '../Button';
 import './Invite.styl';
 
@@ -39,12 +40,11 @@ const Invite = ({ peerId, toggle }) => (
             value={generateConnectionLink(peerId)}
             disabled
         />
-        <Button
-            className="copy-button"
-            right
-        >
-            <Clippy />
-        </Button>
+        <CopyToClipboard text={generateConnectionLink(peerId)}>
+            <Button className="copy-button" right>
+                <Clippy />
+            </Button>
+        </CopyToClipboard>
     </InviteModal>
 );
 
