@@ -1,11 +1,9 @@
-import {addCursor, ADD_CURSUR, deleteCursor, DELETE_CURSUR, setCursor, MOVE_CURSOR} from "../actions/index";
-import {broadcastActions} from "../actions/index";
+import { setCursor, MOVE_CURSOR, broadcastActions } from '../actions/index';
 
-const cursorMiddleware = store => next => action => {
+const cursorMiddleware = store => next => (action) => {
     switch (action.type) {
         case MOVE_CURSOR:
-            action = setCursor(action.payload);
-            store.dispatch(broadcastActions([action]));
+            store.dispatch(broadcastActions([setCursor(action.payload)]));
             break;
         default: next(action);
     }

@@ -1,25 +1,23 @@
-import {GET_ALL_TEXT, broadcastActions, broadcastActionsToPeer, 
+import { broadcastActions, broadcastActionsToPeer,
     INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
-    SET_LINE, SEND_ALL_TEXT, SET_TEXT} from "../actions/index";
-import {generateLineId} from "../utilities/Helpers";
+    SET_LINE, SEND_ALL_TEXT, SET_TEXT } from '../actions/index';
+import { generateLineId } from '../utilities/Helpers';
 
 
 function getNewTimeForAtom(atom) {
-    let oldTime = atom.get('time');
-    return atom.set('time', ++oldTime);
+    return atom.set('time', atom.get('time') + 1);
 }
 
 function insertTextToAtom(atom, pos, pasteText) {
-    let oldText = atom.get('text');
-    atom = getNewTimeForAtom(atom);
-    return atom.set('text', oldText.slice(0, pos) + pasteText + oldText.slice(pos));
+    const oldText = atom.get('text');
+    const newText = oldText.slice(0, pos) + pasteText + oldText.slice(pos);
+    return getNewTimeForAtom(atom).set('text', newText);
 }
 
 function removeTextFromAtom(atom, from = 0, to = Number.MAX_VALUE) {
-    let oldText = atom.get('text');
-    let newText = oldText.slice(0, from) + oldText.slice(to);
-    atom = getNewTimeForAtom(atom);
-    return atom.set('text', newText);
+    const oldText = atom.get('text');
+    const newText = oldText.slice(0, from) + oldText.slice(to);
+    return getNewTimeForAtom(atom).set('text', newText);
 }
 
 function generateInsertActions(atoms, event) {
@@ -83,8 +81,9 @@ function generateRemoveActions(atoms, event) {
 const textMiddleware = store => next => action => {
     switch (action.type) {
         case INSERT_EVENT: {
-            let actions = generateInsertActions(store.getState().text, action.payload);
-            actions.forEach(a => {
+            const actions = generateInsertActions(store.getState().text, action.payload);
+            actions.forEach((a) => {
+                // eslint-disable-next-line no-param-reassign
                 a.payload.atom.peer = store.getState().peers.id;
             });
             store.dispatch(broadcastActions(actions));
@@ -97,31 +96,33 @@ const textMiddleware = store => next => action => {
             next(generateRemoveActions(store.getState().text, action.payload));
             break;
         }
-        case SET_LINE:
-            const time = store.getState().text.get(action.payload.line).time;
+        case SET_LINE: {
+            const { time } = store.getState().text.get(action.payload.line);
             const line = store.getState().text.get(action.payload.line);
             if (action.payload.atom.time < time) {
                 store.dispatch(broadcastActions(line));
                 break;
-            } else if ((action.payload.atom.time === time) && 
+            } else if ((action.payload.atom.time === time) &&
                 (store.getState().peers.id > action.payload.atom.peer)) {
                 store.dispatch(broadcastActions(line));
                 break;
             }
             next(action);
             break;
-        case SEND_ALL_TEXT:
-            //Need some modifications.
-            let setTextAction = {
+        }
+        case SEND_ALL_TEXT: {
+            // Need some modifications.
+            const setTextAction = {
                 type: SET_TEXT,
-                payload: store.getState().text
-            }
-            let actions = {
+                payload: store.getState().text,
+            };
+            const actions = {
                 id: action.payload,
-                broadcastedAction: [setTextAction]
-            }
+                broadcastedAction: [setTextAction],
+            };
             store.dispatch(broadcastActionsToPeer(actions));
             break;
+        }
         default: next(action);
     }
 };
