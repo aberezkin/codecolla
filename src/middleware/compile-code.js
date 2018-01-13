@@ -27,7 +27,7 @@ const LANGS = new Map([
 ]);
 
 const createMessage = text => ({
-    author: 'compileBox',
+    author: 'Compile Box',
     content: text,
     date: new Date(),
 });
@@ -47,7 +47,8 @@ export default store => next => (action) => {
         case COMPILE_CODE: {
             const language = getLanguage(curState);
             if (language < 0) {
-                next(action);
+                const addMessageAction = addMessage(createMessage('This language is not supported!'));
+                next(addMessageAction);
                 break;
             }
             const text = getText(curState);

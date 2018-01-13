@@ -20,14 +20,14 @@ const messages = (state = [], action) => {
             const dateLog = new Date(dateOutput.valueOf() + 1);
             return [
                 ...state,
-                createMessage('Output', action.value.output, dateOutput),
-                createMessage('Error log', action.value.errors, dateLog),
+                createMessage('CompileBox (stdout)', action.value.output, dateOutput),
+                createMessage('CompileBox (stderr)', action.value.errors, dateLog),
             ];
         }
         case POST_REJECT:
             return [
                 ...state,
-                createMessage('Error', action.reason.message, new Date()),
+                createMessage('CompileBox', action.reason.message, new Date()),
             ];
         default: return state;
     }
