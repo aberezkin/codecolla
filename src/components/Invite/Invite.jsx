@@ -33,7 +33,7 @@ const Invite = ({ peerId, toggle }) => (
         onRequestClose={() => toggle()}
         ariaHideApp={false}
     >
-        <h1>Send it to you collegue</h1>
+        <h1>Send it to your collegue</h1>
         <input
             type="text"
             className="link"
