@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { reducer as fetchReducer } from 'react-redux-fetch';
 import isSeed from './is-seed';
 import isTransferAllowed from './is-transfer-allowed';
 import peers from './peer';
@@ -13,4 +14,5 @@ export default combineReducers({
     text,
     chat,
     preferences,
+    fetchReducer,
 });
