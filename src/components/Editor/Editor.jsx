@@ -3,7 +3,6 @@ import AceEditor from 'react-ace';
 import PropTypes from 'prop-types';
 import ChangeEvent from '../../utilities/ChangeEvent';
 import './Editor.styl';
-import { generateCursorMarker } from '../../utilities/Helpers';
 
 const EDIT_INSERT = 'insert';
 const EDIT_REMOVE = 'remove';
@@ -20,33 +19,19 @@ class Editor extends Component {
         this.isCursorTransfer = true;
     }
 
-    componentDidMount() {
-        this.onMount(() => this.setState({ markerIds: [] }));
+    onChange(newValue, newEvent) {
+        this.emitEditEvent(ChangeEvent.getEditEvent(newEvent));
     }
 
-    componentWillReceiveProps({ cursors }) {
-        if (this.props.cursors !== cursors) {
-            this.state.markerIds.forEach(cursor => this.editor.session.removeMarker(cursor));
-            this.setState({
-                markerIds: cursors
-                    .map(cursor => generateCursorMarker(this.editor.session, cursor).id),
-            });
-        }
+    // eslint-disable-next-line class-methods-use-this
+    onCursorChange() {
+        // TODO: broadcast some kind of cursorChange action
     }
 
     onLoad(ed) {
         this.editor = ed;
         this.editor.session.setNewLineMode('unix');
         this.editor.selection.on('changeCursor', this.onCursorChange);
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    onCursorChange() {
-        this.props.moveCursor(this.editor.getCursorPosition());
-    }
-
-    onChange(newValue, newEvent) {
-        this.emitEditEvent(ChangeEvent.getEditEvent(newEvent));
     }
 
     emitEditEvent(e) {
@@ -56,6 +41,7 @@ class Editor extends Component {
         if (e.action === EDIT_REMOVE)
             this.props.onRemove(e);
     }
+
 
     render() {
         return (
@@ -69,11 +55,6 @@ class Editor extends Component {
                 onChange={this.onChange}
                 name="UNIQUE_ID_OF_DIV"
                 editorProps={{ $blockScrolling: 'Infinity' }}
-                commands={[{
-                    name: 'commandCtrlZ',
-                    bindKey: { win: 'Ctrl-z', mac: 'Command-z', linux: 'Ctrl-z' },
-                    exec: () => { console.log('Ctrl-z'); },
-                }]}
             />
         );
     }
@@ -82,13 +63,11 @@ class Editor extends Component {
 Editor.propTypes = {
     onInsert: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
-    moveCursor: PropTypes.func.isRequired,
     language: PropTypes.string,
     theme: PropTypes.string,
     text: PropTypes.string,
     width: PropTypes.string,
     height: PropTypes.string,
-    cursors: PropTypes.arrayOf(PropTypes).isRequired,
 };
 
 Editor.defaultProps = {
