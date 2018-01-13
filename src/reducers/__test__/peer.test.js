@@ -43,7 +43,6 @@ describe('connections reducer', () => {
         expect(connectionsReducer(connections, {})).toBe(connections);
     });
 });
-
 describe('peer id reducer', () => {
     it('should return the initial state', () => {
         expect(idReducer(undefined, {})).toBe('');

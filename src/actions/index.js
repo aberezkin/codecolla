@@ -4,9 +4,34 @@ function createAction(type, payload = undefined) {
     return { type, payload };
 }
 
+export const SEND_ALL_TEXT = 'SENT ALL TEXT';
+export function sendAllText(peerId) {
+    return createAction(SEND_ALL_TEXT, peerId);
+}
+
 export const SET_PEER_ID = 'SET PEER ID';
 export function setPeerId(id) {
     return createAction(SET_PEER_ID, id);
+}
+
+export const MOVE_CURSOR = 'MOVE CURSOR';
+export function moveCursor(id, pos) {
+    return createAction(MOVE_CURSOR, { id, pos });
+}
+
+export const ADD_CURSOR = 'ADD CURSOR';
+export function addCursor(pos) {
+    return createAction(ADD_CURSOR, pos);
+}
+
+export const DELETE_CURSOR = 'DELETE CURSOR';
+export function deleteCursor(pos) {
+    return createAction(DELETE_CURSOR, pos);
+}
+
+export const SET_CURSOR = 'SET CURSOR';
+export function setCursor(pos) {
+    return createAction(SET_CURSOR, pos);
 }
 
 export const SET_IS_SEED = 'SET IS SEED';
@@ -66,6 +91,11 @@ export function broadcastActions(actions) {
     return createAction(BROADCAST_ACTIONS, actions);
 }
 
+export const BROADCAST_DATA_TO_PEER = 'BROADCAST DATA FOR PEER';
+export function broadcastActionsToPeer(data) {
+    return createAction(BROADCAST_DATA_TO_PEER, data);
+}
+
 export const INSERT_EVENT = 'INSERT_EVENT';
 export function insertEvent(event) {
     return createAction(INSERT_EVENT, event);
@@ -78,7 +108,15 @@ export function removeEvent(event) {
 
 export const SET_TEXT = 'SET TEXT';
 export function setText(text) {
-    return createAction(SET_TEXT, text.split('\n').map(line => generateAtom(line, 1)));
+    let payload;
+    if (typeof text === 'string')
+        payload = text.split('\n').map(line => generateAtom(line, 1));
+    else if (Array.isArray(text))
+        payload = text;
+    else
+        throw new Error('Expected string or array as an argument');
+
+    return createAction(SET_TEXT, payload);
 }
 
 export const SET_LINE = 'SET LINE';
