@@ -6,9 +6,7 @@ import RouteConnector from '../RouteConnector';
 import App from '../App';
 
 const text =
-    `function hello() {
-    console.log('Hello, World!');
-}`;
+    'console.log(\'Hello, World!\')';
 
 // TODO: This component was reacted just to avoid merge conflicts with current PRs.
 // TODO: Specifically https://github.com/aberezkin/codecolla/pull/42
