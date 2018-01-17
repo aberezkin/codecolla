@@ -1,7 +1,7 @@
 import '../utilities/Peerjs';
 import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS,
     BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer,
-    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR } from '../actions/index';
+    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor } from '../actions/index';
 import { DELETE_CURSOR, MOVE_CURSOR,
     ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
 
@@ -26,7 +26,7 @@ function eventifyConnection(connection, isSeed, dispatch, peer) {
         const firstEvent = eventArray[0];
 
         // TODO: Send ONLY redux actions and just dispatch them
-        switch (firstEvent.action) {
+        switch (firstEvent.type) {
             case DELETE_CURSOR:
             case MOVE_CURSOR:
             case SET_CURSOR:
@@ -44,12 +44,15 @@ function eventifyConnection(connection, isSeed, dispatch, peer) {
         }
     });
 
-    connection.on(PEER_ERROR, () => {
-        dispatch(removePeer(connection));
+    connection.on(PEER_ERROR, (err) => {
+        console.log('ERROR', err);
+        dispatch(removePeer(connection.peer));
+        dispatch(deleteCursor(connection.peer));
     });
 
     connection.on(CONNECTION_CLOSE, () => {
-        dispatch(removePeer(connection));
+        dispatch(removePeer(connection.peer));
+        dispatch(deleteCursor(connection.peer));
     });
     return connection;
 }

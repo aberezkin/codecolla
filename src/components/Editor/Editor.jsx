@@ -22,7 +22,10 @@ class Editor extends Component {
 
     componentWillReceiveProps({ cursors }) {
         if (this.props.cursors !== cursors) {
-            this.state.markerIds.forEach(cursor => this.editor.session.removeMarker(cursor));
+            let markers = this.editor.session.getMarkers(true);
+            for (let id in markers) {
+                this.editor.session.removeMarker(markers[id].id);
+            };
             this.setState({ markerIds: cursors.map(cursor =>
                 generateCursorMarker(this.editor.session, cursor).id) });
         }

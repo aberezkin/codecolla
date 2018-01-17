@@ -6,7 +6,7 @@ function cursorReducer(state = Map(), { type, payload }) {
         case ADD_CURSOR:
             return state.set(payload.id, payload.pos);
         case DELETE_CURSOR:
-            return state.delete(payload.id);
+            return state.delete(payload);
         case SET_CURSOR:
             return state.set(payload.id, payload.pos);
         default:
