@@ -2,7 +2,7 @@ import '../utilities/Peerjs';
 import { ADD_PEER, ADD_PEER_FROM_ID, CONNECT_TO_ALL_PEERS, connectToAllPeers,
     addPeer, BROADCAST_ACTIONS, INIT_PEER, removePeer, setPeerId,
     broadcastActions, addPeerFromId } from '../actions/index';
-import ChangeEvent, { DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
+import { DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
 
 export const CONNECTION_EVENT = 'connection';
 export const CONNECTION_OPEN = 'open';
@@ -11,14 +11,14 @@ export const DATA_TRANSFER = 'data';
 export const PEER_ERROR = 'error';
 
 const localPeer = new Peer({ key: 'e0twf5gs81lzbyb9' });
-var sayHelloToOtherPeers = false;
+let sayHelloToOtherPeers = false;
 
 function eventifyConnection(connection, dispatch, peer) {
     connection.on(CONNECTION_OPEN, () => {
         // TODO: migrate this to dispatch
         if (sayHelloToOtherPeers) {
             sayHelloToOtherPeers = false;
-            dispatch(broadcastActions([connectToAllPeers(peer.id)]))
+            dispatch(broadcastActions([connectToAllPeers(peer.id)]));
         }
     });
 
@@ -52,8 +52,7 @@ function eventifyConnection(connection, dispatch, peer) {
         }
     });
 
-    connection.on(PEER_ERROR, (err) => {
-        console.log('ERROR', err);
+    connection.on(PEER_ERROR, () => {
         dispatch(removePeer(connection));
     });
 
@@ -65,9 +64,8 @@ function eventifyConnection(connection, dispatch, peer) {
 }
 
 // Making peer injectable here to make it mockable and the function testable
-// eslint-disable-next-line arrow-parens 
+// eslint-disable-next-line arrow-parens
 const peersMiddleware = peer => store => next => action => {
-    
     switch (action.type) {
         case INIT_PEER:
             peer.on(CONNECTION_EVENT, connection => store.dispatch(addPeer(connection)));

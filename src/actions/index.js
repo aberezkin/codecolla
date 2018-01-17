@@ -49,7 +49,7 @@ export const ADD_PEER_FROM_ID = 'ADD PEER FROM ID';
 export function addPeerFromId(id, needAllPeers) {
     if (needAllPeers === undefined)
         needAllPeers = false;
-    return createAction(ADD_PEER_FROM_ID, {id: id, needAllPeers: needAllPeers});
+    return createAction(ADD_PEER_FROM_ID, { id, needAllPeers });
 }
 
 export const CONNECT_TO_ALL_PEERS = 'CONNECT TO ALL PEERS';
