@@ -1,8 +1,8 @@
-import { SET_IS_SEED, SET_LINEFEED, SET_IS_TRANSFER_ALLOWED,
+import { CONNECT_TO_ALL_PEERS, SET_LINEFEED, SET_IS_TRANSFER_ALLOWED,
     SET_ENCODING, SET_LANGUAGE, SET_THEME, INIT_PEER,
     ADD_PEER_FROM_ID, ADD_PEER, REMOVE_PEER, BROADCAST_ACTIONS,
     INSERT_EVENT, REMOVE_EVENT, REMOVE_LINE,
-    SEND_MESSAGE, ADD_MESSAGE, SET_LINE, INSERT_LINE, setIsSeed,
+    SEND_MESSAGE, ADD_MESSAGE, SET_LINE, INSERT_LINE, connectToAllPeers,
     setIsTransferAllowed, setLinefeed, setEncoding,
     setLanguage, setTheme, addPeer, addPeerFromId, removePeer,
     insertEvent, removeEvent, removeLine, sendMessage,
@@ -19,8 +19,8 @@ const testPayloadActionCreator = (actionCreator, type, payload) =>
     testSyncActionCreator(actionCreator, payload, { type, payload });
 
 describe('simple payload action creators', () => {
-    testPayloadActionCreator(setIsSeed, SET_IS_SEED, false);
-    testPayloadActionCreator(setIsSeed, SET_IS_SEED, true);
+    testPayloadActionCreator(connectToAllPeers, CONNECT_TO_ALL_PEERS, false);
+    testPayloadActionCreator(connectToAllPeers, CONNECT_TO_ALL_PEERS, true);
     testPayloadActionCreator(setIsTransferAllowed, SET_IS_TRANSFER_ALLOWED, false);
     testPayloadActionCreator(setIsTransferAllowed, SET_IS_TRANSFER_ALLOWED, true);
     testPayloadActionCreator(setLinefeed, SET_LINEFEED, 'LF');

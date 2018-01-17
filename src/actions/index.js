@@ -10,11 +10,6 @@ export function setPeerId(id) {
     return createAction(SET_PEER_ID, id);
 }
 
-export const SET_IS_SEED = 'SET IS SEED';
-export function setIsSeed(isSeed) {
-    return createAction(SET_IS_SEED, isSeed);
-}
-
 export const SET_IS_TRANSFER_ALLOWED = 'SET IS TRANSFER ALLOWED';
 export function setIsTransferAllowed(isTransferAllowed) {
     return createAction(SET_IS_TRANSFER_ALLOWED, isTransferAllowed);
@@ -51,13 +46,15 @@ export function addPeer(connection) {
 }
 
 export const ADD_PEER_FROM_ID = 'ADD PEER FROM ID';
-export function addPeerFromId(id) {
-    return createAction(ADD_PEER_FROM_ID, { id, needAllPeers: true });
+export function addPeerFromId(id, needAllPeers) {
+    if (needAllPeers === undefined)
+        needAllPeers = false;
+    return createAction(ADD_PEER_FROM_ID, {id: id, needAllPeers: needAllPeers});
 }
 
-export const GET_ALL_PEERS = 'GET ALL PEERS';
-export function getAllPeers(needAllPeers, peerId) {
-    return createAction(GET_ALL_PEERS, { needAllPeers, peedId: peerId });
+export const CONNECT_TO_ALL_PEERS = 'CONNECT TO ALL PEERS';
+export function connectToAllPeers(connect) {
+    return createAction(CONNECT_TO_ALL_PEERS, connect);
 }
 
 export const REMOVE_PEER = 'REMOVE PEER';
