@@ -54,6 +54,7 @@ function eventifyConnection(connection, isSeed, dispatch, peer) {
         dispatch(removePeer(connection.peer));
         dispatch(deleteCursor(connection.peer));
     });
+
     return connection;
 }
 

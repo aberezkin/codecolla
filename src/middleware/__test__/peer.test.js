@@ -10,6 +10,7 @@ class ConnectionMock {
         this.listeners = {};
         this.connect = jest.fn(() => new ConnectionMock());
         this.send = jest.fn();
+        this.peer = 'peer';
     }
 
     on(event, callback) {
@@ -53,7 +54,7 @@ describe('eventifyConnection test', () => {
 
         connection.triggerCallbacks(CONNECTION_CLOSE);
 
-        expect(dispatch).toHaveBeenCalledWith(removePeer(connection));
+        expect(dispatch).toHaveBeenCalledWith(removePeer(connection.peer));
     });
 
     it('should dispatch remove peer on error', () => {
@@ -61,7 +62,7 @@ describe('eventifyConnection test', () => {
 
         connection.triggerCallbacks(PEER_ERROR);
 
-        expect(dispatch).toHaveBeenCalledWith(removePeer(connection));
+        expect(dispatch).toHaveBeenCalledWith(removePeer(connection.peer));
     });
 
     // TODO: implement after isSeed bug fix
