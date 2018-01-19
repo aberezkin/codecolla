@@ -3,6 +3,10 @@ import { broadcastActions, broadcastActionsToPeer,
     SET_LINE, SEND_ALL_TEXT, SET_TEXT } from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
 
+function breakUpTextAtom(atom, pos, pasteText) {
+    const oldText = atom.get('text');
+    return atom.set('text', oldText.slice(0, pos) + pasteText);
+}
 
 function getNewTimeForAtom(atom) {
     const oldTime = atom.get('time');
@@ -25,19 +29,31 @@ function removeTextFromAtom(atom, from = 0, to = Number.MAX_VALUE) {
 function generateInsertActions(atoms, event) {
     const isFirstLineSlice = event.startCol !== 0 || event.startRow === event.endRow;
     const actions = [];
+    // if insert /n in middle of line
+    let tailOfText = '';
+    if (event.text[0] === '' || event.text.length > 1) {
+        const atom = atoms.get(event.startRow);
+        const pos = isFirstLineSlice ? event.startCol : 0;
+        actions.push(setLine(
+            event.startRow,
+            breakUpTextAtom(atom, pos, event.text[0]),
+        ));
+        tailOfText = atom.get('text').slice(pos);
+    } else
+        actions.push(setLine(
+            event.startRow,
+            insertTextToAtom(
+                atoms.get(event.startRow),
+                isFirstLineSlice ? event.startCol : 0, event.text[0],
+            ),
+        ));
 
-    actions.push(setLine(
-        event.startRow,
-        insertTextToAtom(
-            atoms.get(event.startRow),
-            isFirstLineSlice ? event.startCol : 0, event.text[0],
-        ),
-    ));
 
     for (let i = 0 + isFirstLineSlice; i < (event.text.length + isFirstLineSlice) - 1; i += 1) {
         const atom = {
             id: generateLineId(),
-            text: event.text[i],
+            text: i === (event.text.length + isFirstLineSlice) - 2 ?
+                event.text[i] + tailOfText : event.text[i],
             time: 1,
         };
         actions.push(insertLine(event.startRow + i, atom));
