@@ -11,6 +11,7 @@ import { MENU_BAR_CLASSNAME } from '../MenuBar/MenuBar';
 import Menu from '../Menu';
 import { CHAT_CLASSNAME } from '../Chat/Chat';
 import HomePage from '../HomePage';
+import Invite from '../Invite';
 
 export const APP_CLASSNAME = 'App';
 
@@ -58,18 +59,21 @@ export default class App extends Component {
 
     render() {
         return (
-            <div className={`${APP_CLASSNAME} ace-${this.props.theme.replace(/_/g, '-')}`}>
+            <div>
                 <HomePage style={{ display: (!this.props.isSessionActive) ? '' : 'none' }} />
-                <Menu />
-                <div className="wrapper" style={this.state.wrapper}>
-                    <Editor
-                        ref={(editor) => { this.editorRef = editor; }}
-                        height={this.state.editor.height}
-                        width={this.state.editor.width}
-                    />
-                    <Chat style={{ display: (this.props.isChatVisible) ? '' : 'none' }} />
+                <div className={`${APP_CLASSNAME} ace-${this.props.theme.replace(/_/g, '-')}`}>
+                    <Menu />
+                    <div className="wrapper" style={this.state.wrapper}>
+                        <Editor
+                            ref={(editor) => { this.editorRef = editor; }}
+                            height={this.state.editor.height}
+                            width={this.state.editor.width}
+                        />
+                        <Chat style={{ display: (this.props.isChatVisible) ? '' : 'none' }} />
+                    </div>
+                    <StatusBar style={{ display: (this.props.isStatusBarVisible) ? '' : 'none' }} />
                 </div>
-                <StatusBar style={{ display: (this.props.isStatusBarVisible) ? '' : 'none' }} />
+                <Invite peerId="hello" />
             </div>
         );
     }

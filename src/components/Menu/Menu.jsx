@@ -10,6 +10,7 @@ import {
     SAVE_AS,
     SAVE_ALL,
     OPEN_SETTINGS,
+    TOGGLE_INVITE_MODAL,
     COMPILE_CODE,
 } from '../../actions';
 import './Menu.styl';
@@ -62,6 +63,7 @@ class Menu extends Component {
                     </MenuItem>
                     <MenuItem title="Tools">
                         <SubMenu>
+                            <MenuItem title="Invite a friend" command={TOGGLE_INVITE_MODAL} />
                             <MenuItem title="Chat" command={TOGGLE_CHAT} />
                             <MenuItem title="Compile" command={COMPILE_CODE} />
                         </SubMenu>

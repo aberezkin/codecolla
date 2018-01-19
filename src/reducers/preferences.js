@@ -5,7 +5,7 @@ import {
     SET_LANGUAGE,
     SET_LINEFEED,
     SET_THEME,
-    TOGGLE_CHAT,
+    TOGGLE_CHAT, TOGGLE_INVITE_MODAL,
     TOGGLE_STATUS_BAR,
     ENTER_SESSION,
 } from '../actions/index';
@@ -28,6 +28,14 @@ const isStatusBarVisible = (state = true, action) => {
     }
 };
 
+const isInviteModalOpen = (state = false, action) => {
+    switch (action.type) {
+        case TOGGLE_INVITE_MODAL:
+            return !state;
+        default: return state;
+    }
+};
+
 const isSessionActive = (state = false, action) => {
     switch (action.type) {
         case ENTER_SESSION:
@@ -43,5 +51,10 @@ const encoding = generateSetterReducer(SET_ENCODING, 'UTF-8');
 const editor = combineReducers({ language, linefeed, encoding });
 
 export default combineReducers({
-    theme, editor, isChatVisible, isStatusBarVisible, isSessionActive,
+    theme,
+    editor,
+    isChatVisible,
+    isStatusBarVisible,
+    isSessionActive,
+    isInviteModalOpen,
 });

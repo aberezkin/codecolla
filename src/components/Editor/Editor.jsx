@@ -1,8 +1,10 @@
+/* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
 import AceEditor from 'react-ace';
 import PropTypes from 'prop-types';
 import ChangeEvent from '../../utilities/ChangeEvent';
 import './Editor.styl';
+import { generateCursorMarker } from '../../utilities/Helpers';
 
 const EDIT_INSERT = 'insert';
 const EDIT_REMOVE = 'remove';
@@ -10,22 +12,31 @@ const EDIT_REMOVE = 'remove';
 class Editor extends Component {
     constructor(props) {
         super(props);
-        this.cursors = new Map();
 
         this.onChange = this.onChange.bind(this);
         this.onLoad = this.onLoad.bind(this);
         this.onCursorChange = this.onCursorChange.bind(this);
 
         this.isCursorTransfer = true;
+        this.state = { markerIds: [] };
+    }
+
+    componentWillReceiveProps({ cursors }) {
+        if (this.props.cursors !== cursors) {
+            const markers = this.editor.session.getMarkers(true);
+            markers.forEach(id => this.editor.session.removeMarker(markers[id].id));
+
+            this.setState({ markerIds: cursors.map(cursor =>
+                generateCursorMarker(this.editor.session, cursor).id) });
+        }
     }
 
     onChange(newValue, newEvent) {
         this.emitEditEvent(ChangeEvent.getEditEvent(newEvent));
     }
 
-    // eslint-disable-next-line class-methods-use-this
     onCursorChange() {
-        // TODO: broadcast some kind of cursorChange action
+        this.props.moveCursor(this.editor.getCursorPosition());
     }
 
     onLoad(ed) {
@@ -55,6 +66,11 @@ class Editor extends Component {
                 onChange={this.onChange}
                 name="UNIQUE_ID_OF_DIV"
                 editorProps={{ $blockScrolling: 'Infinity' }}
+                commands={[{
+                    name: 'commandCtrlZ',
+                    bindKey: { win: 'Ctrl-z', mac: 'Command-z', linux: 'Ctrl-z' },
+                    exec: () => { console.log('Ctrl-z'); },
+                }]}
             />
         );
     }
@@ -63,11 +79,13 @@ class Editor extends Component {
 Editor.propTypes = {
     onInsert: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
+    moveCursor: PropTypes.func.isRequired,
     language: PropTypes.string,
     theme: PropTypes.string,
     text: PropTypes.string,
     width: PropTypes.string,
     height: PropTypes.string,
+    cursors: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 Editor.defaultProps = {

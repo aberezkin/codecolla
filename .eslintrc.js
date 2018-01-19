@@ -21,5 +21,6 @@ module.exports = {
         "object-curly-newline": ["error", { "consistent": true }],
         "jsx-a11y/click-events-have-key-events": ["none"],
         "jsx-a11y/mouse-events-have-key-events": ["none"],
+        "no-console": 0,
     },
 };
