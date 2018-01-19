@@ -2,11 +2,15 @@ import { SET_IS_SEED, SET_LINEFEED, SET_IS_TRANSFER_ALLOWED,
     SET_ENCODING, SET_LANGUAGE, SET_THEME, INIT_PEER,
     ADD_PEER_FROM_ID, ADD_PEER, REMOVE_PEER, BROADCAST_ACTIONS,
     INSERT_EVENT, REMOVE_EVENT, REMOVE_LINE,
-    SEND_MESSAGE, ADD_MESSAGE, SET_LINE, INSERT_LINE, setIsSeed,
+    SEND_MESSAGE, ADD_MESSAGE, SET_LINE, SET_TEXT, INSERT_LINE, setIsSeed,
+    MOVE_CURSOR, ADD_CURSOR, DELETE_CURSOR, SET_CURSOR, SEND_ALL_TEXT,
+    BROADCAST_DATA_TO_PEER, broadcastActionsToPeer,
+    moveCursor, addCursor, deleteCursor, setCursor, sendAllText,
     setIsTransferAllowed, setLinefeed, setEncoding,
     setLanguage, setTheme, addPeer, addPeerFromId, removePeer,
     insertEvent, removeEvent, removeLine, sendMessage,
-    addMessage, broadcastActions, initPeer, setLine, insertLine } from './index';
+    addMessage, broadcastActions, initPeer, setLine, setText, insertLine,
+    sendCode, handleMenuCommand, SEND_URL } from './index';
 
 const testSyncActionCreator = (actionCreator, payload, expectedValue) => {
     it(`should create ${expectedValue.type} action`, () => {
@@ -43,6 +47,74 @@ describe('simple payload action creators', () => {
     testSyncActionCreator(initPeer, null, { type: INIT_PEER });
 });
 
+describe('set text action', () => {
+    it(`should create ${SET_TEXT} action with string`, () => {
+        expect(Array.isArray(setText('first\n second').payload)).toEqual(Array.isArray([]));
+    });
+
+    it(`should create ${SET_TEXT} action with array`, () => {
+        expect(Array.isArray(setText([]).payload)).toEqual(Array.isArray([]));
+    });
+
+    it(`should create ${SET_TEXT} action with trash`, () => {
+        expect(() => setText(1999)).toThrow();
+    });
+});
+
+describe('test cursor actions', () => {
+    it(`should create ${MOVE_CURSOR} action`, () => {
+        expect(moveCursor(1, { row: 1, col: 1 })).toEqual({ type: MOVE_CURSOR,
+            payload: {
+                id: 1,
+                pos: { row: 1, col: 1 },
+            } });
+    });
+
+    it(`should create ${ADD_CURSOR} action`, () => {
+        expect(addCursor({ row: 1, col: 1 })).toEqual({
+            type: ADD_CURSOR, payload: { row: 1, col: 1 },
+        });
+    });
+    it(`should create ${DELETE_CURSOR} action`, () => {
+        expect(deleteCursor({ row: 1, col: 1 })).toEqual({
+            type: DELETE_CURSOR, payload: { row: 1, col: 1 },
+        });
+    });
+    it(`should create ${SET_CURSOR} action`, () => {
+        expect(setCursor({ row: 1, col: 1 })).toEqual({
+            type: SET_CURSOR, payload: { row: 1, col: 1 },
+        });
+    });
+});
+
+describe('test send all text action', () => {
+    const eq = {
+        type: SEND_ALL_TEXT,
+        payload: 1,
+    };
+    it(`should create ${SEND_ALL_TEXT} action`, () => {
+        expect(sendAllText(1)).toEqual(eq);
+    });
+});
+
+describe('test broadcast data to peer action', () => {
+    const eq = {
+        type: BROADCAST_DATA_TO_PEER,
+        payload: 'qwerty',
+    };
+    it(`should create ${BROADCAST_DATA_TO_PEER} action`, () => {
+        expect(broadcastActionsToPeer('qwerty')).toEqual(eq);
+    });
+});
+
+describe('test handleMenuCommand action', () => {
+    const eq = {
+        type: 'qwerty',
+        payload: false,
+    };
+    expect(handleMenuCommand('qwerty')).toEqual(eq);
+});
+
 describe('several arguments actions', () => {
     it(`should create ${SET_LINE} action`, () => {
         const expectedValue = {
@@ -67,6 +139,27 @@ describe('several arguments actions', () => {
 
         expect(insertLine(3, { atom: 'mock' })).toEqual(expectedValue);
     });
+
+    const POST_REQUEST = 'react-redux-fetch/POST_REQUEST';
+    it(`should create ${POST_REQUEST} action`, () => {
+        const expectedValue = {
+            type: POST_REQUEST,
+            method: 'post',
+            resource: {
+                name: 'compileBox',
+            },
+            request: {
+                url: SEND_URL,
+                body: {
+                    code: 'puts [123]\n',
+                    language: 1,
+                    stdin: '',
+                },
+            },
+        };
+
+        expect(sendCode(1, 'puts [123]\n')).toEqual(expectedValue);
+    });
 });
 
 describe('throws from action creators', () => {
@@ -80,5 +173,6 @@ describe('throws from action creators', () => {
         expect(() => setLine('4', { atom: 'mock' })).toThrow();
     });
 });
+
 
 // TODO: test SET_TEXT action creator
