@@ -10,7 +10,7 @@ import { SET_IS_SEED, SET_LINEFEED, SET_IS_TRANSFER_ALLOWED,
     setLanguage, setTheme, addPeer, addPeerFromId, removePeer,
     insertEvent, removeEvent, removeLine, sendMessage,
     addMessage, broadcastActions, initPeer, setLine, setText, insertLine,
-    sendCode, handleMenuCommand, SEND_URL } from './index';
+    sendCode, handleMenuCommand, SEND_URL, getGist, RESOURCE_GIST } from './index';
 
 const testSyncActionCreator = (actionCreator, payload, expectedValue) => {
     it(`should create ${expectedValue.type} action`, () => {
@@ -159,6 +159,22 @@ describe('several arguments actions', () => {
         };
 
         expect(sendCode(1, 'puts [123]\n')).toEqual(expectedValue);
+    });
+
+    const GET_REQUEST = 'react-redux-fetch/GET_REQUEST';
+    it(`should create ${GET_REQUEST} action`, () => {
+        const expectedValue = {
+            type: GET_REQUEST,
+            method: 'get',
+            resource: {
+                name: RESOURCE_GIST,
+            },
+            request: {
+                url: 'http://api.github.com/gists/2usl212',
+            },
+        };
+
+        expect(getGist('2usl212')).toEqual(expectedValue);
     });
 });
 

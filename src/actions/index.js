@@ -163,7 +163,7 @@ export const RESOURCE_GIST = 'gist';
 
 export function sendCode(langid, text) {
     return buildActionsFromMappings([{
-        resource: 'compileBox',
+        resource: RESOURCE_COMPILEBOX,
         method: 'post',
         request: {
             url: SEND_URL,
@@ -179,7 +179,7 @@ export function sendCode(langid, text) {
 export const GET_GIST = 'GET GIST';
 export function getGist(gistId) {
     return buildActionsFromMappings([{
-        resource: 'gist',
+        resource: RESOURCE_GIST,
         method: 'get',
         request: {
             url: `http://api.github.com/gists/${gistId}`,
