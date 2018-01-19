@@ -2,7 +2,7 @@
 import middleware, { CONNECTION_CLOSE, CONNECTION_EVENT, CONNECTION_OPEN, DATA_TRANSFER, PEER_ERROR } from '../peer';
 import {
     ADD_PEER, ADD_PEER_FROM_ID, addPeer, addPeerFromId,
-    BROADCAST_ACTIONS, broadcastActions, initPeer, removePeer, setPeerId,
+    BROADCAST_ACTIONS, broadcastActions, initPeer, removePeer, setPeerId, BROADCAST_DATA_TO_PEER,
 } from '../../actions/index';
 
 class ConnectionMock {
@@ -10,6 +10,7 @@ class ConnectionMock {
         this.listeners = {};
         this.connect = jest.fn(() => new ConnectionMock());
         this.send = jest.fn();
+        this.peer = 'peer';
     }
 
     on(event, callback) {
@@ -53,7 +54,7 @@ describe('eventifyConnection test', () => {
 
         connection.triggerCallbacks(CONNECTION_CLOSE);
 
-        expect(dispatch).toHaveBeenCalledWith(removePeer(connection));
+        expect(dispatch).toHaveBeenCalledWith(removePeer(connection.peer));
     });
 
     it('should dispatch remove peer on error', () => {
@@ -61,7 +62,7 @@ describe('eventifyConnection test', () => {
 
         connection.triggerCallbacks(PEER_ERROR);
 
-        expect(dispatch).toHaveBeenCalledWith(removePeer(connection));
+        expect(dispatch).toHaveBeenCalledWith(removePeer(connection.peer));
     });
 
     // TODO: implement after isSeed bug fix
@@ -159,5 +160,28 @@ describe('peers middleware', () => {
         const stringifiedBroadcastedActions = JSON.stringify(broadcastedActions);
         connections
             .forEach(conn => expect(conn.send).toHaveBeenCalledWith(stringifiedBroadcastedActions));
+    });
+
+    it(`should handle ${BROADCAST_DATA_TO_PEER} action`, () => {
+        const connections = [
+            new ConnectionMock(),
+            new ConnectionMock(),
+            new ConnectionMock(),
+            new ConnectionMock(),
+        ];
+        const { next, invoke } = setup(connections);
+        const broadcastedActions = [initPeer(), addPeerFromId('hello')];
+        const action = broadcastActions(broadcastedActions);
+
+        invoke(action);
+
+        expect(next).not.toHaveBeenCalled();
+
+        const stringifiedBroadcastedActions = JSON.stringify(broadcastedActions);
+        connections
+            .forEach((conn) => {
+                if (conn.peer === action.payload.id)
+                    expect(conn.send).toHaveBeenCalledWith(stringifiedBroadcastedActions);
+            });
     });
 });
