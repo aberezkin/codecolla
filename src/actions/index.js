@@ -113,6 +113,11 @@ export function addMessage(message) {
     return createAction(ADD_MESSAGE, message);
 }
 
+export const ENTER_SESSION = 'ENTER SESSION';
+export function enterSession(nickname) {
+    return createAction(ENTER_SESSION, nickname);
+}
+
 // Reset to needed server-ip
 export const SEND_URL = 'http://example.ru/compile';
 export const COMPILE_CODE = 'COMPILE CODE';

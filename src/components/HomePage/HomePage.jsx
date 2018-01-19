@@ -7,11 +7,11 @@ export const HOME_PAGE = 'HomePage';
 class HomePage extends Component {
     constructor(props) {
         super(props);
-        this.isNickNameValid = false;
+        this.state = { nickname: '' };
     }
 
-    onSelect(event) {
-        this.isNickNameValid = event.target.value.match(/^[^0-9]\w+$/) !== null;
+    onSelect() {
+        this.isNickNameValid = this.state.nickname === '' || this.state.nickname.match(/^[^0-9]\w+$/) !== null;
         document.querySelector(`.${HOME_PAGE} .wrapper input`).style.boxShadow = !this.isNickNameValid ? '0 0 10px red' : '0 0 10px #3b53ff';
     }
 
@@ -20,8 +20,8 @@ class HomePage extends Component {
     }
 
     enterSession() {
-        if (this.isNickNameValid)
-            this.props.enterSession(this.props.nickname);
+        if (this.state.nickname.length && this.isNickNameValid)
+            this.props.enterSession(this.state.nickname);
     }
 
     render() {
@@ -31,10 +31,11 @@ class HomePage extends Component {
                     <div id="Logo">CodeColla</div>
                     <input
                         type="text"
-                        value={this.props.nickname}
+                        value={this.state.nickname}
                         placeholder="Nickname..."
-                        onSelect={(event) => { this.onSelect(event); }}
-                        onBlur={() => { this.onBlur(); }}
+                        onChange={event => this.setState({ nickname: event.target.value })}
+                        onSelect={() => this.onSelect()}
+                        onBlur={() => this.onBlur()}
                     />
                     <button
                         id="CreateNewSession"
@@ -49,7 +50,6 @@ class HomePage extends Component {
 }
 
 HomePage.propTypes = {
-    nickname: PropTypes.string.isRequired,
     enterSession: PropTypes.func.isRequired,
     style: PropTypes.objectOf(PropTypes.string),
 };

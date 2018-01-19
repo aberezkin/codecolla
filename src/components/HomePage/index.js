@@ -2,12 +2,8 @@ import { connect } from 'react-redux';
 import HomePage from './HomePage';
 import { enterSession } from '../../actions';
 
-const mapStateToProps = state => ({
-    nickname: state.preferences.nickname,
-});
-
 const mapDispatchToProps = dispatch => ({
-    enterSession: command => dispatch(enterSession(command)),
+    enterSession: nickname => dispatch(enterSession(nickname)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(null, mapDispatchToProps)(HomePage);
