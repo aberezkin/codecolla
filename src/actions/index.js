@@ -1,6 +1,10 @@
 import { buildActionsFromMappings } from 'react-redux-fetch';
 import { generateAtom } from '../utilities/Helpers';
 
+export function createSimpleAction(type) {
+    return { type };
+}
+
 function createAction(type, payload = undefined) {
     return { type, payload };
 }
@@ -173,9 +177,9 @@ export function handleMenuCommand(command) {
     return createAction(command, false);
 }
 
-
 export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
 export const TOGGLE_CHAT = 'TOGGLE CHAT';
+export const TOGGLE_INVITE_MODAL = 'TOGGLE INVITE MODAL';
 export const CREATE_NEW = 'CREATE NEW';
 export const OPEN_SMTH = 'OPEN SMTH';
 export const OPEN_URL = 'OPEN URL';
