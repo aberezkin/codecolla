@@ -1,6 +1,6 @@
 import { applyMiddleware } from 'redux';
-import { middleware as fetchMiddleware } from 'react-redux-fetch';
 import multi from 'redux-multi';
+import { middleware as fetchMiddleware } from 'react-redux-fetch';
 import peers from './peer';
 import chat from './chat';
 import text from './text';
@@ -8,12 +8,12 @@ import cursor from './cursor';
 import compileCode from './compile-code';
 
 const middlewares = [
+    fetchMiddleware, // it must be first!!!
     peers,
     chat,
     text,
     cursor,
     compileCode,
-    fetchMiddleware,
     multi, // it must be last!!!
 ];
 

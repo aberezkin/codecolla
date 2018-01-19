@@ -1,10 +1,12 @@
 import {
-    sendCode,
     addMessage,
     handleMenuCommand,
-    broadcastActions,
+    sendCode,
+    sendMessage,
     TOGGLE_CHAT,
     COMPILE_CODE,
+    POST_FULFIL,
+    POST_REJECT,
 } from '../actions';
 
 const LANGS = new Map([
@@ -26,10 +28,10 @@ const LANGS = new Map([
     ['rust', 15],
 ]);
 
-const createMessage = text => ({
-    author: 'Compile Box',
+const createMessage = (author, text, date = new Date()) => ({
+    author,
     content: text,
-    date: new Date(),
+    date,
 });
 const getText = state => state.text.toArray().map(i => i.toObject().text).join('\n');
 const getLanguage = (state) => {
@@ -44,28 +46,38 @@ const getLanguage = (state) => {
 export default store => next => (action) => {
     const curState = store.getState();
     switch (action.type) {
+        case POST_FULFIL: {
+            const dateOutput = new Date();
+            const dateLog = new Date(dateOutput.valueOf() + 1);
+            const sendStdout = sendMessage(createMessage('Compile Box (stdout)', action.value.output, dateOutput));
+            const sendStderr = sendMessage(createMessage('Compile Box (stderr)', action.value.errors, dateLog));
+            store.dispatch([sendStdout, sendStderr]);
+            next(action);
+            break;
+        }
+        case POST_REJECT: {
+            const addMessageAction = addMessage(createMessage('Compile Box', action.reason.message, new Date()));
+            store.dispatch(addMessageAction);
+            next(action);
+            break;
+        }
         case COMPILE_CODE: {
             const language = getLanguage(curState);
-            if (language < 0) {
-                const addMessageAction = addMessage(createMessage('This language is not supported!'));
-                next(addMessageAction);
-                break;
-            }
             const text = getText(curState);
-
-            const sendCodeAction = sendCode(language, text);
-            store.dispatch(broadcastActions([sendCodeAction]));
-            next(sendCodeAction);
 
             if (!curState.preferences.isChatVisible) {
                 const toggleChatAction = handleMenuCommand(TOGGLE_CHAT);
-                store.dispatch(broadcastActions([toggleChatAction]));
-                next(toggleChatAction);
+                store.dispatch(toggleChatAction);
+            }
+            if (language < 0) {
+                const sendMessageAction = sendMessage(createMessage('Compile Box', 'This language is not supported!'));
+                store.dispatch(sendMessageAction);
+                break;
             }
 
-            const addMessageAction = addMessage(createMessage('Code is sent'));
-            store.dispatch(broadcastActions([addMessageAction]));
-            next(addMessageAction);
+            const sendCodeAction = sendCode(language, text);
+            const sendMessageAction = sendMessage(createMessage('Compile Box', 'Code is sent'));
+            store.dispatch([sendCodeAction, sendMessageAction]);
             break;
         }
         default: next(action);
