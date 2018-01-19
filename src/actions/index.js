@@ -1,3 +1,4 @@
+import { buildActionsFromMappings } from 'react-redux-fetch';
 import { generateAtom } from '../utilities/Helpers';
 
 function createAction(type, payload = undefined) {
@@ -150,9 +151,28 @@ export function addMessage(message) {
     return createAction(ADD_MESSAGE, message);
 }
 
+// Reset to needed server-ip
+export const SEND_URL = 'http://example.ru/compile';
+export const COMPILE_CODE = 'COMPILE CODE';
+export function sendCode(langid, text) {
+    return buildActionsFromMappings([{
+        resource: 'compileBox',
+        method: 'post',
+        request: {
+            url: SEND_URL,
+            body: {
+                language: langid,
+                code: text,
+                stdin: '',
+            },
+        },
+    }]).compileBoxPost();
+}
+
 export function handleMenuCommand(command) {
     return createAction(command, false);
 }
+
 
 export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
 export const TOGGLE_CHAT = 'TOGGLE CHAT';
@@ -162,3 +182,8 @@ export const OPEN_URL = 'OPEN URL';
 export const SAVE_AS = 'SAVE AS';
 export const SAVE_ALL = 'SAVE ALL';
 export const OPEN_SETTINGS = 'OPEN SETTINGS';
+
+export const COMPILE_RUBY = 'COMPILE RUBY';
+export const COMPILE_CPP = 'COMPILE CPP';
+export const POST_FULFIL = 'react-redux-fetch/POST_FULFIL';
+export const POST_REJECT = 'react-redux-fetch/POST_REJECT';
