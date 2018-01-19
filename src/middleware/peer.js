@@ -1,7 +1,9 @@
 import '../utilities/Peerjs';
-import { ADD_PEER, ADD_PEER_FROM_ID,
-    addPeer, BROADCAST_ACTIONS, INIT_PEER, removePeer, setPeerId } from '../actions/index';
-import ChangeEvent, { DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
+import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS,
+    BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer,
+    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor } from '../actions/index';
+import { DELETE_CURSOR, MOVE_CURSOR,
+    ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
 
 export const CONNECTION_EVENT = 'connection';
 export const CONNECTION_OPEN = 'open';
@@ -13,8 +15,10 @@ const localPeer = new Peer({ key: 'e0twf5gs81lzbyb9' });
 
 function eventifyConnection(connection, isSeed, dispatch, peer) {
     connection.on(CONNECTION_OPEN, () => {
-        // TODO: migrate this to dispatch
-        if (isSeed) this.broadcastEvent(ChangeEvent.getAddPeerEvent(connection.peer));
+        if (isSeed) {
+            dispatch(sendAllText(connection.peer));
+            dispatch(broadcastActions([addPeerFromId(connection.peer)]));
+        }
     });
 
     connection.on(DATA_TRANSFER, (data) => {
@@ -22,16 +26,12 @@ function eventifyConnection(connection, isSeed, dispatch, peer) {
         const firstEvent = eventArray[0];
 
         // TODO: Send ONLY redux actions and just dispatch them
-        switch (firstEvent.action) {
+        switch (firstEvent.type) {
             case DELETE_CURSOR:
             case MOVE_CURSOR:
+            case SET_CURSOR:
             case ADD_CURSOR: {
-                // TODO: handle cursor changes messages
-                // this.cursorEventHandler({
-                //     type: unpackedEvent.action,
-                //     peerId: unpackedEvent.peer,
-                //     position: unpackedEvent.pos
-                // });
+                dispatch(eventArray);
                 break;
             }
             case PEER_ADDITION: {
@@ -44,12 +44,15 @@ function eventifyConnection(connection, isSeed, dispatch, peer) {
         }
     });
 
-    connection.on(PEER_ERROR, () => {
-        dispatch(removePeer(connection));
+    connection.on(PEER_ERROR, (err) => {
+        console.log('ERROR', err);
+        dispatch(removePeer(connection.peer));
+        dispatch(deleteCursor(connection.peer));
     });
 
     connection.on(CONNECTION_CLOSE, () => {
-        dispatch(removePeer(connection));
+        dispatch(removePeer(connection.peer));
+        dispatch(deleteCursor(connection.peer));
     });
 
     return connection;
@@ -85,6 +88,11 @@ const peersMiddleware = peer => store => next => action => {
                 .peers
                 .connections
                 .forEach(conn => conn.send(JSON.stringify(action.payload)));
+            break;
+        case BROADCAST_DATA_TO_PEER:
+            store.getState().peers.connections
+                .find(conn => conn.peer === action.payload.id)
+                .send(JSON.stringify(action.payload.broadcastedAction));
             break;
         default: next(action);
     }
