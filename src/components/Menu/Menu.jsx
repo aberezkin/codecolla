@@ -12,6 +12,7 @@ import {
     OPEN_SETTINGS,
     TOGGLE_INVITE_MODAL,
     COMPILE_CODE,
+    GET_GIST,
 } from '../../actions';
 import './Menu.styl';
 
@@ -66,6 +67,7 @@ class Menu extends Component {
                             <MenuItem title="Invite a friend" command={TOGGLE_INVITE_MODAL} />
                             <MenuItem title="Chat" command={TOGGLE_CHAT} />
                             <MenuItem title="Compile" command={COMPILE_CODE} />
+                            <MenuItem title="Pull gist" command={GET_GIST} />
                         </SubMenu>
                     </MenuItem>
                     <MenuItem title="Help">

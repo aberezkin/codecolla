@@ -6,6 +6,7 @@ import chat from './chat';
 import text from './text';
 import cursor from './cursor';
 import compileCode from './compile-code';
+import gistGetter from './gist-getter';
 
 const middlewares = [
     fetchMiddleware, // it must be first!!!
@@ -14,6 +15,7 @@ const middlewares = [
     text,
     cursor,
     compileCode,
+    gistGetter,
     multi, // it must be last!!!
 ];
 

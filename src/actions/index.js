@@ -158,6 +158,9 @@ export function addMessage(message) {
 // Reset to needed server-ip
 export const SEND_URL = 'http://example.ru/compile';
 export const COMPILE_CODE = 'COMPILE CODE';
+export const RESOURCE_COMPILEBOX = 'compileBox';
+export const RESOURCE_GIST = 'gist';
+
 export function sendCode(langid, text) {
     return buildActionsFromMappings([{
         resource: 'compileBox',
@@ -171,6 +174,17 @@ export function sendCode(langid, text) {
             },
         },
     }]).compileBoxPost();
+}
+
+export const GET_GIST = 'GET GIST';
+export function getGist(gistId) {
+    return buildActionsFromMappings([{
+        resource: 'gist',
+        method: 'get',
+        request: {
+            url: `http://api.github.com/gists/${gistId}`,
+        },
+    }]).gistGet();
 }
 
 export function handleMenuCommand(command) {
@@ -189,5 +203,7 @@ export const OPEN_SETTINGS = 'OPEN SETTINGS';
 
 export const COMPILE_RUBY = 'COMPILE RUBY';
 export const COMPILE_CPP = 'COMPILE CPP';
+export const GET_FULFIL = 'react-redux-fetch/GET_FULFIL';
+export const GET_REJECT = 'react-redux-fetch/GET_REJECT';
 export const POST_FULFIL = 'react-redux-fetch/POST_FULFIL';
 export const POST_REJECT = 'react-redux-fetch/POST_REJECT';

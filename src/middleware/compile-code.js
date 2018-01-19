@@ -7,6 +7,7 @@ import {
     COMPILE_CODE,
     POST_FULFIL,
     POST_REJECT,
+    RESOURCE_COMPILEBOX,
 } from '../actions';
 
 const LANGS = new Map([
@@ -47,17 +48,21 @@ export default store => next => (action) => {
     const curState = store.getState();
     switch (action.type) {
         case POST_FULFIL: {
-            const dateOutput = new Date();
-            const dateLog = new Date(dateOutput.valueOf() + 1);
-            const sendStdout = sendMessage(createMessage('Compile Box (stdout)', action.value.output, dateOutput));
-            const sendStderr = sendMessage(createMessage('Compile Box (stderr)', action.value.errors, dateLog));
-            store.dispatch([sendStdout, sendStderr]);
+            if (action.resource.name === RESOURCE_COMPILEBOX) {
+                const dateOutput = new Date();
+                const dateLog = new Date(dateOutput.valueOf() + 1);
+                const sendStdout = sendMessage(createMessage('Compile Box (stdout)', action.value.output, dateOutput));
+                const sendStderr = sendMessage(createMessage('Compile Box (stderr)', action.value.errors, dateLog));
+                store.dispatch([sendStdout, sendStderr]);
+            }
             next(action);
             break;
         }
         case POST_REJECT: {
-            const addMessageAction = addMessage(createMessage('Compile Box', action.reason.message, new Date()));
-            store.dispatch(addMessageAction);
+            if (action.resource.name === RESOURCE_COMPILEBOX) {
+                const addMessageAction = addMessage(createMessage('Compile Box', action.reason.message, new Date()));
+                store.dispatch(addMessageAction);
+            }
             next(action);
             break;
         }
