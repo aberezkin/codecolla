@@ -1,7 +1,7 @@
 import '../utilities/Peerjs';
 import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS, ADD_MESSAGE,
     BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer, CONNECT_TO_ALL_PEERS, connectToAllPeers,
-    setPeerId, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor } from '../actions/index';
+    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor } from '../actions/index';
 import { DELETE_CURSOR, MOVE_CURSOR,
     ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
 
@@ -41,6 +41,7 @@ function eventifyConnection(connection, dispatch, peer) {
             }
             case CONNECT_TO_ALL_PEERS: {
                 dispatch(broadcastActions([addPeerFromId(firstEvent.payload)]));
+                dispatch(sendAllText(connection.peer));
                 break;
             }
             case ADD_MESSAGE: {
