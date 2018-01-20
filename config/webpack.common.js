@@ -62,6 +62,7 @@ module.exports = config => {
             new HtmlWebpackPlugin({
                 title: 'Codecolla',
                 filename: 'index.html',
+                favicon: helpers.root("/src/favicon.ico"),
                 template: helpers.root("/src/index.ejs"),
             })
         ]
