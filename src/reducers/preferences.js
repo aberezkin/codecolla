@@ -44,6 +44,7 @@ const isSessionActive = (state = false, action) => {
     }
 };
 
+const nickname = generateSetterReducer(ENTER_SESSION, '');
 const language = generateSetterReducer(SET_LANGUAGE, 'javascript');
 const linefeed = generateSetterReducer(SET_LINEFEED, 'LF');
 const encoding = generateSetterReducer(SET_ENCODING, 'UTF-8');
@@ -51,6 +52,7 @@ const encoding = generateSetterReducer(SET_ENCODING, 'UTF-8');
 const editor = combineReducers({ language, linefeed, encoding });
 
 export default combineReducers({
+    nickname,
     theme,
     editor,
     isChatVisible,
