@@ -7,7 +7,8 @@ import {
     SET_THEME,
     TOGGLE_CHAT, TOGGLE_INVITE_MODAL,
     TOGGLE_STATUS_BAR,
-} from '../actions';
+    ENTER_SESSION,
+} from '../actions/index';
 
 const theme = generateSetterReducer(SET_THEME, 'monokai');
 
@@ -35,6 +36,15 @@ const isInviteModalOpen = (state = false, action) => {
     }
 };
 
+const isSessionActive = (state = false, action) => {
+    switch (action.type) {
+        case ENTER_SESSION:
+            return true;
+        default: return state;
+    }
+};
+
+const nickname = generateSetterReducer(ENTER_SESSION, '');
 const language = generateSetterReducer(SET_LANGUAGE, 'javascript');
 const linefeed = generateSetterReducer(SET_LINEFEED, 'LF');
 const encoding = generateSetterReducer(SET_ENCODING, 'UTF-8');
@@ -42,9 +52,11 @@ const encoding = generateSetterReducer(SET_ENCODING, 'UTF-8');
 const editor = combineReducers({ language, linefeed, encoding });
 
 export default combineReducers({
+    nickname,
     theme,
     editor,
     isChatVisible,
     isStatusBarVisible,
+    isSessionActive,
     isInviteModalOpen,
 });

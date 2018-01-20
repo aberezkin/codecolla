@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+
+
+#Logo
+  margin 0 auto
+  margin-top -140px
+  font-family 'Lobster', SansSerif
+  font-size 84pt
+  user-select none
+
+.HomePage
+  position fixed
+  z-index 9999
+  top 0
+  left 0
+  right 0
+  bottom 0
+  background inherit
+  display flex
+  flex-direction column
+  .wrapper
+    display flex
+    flex-direction column
+    width auto
+    margin auto
+    input, #CreateNewSession
+      font-family monospace
+      border 4px solid white
+      padding 5px
+      font-size 14pt
+      margin 0 auto
+    input
+      width 280px
+      outline none
+      margin-top 40px
+    #CreateNewSession
+      width 298px
+      margin-top 10px
+      color inherit
+      background inherit
+      border-color rgb(255, 63, 5)
+      text-align center
+      height fit-content
+      cursor pointer
+      outline none
+      transition background-color 0.2s linear, color 0.2s linear
+      &:hover
+        color white
+        background rgb(255, 63, 5)

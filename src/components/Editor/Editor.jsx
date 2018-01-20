@@ -47,6 +47,7 @@ class Editor extends Component {
     onLoad(ed) {
         this.editor = ed;
         this.editor.session.setNewLineMode('unix');
+        this.editor.session.setUseWorker(false);
         this.editor.selection.on('changeCursor', this.onCursorChange);
     }
 
