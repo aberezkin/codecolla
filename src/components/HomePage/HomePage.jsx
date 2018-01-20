@@ -41,7 +41,7 @@ class HomePage extends Component {
                         id="CreateNewSession"
                         onClick={(event) => { this.enterSession(event); }}
                     >
-                        Create new session
+                        Start coding
                     </button>
                 </div>
             </div>
