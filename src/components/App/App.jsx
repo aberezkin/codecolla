@@ -60,8 +60,8 @@ export default class App extends Component {
     render() {
         return (
             <div>
-                <HomePage style={{ display: (!this.props.isSessionActive) ? '' : 'none' }} />
                 <div className={`${APP_CLASSNAME} ace-${this.props.theme.replace(/_/g, '-')}`}>
+                    <HomePage style={{ display: (!this.props.isSessionActive) ? '' : 'none' }} />
                     <Menu />
                     <div className="wrapper" style={this.state.wrapper}>
                         <Editor
