@@ -194,7 +194,7 @@ export function getGist(gistId) {
         resource: RESOURCE_GIST,
         method: 'get',
         request: {
-            url: `http://api.github.com/gists/${gistId}`,
+            url: `https://api.github.com/gists/${gistId}`,
         },
     }]).gistGet();
 }

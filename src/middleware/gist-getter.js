@@ -1,6 +1,7 @@
 import {
     getGist,
     setText,
+    broadcastActions,
     GET_GIST,
     GET_FULFIL,
     GET_REJECT,
@@ -19,7 +20,7 @@ export default store => next => (action) => {
                 const fileNames = Object.keys(action.value.files);
                 if (fileNames.length === 1) {
                     const setTextAction = setText(action.value.files[fileNames[0]].content);
-                    store.dispatch(setTextAction);
+                    store.dispatch([broadcastActions([setTextAction]), setTextAction]);
                 }
             }
             next(action);

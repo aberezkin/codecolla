@@ -15,8 +15,8 @@ const text =
 // TODO: Move all this logic to App component and logic from App component somewhere else.
 export default class Branching extends Component {
     componentDidMount() {
-        this.props.initPeer();
         this.props.setText(text);
+        this.props.initPeer();
     }
 
     render() {

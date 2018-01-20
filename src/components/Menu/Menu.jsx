@@ -64,7 +64,6 @@ class Menu extends Component {
                     </MenuItem>
                     <MenuItem title="Tools">
                         <SubMenu>
-                            <MenuItem title="Invite a friend" command={TOGGLE_INVITE_MODAL} />
                             <MenuItem title="Chat" command={TOGGLE_CHAT} />
                             <MenuItem title="Compile" command={COMPILE_CODE} />
                             <MenuItem title="Pull gist" command={GET_GIST} />
@@ -79,6 +78,7 @@ class Menu extends Component {
     }
 }
 
+//<!-- <MenuItem title="Invite a friend" command={TOGGLE_INVITE_MODAL} />-->
 Menu.propTypes = {
     onMenuOptionHandler: PropTypes.func.isRequired,
     style: PropTypes.objectOf(PropTypes.string),

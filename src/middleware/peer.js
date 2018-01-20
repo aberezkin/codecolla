@@ -1,7 +1,7 @@
 import '../utilities/Peerjs';
 import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS, ADD_MESSAGE,
     BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer, CONNECT_TO_ALL_PEERS, connectToAllPeers,
-    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor } from '../actions/index';
+    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor, addMessage } from '../actions/index';
 import { DELETE_CURSOR, MOVE_CURSOR,
     ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
 
@@ -13,6 +13,12 @@ export const PEER_ERROR = 'error';
 
 const localPeer = new Peer({ key: 'e0twf5gs81lzbyb9' });
 let sayHelloToOtherPeers = false;
+
+const createMessage = (author, text, date = new Date()) => ({
+    author,
+    content: text,
+    date,
+});
 
 function eventifyConnection(connection, dispatch, peer) {
     connection.on(CONNECTION_OPEN, () => {
@@ -78,7 +84,7 @@ const peersMiddleware = peer => store => next => action => {
             peer.on(CONNECTION_OPEN, (id) => {
                 // eslint-disable-next-line no-console
                 console.log('pid: ', id);
-                store.dispatch(setPeerId(id));
+                store.dispatch([setPeerId(id), addMessage(createMessage("pid:", id))]);
             });
             break;
         case ADD_PEER_FROM_ID:
