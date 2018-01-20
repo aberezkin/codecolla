@@ -80,8 +80,15 @@ export function addPeer(connection) {
 }
 
 export const ADD_PEER_FROM_ID = 'ADD PEER FROM ID';
-export function addPeerFromId(id) {
-    return createAction(ADD_PEER_FROM_ID, id);
+export function addPeerFromId(id, needAllPeers) {
+    if (needAllPeers === undefined)
+        needAllPeers = false;
+    return createAction(ADD_PEER_FROM_ID, { id, needAllPeers });
+}
+
+export const CONNECT_TO_ALL_PEERS = 'CONNECT TO ALL PEERS';
+export function connectToAllPeers(connect) {
+    return createAction(CONNECT_TO_ALL_PEERS, connect);
 }
 
 export const REMOVE_PEER = 'REMOVE PEER';
@@ -153,6 +160,11 @@ export function sendMessage(message) {
 export const ADD_MESSAGE = 'ADD MESSAGE';
 export function addMessage(message) {
     return createAction(ADD_MESSAGE, message);
+}
+
+export const ENTER_SESSION = 'ENTER SESSION';
+export function enterSession(nickname) {
+    return createAction(ENTER_SESSION, nickname);
 }
 
 // Reset to needed server-ip
