@@ -25,7 +25,7 @@ class Chat extends Component {
         if (this.state.textareaValue === '') return;
 
         const elem = {
-            author: 'test',
+            author: this.props.nickname,
             content: this.state.textareaValue,
             date: new Date(),
         };
@@ -80,6 +80,7 @@ Chat.propTypes = {
     style: PropTypes.objectOf(PropTypes.string),
     messages: PropTypes.arrayOf(PropTypes.object),
     onMessage: PropTypes.func,
+    nickname: PropTypes.string.isRequired,
 };
 
 Chat.defaultProps = {
