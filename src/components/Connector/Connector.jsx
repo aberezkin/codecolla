@@ -32,12 +32,6 @@ class Connector extends Component {
                 <button onClick={() => this.props.connectToPeer(this.addPeer)}>
                     Connect
                 </button>
-                <input
-                    type="checkbox"
-                    id="cb"
-                    name="admin"
-                    onChange={this.props.seedChange}
-                />
             </div>
         );
     }
@@ -46,7 +40,6 @@ class Connector extends Component {
 
 Connector.propTypes = {
     connectToPeer: PropTypes.func.isRequired,
-    seedChange: PropTypes.func.isRequired,
 };
 
 export default Connector;
