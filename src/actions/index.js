@@ -80,8 +80,15 @@ export function addPeer(connection) {
 }
 
 export const ADD_PEER_FROM_ID = 'ADD PEER FROM ID';
-export function addPeerFromId(id) {
-    return createAction(ADD_PEER_FROM_ID, id);
+export function addPeerFromId(id, needAllPeers) {
+    if (needAllPeers === undefined)
+        needAllPeers = false;
+    return createAction(ADD_PEER_FROM_ID, { id, needAllPeers });
+}
+
+export const CONNECT_TO_ALL_PEERS = 'CONNECT TO ALL PEERS';
+export function connectToAllPeers(connect) {
+    return createAction(CONNECT_TO_ALL_PEERS, connect);
 }
 
 export const REMOVE_PEER = 'REMOVE PEER';
