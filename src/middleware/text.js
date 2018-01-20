@@ -1,33 +1,59 @@
-import { broadcastActions, INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine } from '../actions/index';
+import { broadcastActions, broadcastActionsToPeer,
+    INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
+    SET_LINE, SEND_ALL_TEXT, SET_TEXT } from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
+
+function breakUpTextAtom(atom, pos, pasteText) {
+    const oldText = atom.get('text');
+    return atom.set('text', oldText.slice(0, pos) + pasteText);
+}
+
+function getNewTimeForAtom(atom) {
+    const oldTime = atom.get('time');
+    return atom.set('time', oldTime + 1);
+}
 
 function insertTextToAtom(atom, pos, pasteText) {
     const oldText = atom.get('text');
-    return atom.set('text', oldText.slice(0, pos) + pasteText + oldText.slice(pos));
+    const newAtom = getNewTimeForAtom(atom);
+    return newAtom.set('text', oldText.slice(0, pos) + pasteText + oldText.slice(pos));
 }
 
 function removeTextFromAtom(atom, from = 0, to = Number.MAX_VALUE) {
     const oldText = atom.get('text');
     const newText = oldText.slice(0, from) + oldText.slice(to);
-    return atom.set('text', newText);
+    const newAtom = getNewTimeForAtom(atom);
+    return newAtom.set('text', newText);
 }
 
 function generateInsertActions(atoms, event) {
     const isFirstLineSlice = event.startCol !== 0 || event.startRow === event.endRow;
     const actions = [];
+    // if insert /n in middle of line
+    let tailOfText = '';
+    if (event.text[0] === '' || event.text.length > 1) {
+        const atom = atoms.get(event.startRow);
+        const pos = isFirstLineSlice ? event.startCol : 0;
+        actions.push(setLine(
+            event.startRow,
+            breakUpTextAtom(atom, pos, event.text[0]),
+        ));
+        tailOfText = atom.get('text').slice(pos);
+    } else
+        actions.push(setLine(
+            event.startRow,
+            insertTextToAtom(
+                atoms.get(event.startRow),
+                isFirstLineSlice ? event.startCol : 0, event.text[0],
+            ),
+        ));
 
-    actions.push(setLine(
-        event.startRow,
-        insertTextToAtom(
-            atoms.get(event.startRow),
-            isFirstLineSlice ? event.startCol : 0, event.text[0],
-        ),
-    ));
 
     for (let i = 0 + isFirstLineSlice; i < (event.text.length + isFirstLineSlice) - 1; i += 1) {
         const atom = {
             id: generateLineId(),
-            text: event.text[i],
+            text: i === (event.text.length + isFirstLineSlice) - 2 ?
+                event.text[i] + tailOfText : event.text[i],
             time: 1,
         };
         actions.push(insertLine(event.startRow + i, atom));
@@ -74,6 +100,11 @@ const textMiddleware = store => next => action => {
     switch (action.type) {
         case INSERT_EVENT: {
             const actions = generateInsertActions(store.getState().text, action.payload);
+            actions.forEach((a) => {
+                const newA = a;
+                newA.payload.atom.peer = store.getState().peers.id;
+                return newA;
+            });
             store.dispatch(broadcastActions(actions));
             next(actions);
             break;
@@ -82,6 +113,33 @@ const textMiddleware = store => next => action => {
             const actions = generateRemoveActions(store.getState().text, action.payload);
             store.dispatch(broadcastActions(actions));
             next(generateRemoveActions(store.getState().text, action.payload));
+            break;
+        }
+        case SET_LINE: {
+            const { time } = store.getState().text.get(action.payload.line);
+            const line = store.getState().text.get(action.payload.line);
+            if (action.payload.atom.time < time) {
+                store.dispatch(broadcastActions(line));
+                break;
+            } else if ((action.payload.atom.time === time) &&
+                (store.getState().peers.id > action.payload.atom.peer)) {
+                store.dispatch(broadcastActions(line));
+                break;
+            }
+            next(action);
+            break;
+        }
+        case SEND_ALL_TEXT: {
+            // Need some modifications.
+            const setTextAction = {
+                type: SET_TEXT,
+                payload: store.getState().text,
+            };
+            const actions = {
+                id: action.payload,
+                broadcastedAction: [setTextAction],
+            };
+            store.dispatch(broadcastActionsToPeer(actions));
             break;
         }
         default: next(action);

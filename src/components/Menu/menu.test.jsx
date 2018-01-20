@@ -27,12 +27,6 @@ describe('menu component', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('check rendering of MenuItem', () => {
-        const { wrapper } = setup();
-
-        expect(wrapper.contains([<MenuItem title="Test" command="test" />])).toBeTruthy();
-    });
-
     it('should call onSelect when click MenuItem "test"', () => {
         const { onSelect, wrapper } = setup();
 
