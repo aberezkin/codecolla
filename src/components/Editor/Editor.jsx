@@ -1,4 +1,6 @@
 /* eslint-disable react/no-unused-state */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 import React, { Component } from 'react';
 import AceEditor from 'react-ace';
 import PropTypes from 'prop-types';
@@ -24,7 +26,10 @@ class Editor extends Component {
     componentWillReceiveProps({ cursors }) {
         if (this.props.cursors !== cursors) {
             const markers = this.editor.session.getMarkers(true);
-            markers.forEach(id => this.editor.session.removeMarker(markers[id].id));
+            for (const id in markers)
+                this.editor.session.removeMarker(markers[id].id);
+
+            // markers.forEach(id => this.editor.session.removeMarker(markers[id].id));
 
             this.setState({ markerIds: cursors.map(cursor =>
                 generateCursorMarker(this.editor.session, cursor).id) });
