@@ -1,6 +1,6 @@
 import { broadcastActions, broadcastActionsToPeer,
     INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
-    SET_LINE, SEND_ALL_TEXT, SET_TEXT } from '../actions/index';
+    SET_LINE, SEND_ALL_TEXT, SET_TEXT, stepBackAddAction } from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
 
 function breakUpTextAtom(atom, pos, pasteText) {
@@ -30,10 +30,15 @@ function removeTextFromAtom(atom, from = 0, to = Number.MAX_VALUE) {
 
 function generateInsertActions(atoms, event) {
     const actions = [];
+
+    let actionHistory = [];
     
     let tailOfText = '';
     //insert if many string, or insert \n
     if (event.text[0] === '' || event.text.length > 1) {
+        actionHistory.push(setLine(event.startRow, 
+            atoms.get(event.startRow)));
+
         const atom = atoms.get(event.startRow);
         actions.push(setLine(
             event.startRow,
@@ -43,6 +48,9 @@ function generateInsertActions(atoms, event) {
         ));
         tailOfText = atom.get('text').slice(event.startCol);
     } else {
+        actionHistory.push(setLine(event.startRow, 
+            atoms.get(event.startRow)));
+
         actions.push(setLine(
             event.startRow,
             insertTextToAtom(
@@ -60,24 +68,36 @@ function generateInsertActions(atoms, event) {
             time: 1,
         };
         actions.push(insertLine(event.startRow + i, atom));
+        actionHistory.push(removeLine(event.startRow + 1));
     }
-    return actions;
+    return {
+        actions: actions,
+        actionHistory: actionHistory
+    };
 }
 
 function generateRemoveActions(atoms, event) {
     const { startCol, endCol, startRow, endRow } = event;
     const actions = [];
+    let actionHistory = [];
 
     if (startRow === endRow) { // Removing just a part of a line
+        actionHistory.push(setLine(startRow, atoms.get(startRow)));
+
         actions.push(setLine(
             startRow,
             removeTextFromAtom(atoms.get(startRow), startCol, endCol),
         ));
-        return actions;
+        return {
+            actions: actions,
+            actionHistory: actionHistory
+        };
     }
 
     const lastAtom = atoms.get(endRow);
     const tail = lastAtom.get('text').length > endCol ? lastAtom.get('text').slice(endCol, Number.MAX_VALUE) : '';
+
+    actionHistory.push(setLine(startRow, atoms.get(startRow)));
 
     actions.push(setLine(
         startRow,
@@ -89,9 +109,15 @@ function generateRemoveActions(atoms, event) {
     ));
 
     // Removing all lines between startRow and endRow
-    for (let i = endRow; i > startRow; i -= 1) actions.push(removeLine(i));
+    for (let i = endRow; i > startRow; i -= 1) {
+        actionHistory.push(insertLine(i, atoms.get(i)));
+        actions.push(removeLine(i));
+    }
 
-    return actions;
+    return {
+        actions: actions,
+        actionHistory: actionHistory
+    };
 }
 
 // TODO: create a INSERT_LINE_INTERVAL and REMOVE_LINE_INTERVAL actions?
@@ -101,26 +127,29 @@ function generateRemoveActions(atoms, event) {
 const textMiddleware = store => next => action => {
     switch (action.type) {
         case INSERT_EVENT: {
-            console.log('DEBUG::TEXT_INSERT', action);
             const actions = generateInsertActions(store.getState().text, action.payload);
-            actions.forEach((a) => {
+            actions.actions.forEach((a) => {
                 let newA = a;
                 newA.payload.atom.peer = store.getState().peers.id;
                 return newA;
             });
-            store.dispatch(broadcastActions(actions));
-            next(actions);
+            store.dispatch(broadcastActions(actions.actions));
+
+            store.dispatch(stepBackAddAction(actions.actionHistory));
+
+            next(actions.actions);
             break;
         }
         case REMOVE_EVENT: {
-            console.log('DEBUG::TEXT_REMOVE', action);
             const actions = generateRemoveActions(store.getState().text, action.payload);
-            store.dispatch(broadcastActions(actions));
-            next(generateRemoveActions(store.getState().text, action.payload));
+            store.dispatch(broadcastActions(actions.actions));
+
+            store.dispatch(stepBackAddAction(actions.actionHistory));
+
+            next(generateRemoveActions(store.getState().text, action.payload).actions);
             break;
         }
         case SET_LINE: {
-            console.log('DEBUG::TEXT_SET_LINE', action);
             const { time } = store.getState().text.get(action.payload.line);
             const line = store.getState().text.get(action.payload.line);
             if (action.payload.atom.time < time) {
@@ -135,7 +164,6 @@ const textMiddleware = store => next => action => {
             break;
         }
         case SEND_ALL_TEXT: {
-            console.log('DEBUG::SEND_ALL', action);
             // Need some modifications.
             const setTextAction = {
                 type: SET_TEXT,

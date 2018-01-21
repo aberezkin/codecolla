@@ -18,6 +18,7 @@ class Editor extends Component {
         this.onChange = this.onChange.bind(this);
         this.onLoad = this.onLoad.bind(this);
         this.onCursorChange = this.onCursorChange.bind(this);
+        this.ctrlZShortcut = this.ctrlZShortcut.bind(this);
 
         this.isCursorTransfer = true;
         this.state = { markerIds: [] };
@@ -59,8 +60,14 @@ class Editor extends Component {
             this.props.onRemove(e);
     }
 
+    ctrlZShortcut() {
+        console.log('Ctrl-z');
+        
+        this.props.stepBackShortcut();
+    }
 
     render() {
+        //exec: () => { console.log('Ctrl-z'); },
         return (
             <AceEditor
                 onLoad={this.onLoad}
@@ -75,7 +82,7 @@ class Editor extends Component {
                 commands={[{
                     name: 'commandCtrlZ',
                     bindKey: { win: 'Ctrl-z', mac: 'Command-z', linux: 'Ctrl-z' },
-                    exec: () => { console.log('Ctrl-z'); },
+                    exec: this.ctrlZShortcut,
                 }]}
             />
         );

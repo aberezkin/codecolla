@@ -5,6 +5,7 @@ import peers from './peer';
 import chat from './chat';
 import text from './text';
 import cursor from './cursor';
+import stepBack from './stepBackShortcut';
 import compileCode from './compile-code';
 
 const middlewares = [
@@ -14,6 +15,7 @@ const middlewares = [
     text,
     cursor,
     compileCode,
+    stepBack,
     multi, // it must be last!!!
 ];
 

@@ -6,6 +6,7 @@ import text from './text';
 import chat from './chat';
 import cursors from './cursor';
 import preferences from './preferences';
+import stepBack from './stepBackShortcut';
 
 export default combineReducers({
     isTransferAllowed,
@@ -15,4 +16,5 @@ export default combineReducers({
     cursors,
     preferences,
     fetchReducer,
+    stepBack,
 });
