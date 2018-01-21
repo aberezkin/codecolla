@@ -85,6 +85,11 @@ const peersMiddleware = peer => store => next => action => {
             // Just modify action before eventifying connection
             // eslint-disable-next-line no-param-reassign
             sayHelloToOtherPeers = action.payload.needAllPeers;
+            if (store.getState()
+                .peers
+                .connections.find(peer => peer == action.payload.id)) {
+                    break;
+            }
             action = addPeer(peer.connect(action.payload.id));
             // eslint-disable-next-line no-fallthrough
         case ADD_PEER:
