@@ -74,7 +74,10 @@ function eventifyConnection(connection, dispatch, peer) {
 const peersMiddleware = peer => store => next => action => {
     switch (action.type) {
         case INIT_PEER:
-            peer.on(CONNECTION_EVENT, connection => store.dispatch(addPeer(connection)));
+            peer.on(CONNECTION_EVENT, (connection) => {
+                connection.open = true;
+                store.dispatch(addPeer(connection));
+            });
             peer.on(CONNECTION_OPEN, (id) => {
                 // eslint-disable-next-line no-console
                 console.log('pid: ', id);
