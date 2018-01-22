@@ -75,15 +75,17 @@
   left 100%
 .MenuItem, .SubMenu, .Checkable, .Separator
   list-style none
-.SubMenu > .MenuItem.submenu
-  > .title:after
-    display block
-    content " "
-    float right
-    width 5px
-    height 0
-    border-color transparent
-    border-style solid
-    border-left-color #cccccc
-    margin-top 5px
-    margin-right -10px
+.SubMenu > .MenuItem.submenu > span label
+    padding-right 10px
+    &:after
+      content: '';
+      position: absolute;
+      float right
+      top: 25%;
+      bottom: 25%;
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 5px solid #cccccc;
+      margin-left 5px
