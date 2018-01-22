@@ -1,16 +1,17 @@
 import { connect } from 'react-redux';
 import Menu from './Menu';
-import { createSimpleAction } from '../../actions/index';
-import PropTypes from "prop-types";
+import { createSimpleAction, addHotKey } from '../../actions/index';
 
 const mapStateToProps = state => ({
     isStatusBarVisible : state.preferences.isStatusBarVisible,
     isChatVisible: state.preferences.isChatVisible,
+    hotKeysMap: state.preferences.hotkeys.map,
 });
 
 // TODO: move this to individual selectors
 const mapDispatchToProps = dispatch => ({
     onMenuOptionHandler: command => dispatch(createSimpleAction(command)),
+    addHotKey: (command, hotkey, handler) => dispatch(addHotKey(command, hotkey, handler)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);

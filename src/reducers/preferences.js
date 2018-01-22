@@ -8,6 +8,7 @@ import {
     TOGGLE_CHAT, TOGGLE_INVITE_MODAL,
     TOGGLE_STATUS_BAR,
     ENTER_SESSION,
+    ADD_HOTKEY,
 } from '../actions/index';
 
 const theme = generateSetterReducer(SET_THEME, 'monokai');
@@ -51,10 +52,37 @@ const encoding = generateSetterReducer(SET_ENCODING, 'UTF-8');
 
 const editor = combineReducers({ language, linefeed, encoding });
 
+const hotKeys = (state = {}, action) => {
+    switch (action.type) {
+        case ADD_HOTKEY: {
+            let obj = {};
+            obj[action.payload.command] = action.payload.hotkey;
+            return Object.assign(obj, state);
+        }
+        default:
+            return state;
+    }
+};
+
+const hotKeysHandlers = (state = {}, action) => {
+    switch (action.type) {
+        case ADD_HOTKEY: {
+            let obj = {};
+            obj[action.payload.command] = action.payload.handler;
+            return Object.assign(obj, state);
+        }
+        default:
+            return state;
+    }
+};
+
+const hotkeys = combineReducers({ map: hotKeys, handlers: hotKeysHandlers});
+
 export default combineReducers({
     nickname,
     theme,
     editor,
+    hotkeys,
     isChatVisible,
     isStatusBarVisible,
     isSessionActive,

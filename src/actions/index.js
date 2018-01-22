@@ -203,3 +203,9 @@ export const COMPILE_RUBY = 'COMPILE RUBY';
 export const COMPILE_CPP = 'COMPILE CPP';
 export const POST_FULFIL = 'react-redux-fetch/POST_FULFIL';
 export const POST_REJECT = 'react-redux-fetch/POST_REJECT';
+
+
+export const ADD_HOTKEY = 'ADD HOTKEY';
+export function addHotKey(command, hotkey, handler) {
+    return createAction(ADD_HOTKEY, {command, hotkey, handler});
+}

@@ -20,7 +20,6 @@ class SubMenu extends Component {
     render() {
         return (
             <ul className={`${SUB_MENU_CLASSNAME}`}>
-
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </ul>
         );

@@ -12,6 +12,7 @@ import Menu from '../Menu';
 import { CHAT_CLASSNAME } from '../Chat/Chat';
 import HomePage from '../HomePage';
 import Invite from '../Invite';
+import {HotKeys} from 'react-hotkeys';
 
 export const APP_CLASSNAME = 'App';
 
@@ -59,7 +60,10 @@ export default class App extends Component {
 
     render() {
         return (
-            <div>
+            <HotKeys
+                keyMap={this.props.hotKeysMap}
+                handlers={this.props.hotKeysHandlers}
+                autofocus>
                 <div className={`${APP_CLASSNAME} ace-${this.props.theme.replace(/_/g, '-')}`}>
                     <HomePage style={{ display: (!this.props.isSessionActive) ? '' : 'none' }} />
                     <Menu />
@@ -68,13 +72,14 @@ export default class App extends Component {
                             ref={(editor) => { this.editorRef = editor; }}
                             height={this.state.editor.height}
                             width={this.state.editor.width}
+                            autofocus={this.props.isSessionActive}
                         />
                         <Chat style={{ display: (this.props.isChatVisible) ? '' : 'none' }} />
                     </div>
                     <StatusBar style={{ display: (this.props.isStatusBarVisible) ? '' : 'none' }} />
                 </div>
                 <Invite peerId="hello" />
-            </div>
+            </HotKeys>
         );
     }
 }
@@ -84,4 +89,11 @@ App.propTypes = {
     isChatVisible: PropTypes.bool.isRequired,
     isSessionActive: PropTypes.bool.isRequired,
     theme: PropTypes.string.isRequired,
+    hotKeysMap: PropTypes.objectOf(PropTypes.string),
+    hotKeysHandlers: PropTypes.objectOf(PropTypes.func),
+};
+
+App.defaultProps = {
+    hotKeysMap: {},
+    hotKeysHandlers: {},
 };

@@ -17,7 +17,7 @@
     height 100%
     outline none
     user-select none
-    .title
+    .container
       padding 1px 4px
       outline none
       user-select none
@@ -32,7 +32,7 @@
     > *
       outline none
       user-select none
-    .MenuItem .title, .Checkable .title
+    .MenuItem .container, .Checkable .container
       display block
   .Separator
     margin 0 auto
@@ -67,9 +67,13 @@
 .MenuItem, .Checkable
   position relative
   color inherit
-  .title
+  .container
     color inherit
     white-space nowrap
+    justify-content space-between
+    .hotkey
+      display inline-block
+      margin-left 20px
 .SubMenu .SubMenu
   top -1px
   left 100%
@@ -80,7 +84,8 @@
     &:after
       content: '';
       position: absolute;
-      float right
+      //float right
+      left 100%
       top: 25%;
       bottom: 25%;
       width: 0;
@@ -88,4 +93,4 @@
       border-top: 5px solid transparent;
       border-bottom: 5px solid transparent;
       border-left: 5px solid #cccccc;
-      margin-left 5px
+      margin-left -10px
