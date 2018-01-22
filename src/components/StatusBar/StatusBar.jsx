@@ -43,9 +43,7 @@ class StatusBar extends Component {
     render() {
         return (
             <div className={STATUS_BAR_CLASSNAME} style={this.props.style}>
-                <div className="Left">
-                    <Connector />
-                </div>
+                <div className="Left" />
                 <div className="Right">
                     <ListSelector
                         options={['CRLF', 'LF', 'CR']}

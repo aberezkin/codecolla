@@ -130,16 +130,11 @@ const textMiddleware = store => next => action => {
             break;
         }
         case SEND_ALL_TEXT: {
-            // Need some modifications.
             const setTextAction = {
                 type: SET_TEXT,
                 payload: store.getState().text,
             };
-            const actions = {
-                id: action.payload,
-                broadcastedAction: [setTextAction],
-            };
-            store.dispatch(broadcastActionsToPeer(actions));
+            store.dispatch(broadcastActionsToPeer(action.payload, setTextAction));
             break;
         }
         default: next(action);
