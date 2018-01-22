@@ -110,7 +110,8 @@ class MenuItem extends Component {
                     style={this.state.titleStyle}
                     onClick={this.onClick}
                 >
-                    {this.props.title}
+                    <div className="image" style={{display: (this.props.isTopLevel ? 'none': ''), ...this.props.style}}></div>
+                    <label>{this.props.title}</label>
                 </span>
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </li>
@@ -125,6 +126,7 @@ MenuItem.propTypes = {
     isMenuBarActive: PropTypes.bool,
     onSelect: PropTypes.func,
     children: PropTypes.node,
+    style: PropTypes.objectOf(PropTypes.string),
 };
 
 MenuItem.defaultProps = {
@@ -133,6 +135,7 @@ MenuItem.defaultProps = {
     onSelect() {},
     command: '',
     children: [],
+    style: {},
 };
 
 

@@ -8,20 +8,30 @@ class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = { nickname: '' };
+        this.nicknameRegEx = /^[a-zA-Z0-9]+$/;
+        document.addEventListener('keydown', event => this.onKeyDown(event));
     }
 
     onSelect() {
-        this.isNickNameValid = this.state.nickname === '' || this.state.nickname.match(/^[^0-9]\w+$/) !== null;
-        document.querySelector(`.${HOME_PAGE} .wrapper input`).style.boxShadow = !this.isNickNameValid ? '0 0 10px red' : '0 0 10px #3b53ff';
+        this.isNickNameValid = this.state.nickname === '' || this.state.nickname.match(this.nicknameRegEx) !== null;
+        document.querySelector(`.${HOME_PAGE} input`).style.boxShadow = !this.isNickNameValid ?
+            '0 0 10px red' : '0 0 10px #3b53ff';
     }
 
     onBlur() {
-        document.querySelector(`.${HOME_PAGE} .wrapper input`).style.boxShadow = !this.isNickNameValid ? '0 0 10px red' : 'none';
+        document.querySelector(`.${HOME_PAGE} input`).style.boxShadow = !this.isNickNameValid ? '0 0 10px red' : 'none';
+    }
+
+    onKeyDown(event) {
+        if (event.keyCode === 13) this.enterSession();
+        else document.querySelector(`.${HOME_PAGE} input`).focus();
     }
 
     enterSession() {
-        if (this.state.nickname.length && this.isNickNameValid)
+        if (this.state.nickname.length && this.isNickNameValid) {
             this.props.enterSession(this.state.nickname);
+            document.removeEventListener('keydown', event => this.onKeyDown(event));
+        }
     }
 
     render() {
@@ -39,7 +49,7 @@ class HomePage extends Component {
                     />
                     <button
                         id="CreateNewSession"
-                        onClick={(event) => { this.enterSession(event); }}
+                        onClick={event => this.enterSession(event)}
                     >
                         Start coding
                     </button>

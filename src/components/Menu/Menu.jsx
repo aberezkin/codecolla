@@ -46,13 +46,21 @@ class Menu extends Component {
                     </MenuItem>
                     <MenuItem title="View">
                         <SubMenu>
-                            <MenuItem title="Tools">
+                            <MenuItem title="Tool Windows">
                                 <SubMenu>
-                                    <MenuItem title="Chat" command={TOGGLE_CHAT} />
+                                    <Checkable
+                                        title="Chat"
+                                        command={TOGGLE_CHAT}
+                                        checked={this.props.isChatVisible}
+                                    />
                                 </SubMenu>
                             </MenuItem>
                             <Separator />
-                            <Checkable title="Status bar" command={TOGGLE_STATUS_BAR} />
+                            <Checkable
+                                title="Status bar"
+                                command={TOGGLE_STATUS_BAR}
+                                checked={this.props.isStatusBarVisible}
+                            />
                         </SubMenu>
                     </MenuItem>
                     <MenuItem title="Navigate">
@@ -64,7 +72,6 @@ class Menu extends Component {
                     <MenuItem title="Tools">
                         <SubMenu>
                             <MenuItem title="Invite a friend" command={TOGGLE_INVITE_MODAL} />
-                            <MenuItem title="Chat" command={TOGGLE_CHAT} />
                             <MenuItem title="Compile" command={COMPILE_CODE} />
                         </SubMenu>
                     </MenuItem>
@@ -80,6 +87,8 @@ class Menu extends Component {
 Menu.propTypes = {
     onMenuOptionHandler: PropTypes.func.isRequired,
     style: PropTypes.objectOf(PropTypes.string),
+    isStatusBarVisible : PropTypes.bool.isRequired,
+    isChatVisible: PropTypes.bool.isRequired,
 };
 
 Menu.defaultProps = {
