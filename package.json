@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "precommit": "lint-staged",
     "start:dev": "webpack-dev-server",
     "test": "jest",
     "test:watch": "jest --watch",

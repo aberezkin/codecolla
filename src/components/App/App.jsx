@@ -10,6 +10,7 @@ import { STATUS_BAR_CLASSNAME } from '../StatusBar/StatusBar';
 import { MENU_BAR_CLASSNAME } from '../MenuBar/MenuBar';
 import Menu from '../Menu';
 import { CHAT_CLASSNAME } from '../Chat/Chat';
+import HomePage from '../HomePage';
 import Invite from '../Invite';
 
 export const APP_CLASSNAME = 'App';
@@ -60,6 +61,7 @@ export default class App extends Component {
         return (
             <div>
                 <div className={`${APP_CLASSNAME} ace-${this.props.theme.replace(/_/g, '-')}`}>
+                    <HomePage style={{ display: (!this.props.isSessionActive) ? '' : 'none' }} />
                     <Menu />
                     <div className="wrapper" style={this.state.wrapper}>
                         <Editor
@@ -80,5 +82,6 @@ export default class App extends Component {
 App.propTypes = {
     isStatusBarVisible: PropTypes.bool.isRequired,
     isChatVisible: PropTypes.bool.isRequired,
+    isSessionActive: PropTypes.bool.isRequired,
     theme: PropTypes.string.isRequired,
 };

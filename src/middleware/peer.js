@@ -1,6 +1,6 @@
 import '../utilities/Peerjs';
-import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS,
-    BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer,
+import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS, ADD_MESSAGE,
+    BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer, CONNECT_TO_ALL_PEERS, connectToAllPeers,
     setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor } from '../actions/index';
 import { DELETE_CURSOR, MOVE_CURSOR,
     ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
@@ -12,19 +12,20 @@ export const DATA_TRANSFER = 'data';
 export const PEER_ERROR = 'error';
 
 const localPeer = new Peer({ key: 'e0twf5gs81lzbyb9' });
+let sayHelloToOtherPeers = false;
 
-function eventifyConnection(connection, isSeed, dispatch, peer) {
+function eventifyConnection(connection, dispatch, peer) {
     connection.on(CONNECTION_OPEN, () => {
-        if (isSeed) {
-            dispatch(sendAllText(connection.peer));
-            dispatch(broadcastActions([addPeerFromId(connection.peer)]));
+        // TODO: migrate this to dispatch
+        if (sayHelloToOtherPeers) {
+            sayHelloToOtherPeers = false;
+            dispatch(broadcastActions([connectToAllPeers(peer.id)]));
         }
     });
 
     connection.on(DATA_TRANSFER, (data) => {
         const eventArray = JSON.parse(data);
         const firstEvent = eventArray[0];
-
         // TODO: Send ONLY redux actions and just dispatch them
         switch (firstEvent.type) {
             case DELETE_CURSOR:
@@ -36,6 +37,16 @@ function eventifyConnection(connection, isSeed, dispatch, peer) {
             }
             case PEER_ADDITION: {
                 dispatch(addPeer(peer.connect(firstEvent.data)));
+                break;
+            }
+            case CONNECT_TO_ALL_PEERS: {
+                dispatch(broadcastActions([addPeerFromId(firstEvent.payload)]));
+                dispatch(sendAllText(connection.peer));
+                break;
+            }
+            case ADD_MESSAGE: {
+                firstEvent.payload.date = new Date(firstEvent.payload.date);
+                dispatch(firstEvent);
                 break;
             }
             default: {
@@ -73,12 +84,12 @@ const peersMiddleware = peer => store => next => action => {
         case ADD_PEER_FROM_ID:
             // Just modify action before eventifying connection
             // eslint-disable-next-line no-param-reassign
-            action = addPeer(peer.connect(action.payload));
+            sayHelloToOtherPeers = action.payload.needAllPeers;
+            action = addPeer(peer.connect(action.payload.id));
             // eslint-disable-next-line no-fallthrough
         case ADD_PEER:
             next(addPeer(eventifyConnection(
                 action.payload,
-                store.getState().isSeed,
                 store.dispatch,
                 peer,
             )));
