@@ -81,7 +81,7 @@ export function addPeer(connection) {
 
 export const ADD_PEER_FROM_ID = 'ADD PEER FROM ID';
 export function addPeerFromId(id) {
-    return createAction(ADD_PEER_FROM_ID, { id });
+    return createAction(ADD_PEER_FROM_ID, id);
 }
 
 export const REMOVE_PEER = 'REMOVE PEER';
@@ -97,8 +97,8 @@ export function broadcastActions(actions) {
 }
 
 export const BROADCAST_DATA_TO_PEER = 'BROADCAST DATA FOR PEER';
-export function broadcastActionsToPeer(id, broadcastedActions) {
-    return createAction(BROADCAST_DATA_TO_PEER, {id, broadcastedActions});
+export function broadcastActionsToPeer(id, actions) {
+    return createAction(BROADCAST_DATA_TO_PEER, {id, actions});
 }
 
 export const INSERT_EVENT = 'INSERT_EVENT';

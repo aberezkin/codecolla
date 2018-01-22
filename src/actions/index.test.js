@@ -22,8 +22,6 @@ const testPayloadActionCreator = (actionCreator, type, payload) =>
     testSyncActionCreator(actionCreator, payload, { type, payload });
 
 describe('simple payload action creators', () => {
-    testPayloadActionCreator(connectToAllPeers, CONNECT_TO_ALL_PEERS, false);
-    testPayloadActionCreator(connectToAllPeers, CONNECT_TO_ALL_PEERS, true);
     testPayloadActionCreator(setIsTransferAllowed, SET_IS_TRANSFER_ALLOWED, false);
     testPayloadActionCreator(setIsTransferAllowed, SET_IS_TRANSFER_ALLOWED, true);
     testPayloadActionCreator(setLinefeed, SET_LINEFEED, 'LF');
@@ -100,10 +98,13 @@ describe('test send all text action', () => {
 describe('test broadcast data to peer action', () => {
     const eq = {
         type: BROADCAST_DATA_TO_PEER,
-        payload: 'qwerty',
+        payload: {
+            id: 'john',
+            actions: []
+        },
     };
     it(`should create ${BROADCAST_DATA_TO_PEER} action`, () => {
-        expect(broadcastActionsToPeer('qwerty')).toEqual(eq);
+        expect(broadcastActionsToPeer('john', [])).toEqual(eq);
     });
 });
 

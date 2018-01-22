@@ -6,6 +6,7 @@ const setup = (propOverrides) => {
         messages: [],
         onMessage: jest.fn(),
         isVisible: true,
+        nickname: 'john',
         ...propOverrides,
     };
 

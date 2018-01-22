@@ -84,8 +84,8 @@ const peersMiddleware = peer => store => next => action => {
         case ADD_PEER_FROM_ID: {
             // Just modify action before eventifying connection
             const state = store.getState();
-            if (action.payload.id === state.peers.id) break;
-            action = addPeer(peer.connect(action.payload.id));
+            if (action.payload === state.peers.id) break;
+            action = addPeer(peer.connect(action.payload));
             // eslint-disable-next-line no-fallthrough
         }
         case ADD_PEER:
@@ -104,7 +104,7 @@ const peersMiddleware = peer => store => next => action => {
         case BROADCAST_DATA_TO_PEER:
             store.getState().peers.connections
                 .find(conn => conn.peer === action.payload.id)
-                .send(JSON.stringify(action.payload.broadcastedActions));
+                .send(JSON.stringify(action.payload.actions));
             break;
         default: next(action);
     }
