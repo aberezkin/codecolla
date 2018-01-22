@@ -5,3 +5,4 @@ docs
 package-lock.json
 coverage
 *.log
+package.json
