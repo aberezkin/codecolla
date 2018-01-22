@@ -47,7 +47,12 @@ class Checkable extends Component {
                     onMouseOut={this.onMouseOut}
                     style={this.state.titleStyle}
                 >
-                    {this.props.title}
+                    <input
+                        type="checkbox"
+                        checked={this.props.checked}
+                        readOnly
+                    />
+                    <label>{this.props.title}</label>
                 </span>
             </li>
         );
@@ -58,6 +63,7 @@ Checkable.propTypes = {
     title: PropTypes.string.isRequired,
     command: PropTypes.string,
     onSelect: PropTypes.func,
+    checked: PropTypes.bool.isRequired,
 };
 
 Checkable.defaultProps = {
