@@ -1,6 +1,6 @@
 import { broadcastActions, broadcastActionsToPeer,
-    INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
-    SET_LINE, SEND_ALL_TEXT, SET_TEXT } from '../actions/index';
+    INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine, setText,
+    SET_LINE, SEND_ALL_TEXT, SET_TEXT, OPEN_FILE, SET_FILE } from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
 
 function breakUpTextAtom(atom, pos, pasteText) {
@@ -146,6 +146,30 @@ const textMiddleware = store => next => action => {
                 broadcastedAction: [setTextAction],
             };
             store.dispatch(broadcastActionsToPeer(actions));
+            break;
+        }
+        case OPEN_FILE: {
+            let openFile = document.getElementById('openFile');
+            openFile.click();
+            break;
+        }
+        case SET_FILE: {
+            var text = '';
+            let files = action.payload;
+            if(files.length) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    text = e.target.result;
+                };
+                
+                reader.onloadend = function(e) {
+                    let setAction = setText(text) 
+                    store.dispatch(setAction);
+                    store.dispatch(broadcastActions([setAction]));
+                }
+                reader.readAsBinaryString(files[0]);
+                
+            }
             break;
         }
         default: next(action);
