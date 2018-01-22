@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "webpack-dev-server",
+    "start:prod": "./scripts/run-serve.sh",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -101,6 +102,7 @@
     "optimize-js-plugin": "0.0.4",
     "raf": "^3.4.0",
     "react-test-renderer": "^16.2.0",
+    "serve": "^6.4.8",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.7",
     "webpack-merge": "^4.1.0"

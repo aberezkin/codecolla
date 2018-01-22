@@ -1,5 +1,7 @@
 .idea
 node_modules
 dev-docs
+docs
+package-lock.json
 coverage
 *.log
