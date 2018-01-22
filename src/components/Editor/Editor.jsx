@@ -18,9 +18,19 @@ class Editor extends Component {
         this.onChange = this.onChange.bind(this);
         this.onLoad = this.onLoad.bind(this);
         this.onCursorChange = this.onCursorChange.bind(this);
+        this.saveTextAsFile = this.saveTextAsFile.bind(this);
+        this.destroyClickedElement = this.destroyClickedElement.bind(this);
 
         this.isCursorTransfer = true;
         this.state = { markerIds: [] };
+    }
+
+    destroyClickedElement(event) {
+        document.body.removeChild(event.target);
+    }
+
+    saveTextAsFile() {
+        this.props.saveTextAsFile();
     }
 
     componentWillReceiveProps({ cursors }) {
@@ -71,11 +81,18 @@ class Editor extends Component {
                 onChange={this.onChange}
                 name="UNIQUE_ID_OF_DIV"
                 editorProps={{ $blockScrolling: 'Infinity' }}
-                commands={[{
-                    name: 'commandCtrlZ',
-                    bindKey: { win: 'Ctrl-z', mac: 'Command-z', linux: 'Ctrl-z' },
-                    exec: () => { console.log('Ctrl-z'); },
-                }]}
+                commands={[
+                    {
+                        name: 'commandCtrlZ',
+                        bindKey: { win: 'Ctrl-z', mac: 'Command-z', linux: 'Ctrl-z' },
+                        exec: () => { console.log('Ctrl-z'); },
+                    },
+                    {
+                        name: 'commandCtrlS',
+                        bindKey: { win: 'Ctrl-s', mac: 'Command-s', linux: 'Ctrl-s' },
+                        exec: () => { this.saveTextAsFile(); console.log('Ctrl-s'); },
+                    },
+                ]}
             />
         );
     }

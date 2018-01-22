@@ -1,7 +1,46 @@
 import { broadcastActions, broadcastActionsToPeer,
-    INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine, setText,
-    SET_LINE, SEND_ALL_TEXT, SET_TEXT, OPEN_FILE, SET_FILE } from '../actions/index';
+    INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine, setText, SAVE_AS,
+    SET_LINE, SEND_ALL_TEXT, SET_TEXT, OPEN_FILE, SET_FILE, setLanguage } from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
+
+const EXTENSION_LANGS = new Map([
+    [ '.py', 'python'     ],
+    [ '.rb', 'ruby'       ],
+    ['.clj', 'clojure'    ],
+    ['.php', 'php'        ],
+    [ '.js', 'javascript' ],
+    [ '.sc', 'scala'      ],
+    [ '.go', 'go'         ],
+    ['.cpp', 'c_cpp'      ],
+    [  '.h', 'c_cpp'      ],
+    ['.java','java'       ],
+    [ '.vb', 'VB.NET'     ],
+    [ '.cs', 'csharp'     ],
+    [ '.sh', 'sh'         ],
+    [  '.c', 'Objective-C'],
+    ['.sql', 'mysql'      ],
+    [ '.pl', 'perl'       ],
+    [ '.rs', 'rust'       ],
+]);
+
+const LANGS_EXTENSION = new Map([
+    ['python'     ,  '.py'],
+    ['ruby'       ,  '.rb'],
+    ['clojure'    , '.clj'],
+    ['php'        , '.php'],
+    ['javascript' ,  '.js'],
+    ['scala'      ,  '.sc'],
+    ['go'         ,  '.go'],
+    ['c_cpp'      , '.cpp'],
+    ['java'       ,'.java'],
+    ['VB.NET'     ,  '.vb'],
+    ['csharp'     ,  '.cs'],
+    ['sh'         ,  '.sh'],
+    ['Objective-C',   '.c'],
+    ['mysql'      , '.sql'],
+    ['perl'       ,  '.pl'],
+    ['rust'       ,  '.rs'],
+]);
 
 function breakUpTextAtom(atom, pos, pasteText) {
     const oldText = atom.get('text');
@@ -167,9 +206,31 @@ const textMiddleware = store => next => action => {
                     store.dispatch(setAction);
                     store.dispatch(broadcastActions([setAction]));
                 }
+                let nameFmt = files[0].name.substr(files[0].name.indexOf('.')); 
+                store.dispatch(setLanguage(EXTENSION_LANGS.get(nameFmt)));
                 reader.readAsBinaryString(files[0]);
                 
             }
+            break;
+        }
+        case SAVE_AS: {
+            const textToSave = state => state.text.toArray().map(i => i.toObject().text).join('\n');
+
+            let textToSaveAsBlob = new Blob([textToSave], {type:'text/plain'});
+            let textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+            let fileNameToSaveAs = 'newfile' + 
+                LANGS_EXTENSION.get(store.getState().preferences.editor.language);
+         
+            let downloadLink = document.createElement('a');
+            downloadLink.download = fileNameToSaveAs;
+            downloadLink.innerHTML = 'Download File';
+            downloadLink.href = textToSaveAsURL;
+            downloadLink.onclick = this.destroyClickedElement;
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+         
+            downloadLink.click();
+            
             break;
         }
         default: next(action);
