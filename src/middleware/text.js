@@ -16,7 +16,6 @@ function getNewTimeForAtom(atom) {
 function insertTextToAtom(atom, pos, pasteText) {
     const oldText = atom.get('text');
     const newAtom = getNewTimeForAtom(atom);
-    console.log('first', oldText.slice(0, pos) + pasteText + oldText.slice(pos));
     return newAtom.set('text', oldText.slice(0, pos) + pasteText + oldText.slice(pos));
 }
 
@@ -24,7 +23,6 @@ function removeTextFromAtom(atom, from = 0, to = Number.MAX_VALUE) {
     const oldText = atom.get('text');
     const newText = oldText.slice(0, from) + oldText.slice(to);
     const newAtom = getNewTimeForAtom(atom);
-    //console.log('first', newText);
     return newAtom.set('text', newText);
 }
 
@@ -101,7 +99,6 @@ function generateRemoveActions(atoms, event) {
 const textMiddleware = store => next => action => {
     switch (action.type) {
         case INSERT_EVENT: {
-            console.log('DEBUG::TEXT_INSERT', action);
             const actions = generateInsertActions(store.getState().text, action.payload);
             actions.forEach((a) => {
                 let newA = a;
@@ -113,14 +110,12 @@ const textMiddleware = store => next => action => {
             break;
         }
         case REMOVE_EVENT: {
-            console.log('DEBUG::TEXT_REMOVE', action);
             const actions = generateRemoveActions(store.getState().text, action.payload);
             store.dispatch(broadcastActions(actions));
             next(generateRemoveActions(store.getState().text, action.payload));
             break;
         }
         case SET_LINE: {
-            console.log('DEBUG::TEXT_SET_LINE', action);
             const { time } = store.getState().text.get(action.payload.line);
             const line = store.getState().text.get(action.payload.line);
             if (action.payload.atom.time < time) {
@@ -135,7 +130,6 @@ const textMiddleware = store => next => action => {
             break;
         }
         case SEND_ALL_TEXT: {
-            console.log('DEBUG::SEND_ALL', action);
             // Need some modifications.
             const setTextAction = {
                 type: SET_TEXT,
