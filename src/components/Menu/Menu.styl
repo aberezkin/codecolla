@@ -35,12 +35,40 @@
     .MenuItem .title, .Checkable .title
       display block
   .Separator
-    width 100%
+    margin 0 auto
+    width 95%
     height 0
-    border-bottom 1px black solid
+    border-bottom 1px rgba(80, 80, 80, 0.3) solid
+.Checkable input[type="checkbox"]
+  -webkit-appearance none
+  -moz-appearance none
+  -ms-progress-appearance none
+  width 12px
+  height 12px
+  display inline-block
+  position relative
+  color inherit
+  outline none
+  &:checked:after
+    position absolute
+    content '\2714'
+    font-size 12px
+    top 0
+    left 0
+  &:after
+    content ' '
+    font-size 12px
+    top 0
+    left 0
+.MenuItem .image
+  width 12px
+  height 12px
+  display inline-block
 .MenuItem, .Checkable
   position relative
+  color inherit
   .title
+    color inherit
     white-space nowrap
 .SubMenu .SubMenu
   top -1px
