@@ -40,8 +40,7 @@ class Chat extends Component {
             <div className={CHAT_CLASSNAME}
                  tabIndex='0'
                  style={this.props.style}
-                 onFocus={event => this.onKeyDown(event)}
-                 onKeyDownCapture={event => this.onKeyDown(event)}
+                 onKeyDown={event => this.onKeyDown(event)}
             >
                 <div className="MessageBox">
                     {
