@@ -20,23 +20,23 @@ export function setPeerId(id) {
 }
 
 export const MOVE_CURSOR = 'MOVE CURSOR';
-export function moveCursor(id, pos) {
-    return createAction(MOVE_CURSOR, { id, pos });
+export function moveCursor(id, pos, name) {
+    return createAction(MOVE_CURSOR, { id, pos, name });
 }
 
 export const ADD_CURSOR = 'ADD CURSOR';
-export function addCursor(pos) {
-    return createAction(ADD_CURSOR, pos);
+export function addCursor(id, pos, name) {
+    return createAction(ADD_CURSOR, {id, pos, name});
 }
 
 export const DELETE_CURSOR = 'DELETE CURSOR';
-export function deleteCursor(pos) {
-    return createAction(DELETE_CURSOR, pos);
+export function deleteCursor(id) {
+    return createAction(DELETE_CURSOR, id);
 }
 
 export const SET_CURSOR = 'SET CURSOR';
-export function setCursor(pos) {
-    return createAction(SET_CURSOR, pos);
+export function setCursor(cursor) {
+    return createAction(SET_CURSOR, cursor);
 }
 
 export const SET_IS_SEED = 'SET IS SEED';
