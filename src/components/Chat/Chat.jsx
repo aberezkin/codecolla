@@ -12,7 +12,6 @@ class Chat extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.state = {
             textareaValue: '',
-            countReadMessages: 0,
         };
     }
 
