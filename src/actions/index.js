@@ -186,6 +186,7 @@ export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
 export const TOGGLE_CHAT = 'TOGGLE CHAT';
 export const TOGGLE_INVITE_MODAL = 'TOGGLE INVITE MODAL';
 export const TOGGLE_URL_MODAL = 'TOGGLE URL MODAL';
+export const TOGGLE_ABOUT_MODAL = 'TOGGLE ABOUT MODAL';
 export const CREATE_NEW = 'CREATE NEW';
 export const OPEN_SMTH = 'OPEN SMTH';
 export const OPEN_URL = 'OPEN URL';
@@ -195,12 +196,18 @@ export function openUrl(urlText) {
 export const SAVE_AS = 'SAVE AS';
 export const SAVE_ALL = 'SAVE ALL';
 export const OPEN_SETTINGS = 'OPEN SETTINGS';
+export const TOGGLE_SEARCH_BOX = 'TOGGLE SEARCH BOX';
+export const OPEN_FILE = 'OPEN FILE';
 
 export const COMPILE_RUBY = 'COMPILE RUBY';
 export const COMPILE_CPP = 'COMPILE CPP';
 export const POST_FULFIL = 'react-redux-fetch/POST_FULFIL';
 export const POST_REJECT = 'react-redux-fetch/POST_REJECT';
 
+export const SET_FILE = 'SET FILE';
+export function onFileOpen(files) {
+    return createAction(SET_FILE, files);
+}
 
 export const ADD_HOTKEY = 'ADD HOTKEY';
 export function addHotKey(command, hotkey, handler) {
