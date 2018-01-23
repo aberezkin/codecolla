@@ -1,7 +1,26 @@
-import { broadcastActions, broadcastActionsToPeer,
+import { broadcastActions, broadcastActionsToPeer, SAVE_AS, setLanguage,
     INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
     SET_LINE, SEND_ALL_TEXT, SET_TEXT } from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
+
+const LANGS_EXTENSION = new Map([
+    ['python'     ,  '.py'],
+    ['ruby'       ,  '.rb'],
+    ['clojure'    , '.clj'],
+    ['php'        , '.php'],
+    ['javascript' ,  '.js'],
+    ['scala'      ,  '.sc'],
+    ['go'         ,  '.go'],
+    ['c_cpp'      , '.cpp'],
+    ['java'       ,'.java'],
+    ['VB.NET'     ,  '.vb'],
+    ['csharp'     ,  '.cs'],
+    ['sh'         ,  '.sh'],
+    ['Objective-C',   '.c'],
+    ['sql'      , '.sql'],
+    ['perl'       ,  '.pl'],
+    ['rust'       ,  '.rs'],
+]);
 
 function breakUpTextAtom(atom, pos, pasteText) {
     const oldText = atom.get('text');
@@ -141,6 +160,26 @@ const textMiddleware = store => next => action => {
                 broadcastedAction: [setTextAction],
             };
             store.dispatch(broadcastActionsToPeer(actions));
+            break;
+        }
+        case SAVE_AS: {
+            const textToSave = state => state.text.toArray().map(i => i.toObject().text).join('\n');
+        
+            let textToSaveAsBlob = new Blob([textToSave], {type:'text/plain'});
+            let textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+            let fileNameToSaveAs = 'newfile' + 
+                LANGS_EXTENSION.get(store.getState().preferences.editor.language);
+         
+            let downloadLink = document.createElement('a');
+            downloadLink.download = fileNameToSaveAs;
+            downloadLink.innerHTML = 'Download File';
+            downloadLink.href = textToSaveAsURL;
+            downloadLink.onclick = this.destroyClickedElement;
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+         
+            downloadLink.click();
+            
             break;
         }
         default: next(action);
