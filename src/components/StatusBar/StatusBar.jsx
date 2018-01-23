@@ -49,25 +49,25 @@ class StatusBar extends Component {
                 <div className="Right">
                     <ListSelector
                         options={['CRLF', 'LF', 'CR']}
-                        default={this.props.linefeed}
+                        active={this.props.linefeed}
                         onChange={this.props.setLinefeed}
                         textColor={this.state.textColor}
                     />
                     <ListSelector
                         options={['UTF-8', 'CP-866', 'CP-1255']}
-                        default={this.props.encoding}
+                        active={this.props.encoding}
                         onChange={this.props.setEncoding}
                         textColor={this.state.textColor}
                     />
                     <ListSelector
                         options={languages}
-                        default={this.props.language}
+                        active={this.props.language}
                         onChange={this.props.setLanguage}
                         textColor={this.state.textColor}
                     />
                     <ListSelector
                         options={themes}
-                        default={this.props.theme}
+                        active={this.props.theme}
                         onChange={this.changeTheme}
                         textColor={this.state.textColor}
                     />
