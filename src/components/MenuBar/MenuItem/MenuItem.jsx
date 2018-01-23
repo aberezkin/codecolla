@@ -112,7 +112,9 @@ class MenuItem extends Component {
                 >
                     <div className="image" style={{display: (this.props.isTopLevel ? 'none': ''), ...this.props.style}}></div>
                     <label>{this.props.label}</label>
-                    <div className="hotkey" style={{display: (this.props.hotkey === '' ? 'none' : '')}}>{this.props.hotkey}</div>
+                    <div className="hotkey" style={{display: (this.props.hotkey === '' ? 'none' : '')}}>
+                        {this.props.hotkey.replace(/\b[a-z]/g,function(c){return c.toUpperCase();})}
+                    </div>
                 </span>
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </li>

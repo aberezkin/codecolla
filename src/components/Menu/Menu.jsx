@@ -18,7 +18,6 @@ import './Menu.styl';
 class Menu extends Component {
     constructor(props) {
         super(props);
-        this.onMenuOptionHandler = this.onMenuOptionHandler.bind(this);
     }
 
     onMenuOptionHandler(command) {
@@ -29,7 +28,7 @@ class Menu extends Component {
         return (
             <div className="menu-wrapper">
                 <MenuBar
-                    onSelect={this.onMenuOptionHandler}
+                    onSelect={command => this.onMenuOptionHandler(command)}
                     style={this.props.style}
                 >
                     <MenuItem label="File">
