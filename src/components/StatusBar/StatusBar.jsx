@@ -5,6 +5,7 @@ import languages from '../../utilities/HighlightLanguages';
 import themes from '../../utilities/ColorSchemes';
 import Connector from '../Connector';
 import ListSelector from '../ListSelector/ListSelector';
+import CursorPosition from '../CursorPosition/CursorPosition';
 
 export const STATUS_BAR_CLASSNAME = 'StatusBar';
 
@@ -43,7 +44,12 @@ class StatusBar extends Component {
     render() {
         return (
             <div className={STATUS_BAR_CLASSNAME} style={this.props.style}>
-                <div className="Left" />
+                <div className="Left">
+                    <CursorPosition
+                        position={this.props.cursorPosition}
+                        textColor={this.state.textColor}
+                    />
+                </div>
                 <div className="Right">
                     <ListSelector
                         options={['CRLF', 'LF', 'CR']}
