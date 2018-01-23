@@ -37,7 +37,7 @@ class ListSelector extends Component {
 
 ListSelector.propTypes = {
     options: PropTypes.arrayOf(PropTypes.string).isRequired, // all selectable options
-    default: PropTypes.string.isRequired, // selected option
+    active: PropTypes.string.isRequired, // selected option
     onChange: PropTypes.func.isRequired, // onChangeListener
     textColor: PropTypes.string,
 };
