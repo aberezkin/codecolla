@@ -1,8 +1,28 @@
-import { broadcastActions, broadcastActionsToPeer,
+import { broadcastActions, broadcastActionsToPeer, setLanguage,
     INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
     SET_LINE, SEND_ALL_TEXT, SET_TEXT, OPEN_FILE, SET_FILE,
     setText } from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
+
+const EXTENSION_LANGS = new Map([
+    [ '.py', 'python'     ],
+    [ '.rb', 'ruby'       ],
+    ['.clj', 'clojure'    ],
+    ['.php', 'php'        ],
+    [ '.js', 'javascript' ],
+    [ '.sc', 'scala'      ],
+    [ '.go', 'go'         ],
+    ['.cpp', 'c_cpp'      ],
+    [  '.h', 'c_cpp'      ],
+    ['.java','java'       ],
+    [ '.vb', 'VB.NET'     ],
+    [ '.cs', 'csharp'     ],
+    [ '.sh', 'sh'         ],
+    [  '.c', 'Objective-C'],
+    ['.sql', 'mysql'      ],
+    [ '.pl', 'perl'       ],
+    [ '.rs', 'rust'       ],
+]);
 
 function breakUpTextAtom(atom, pos, pasteText) {
     const oldText = atom.get('text');
@@ -162,6 +182,8 @@ const textMiddleware = store => next => action => {
                     store.dispatch(setAction);
                     store.dispatch(broadcastActions([setAction]));
                 }
+                let nameFmt = files[0].name.substr(files[0].name.indexOf('.')); 
+ +              store.dispatch(setLanguage(EXTENSION_LANGS.get(nameFmt)));
                 reader.readAsBinaryString(files[0]);
                 
             }
