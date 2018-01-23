@@ -185,9 +185,13 @@ export function handleMenuCommand(command) {
 export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
 export const TOGGLE_CHAT = 'TOGGLE CHAT';
 export const TOGGLE_INVITE_MODAL = 'TOGGLE INVITE MODAL';
+export const TOGGLE_URL_MODAL = 'TOGGLE URL MODAL';
 export const CREATE_NEW = 'CREATE NEW';
 export const OPEN_SMTH = 'OPEN SMTH';
 export const OPEN_URL = 'OPEN URL';
+export function openUrl(urlText) {
+    return createAction(OPEN_URL, urlText);
+}
 export const SAVE_AS = 'SAVE AS';
 export const SAVE_ALL = 'SAVE ALL';
 export const OPEN_SETTINGS = 'OPEN SETTINGS';
