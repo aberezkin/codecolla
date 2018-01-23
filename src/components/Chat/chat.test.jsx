@@ -10,7 +10,7 @@ const setup = (propOverrides) => {
         ...propOverrides,
     };
 
-    const wrapper = shallow((<Chat {...props} />));
+    const wrapper = mount((<Chat {...props} />));
 
     return {
         props,

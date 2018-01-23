@@ -69,8 +69,13 @@ describe('test cursor actions', () => {
     });
 
     it(`should create ${ADD_CURSOR} action`, () => {
-        expect(addCursor({ row: 1, col: 1 })).toEqual({
-            type: ADD_CURSOR, payload: { row: 1, col: 1 },
+        expect(addCursor('asd', { row: 1, col: 1 }, 'john')).toEqual({
+            type: ADD_CURSOR, 
+            payload: {
+                id: 'asd',
+                pos: { row: 1, col: 1 },
+                name: 'john',
+            },
         });
     });
     it(`should create ${DELETE_CURSOR} action`, () => {
