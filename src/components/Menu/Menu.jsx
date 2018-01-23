@@ -14,6 +14,7 @@ import {
     OPEN_SETTINGS,
     TOGGLE_SEARCH_BOX,
     TOGGLE_INVITE_MODAL,
+    TOGGLE_ABOUT_MODAL,
     COMPILE_CODE,
 } from '../../actions';
 import './Menu.styl';
@@ -107,7 +108,12 @@ class Menu extends Component {
                         </SubMenu>
                     </MenuItem>
                     <MenuItem label="Help">
-                        <SubMenu />
+                        <SubMenu>
+                            <MenuItem 
+                                label="About Codecolla"
+                                command={TOGGLE_ABOUT_MODAL}
+                            />
+                        </SubMenu>
                     </MenuItem>
                 </MenuBar>
             </div>
