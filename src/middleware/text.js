@@ -183,7 +183,8 @@ const textMiddleware = store => next => action => {
                     store.dispatch(broadcastActions([setAction]));
                 }
                 let nameFmt = files[0].name.substr(files[0].name.indexOf('.')); 
- +              store.dispatch(setLanguage(EXTENSION_LANGS.get(nameFmt)));
+                let lang = EXTENSION_LANGS.get(nameFmt) === undefined ? 'text' : EXTENSION_LANGS.get(nameFmt);
+ +              store.dispatch(setLanguage(lang));
                 reader.readAsBinaryString(files[0]);
                 
             }
