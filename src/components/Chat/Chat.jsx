@@ -40,19 +40,27 @@ class Chat extends Component {
             <div className={CHAT_CLASSNAME}
                  tabIndex='0'
                  style={this.props.style}
-                 onFocus={event => this.onKeyDown(event)}
-                 onKeyDownCapture={event => this.onKeyDown(event)}
+                 onKeyDown={event => this.onKeyDown(event)}
             >
                 <div className="MessageBox">
                     {
-                        this.props.messages.map(message => (
-                            <Message
-                                key={message.date.getTime()}
-                                author={message.author}
-                                content={message.content}
-                                date={message.date}
-                            />
-                        ))
+                        this.props.messages.map(message => {
+                            let chat = document.querySelector(`.${CHAT_CLASSNAME}`);
+                            if (chat.contains(document.activeElement))
+                                setInterval(() => {
+                                    let messageBox = chat.querySelector('.MessageBox');
+                                    messageBox.scrollTop = messageBox.scrollHeight;
+                                }, 1000);
+                            return (
+                                <Message
+                                    key={message.date.getTime()}
+                                    author={message.author}
+                                    content={message.content}
+                                    date={message.date}
+                                />
+                            );
+                        }
+                        )
                     }
                 </div>
                 <div className="InputBox">

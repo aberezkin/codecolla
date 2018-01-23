@@ -13,6 +13,7 @@ import { CHAT_CLASSNAME } from '../Chat/Chat';
 import HomePage from '../HomePage';
 import { HOME_PAGE_CLASSNAME } from '../HomePage/HomePage';
 import Invite from '../Invite';
+import SplitPane from 'react-split-pane';
 
 export const APP_CLASSNAME = 'App';
 
@@ -73,12 +74,21 @@ export default class App extends Component {
                     />
                     <Menu />
                     <div className="wrapper" style={this.state.wrapper}>
-                        <Editor
-                            ref={(editor) => { this.editorRef = editor; }}
-                            height={this.state.editor.height}
-                            width={this.state.editor.width}
-                        />
-                        <Chat style={{ display: (this.props.isChatVisible) ? '' : 'none' }} />
+                        <SplitPane
+                            split='vertical'
+                            primary='second'
+                            minSize={this.props.isChatVisible ? 320 : 0}
+                            maxSize={this.props.isChatVisible ? 480 : 0}
+                            style={{height: this.state.wrapper.height}}
+                            onChange={size => this.setState({editor: {width: `${getPageWidth() - size}px`}})}
+                        >
+                            <Editor
+                                ref={editor => { this.editorRef = editor; }}
+                                height={this.state.editor.height}
+                                width={this.state.editor.width}
+                            />
+                            <Chat />
+                        </SplitPane>
                     </div>
                     <StatusBar style={{ display: (this.props.isStatusBarVisible) ? '' : 'none' }} />
                 </div>

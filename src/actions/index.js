@@ -168,7 +168,7 @@ export function enterSession(nickname) {
 }
 
 // Reset to needed server-ip
-export const SEND_URL = 'http://example.ru/compile';
+export const SEND_URL = 'http://52.231.193.194:8080/compile';
 export const COMPILE_CODE = 'COMPILE CODE';
 export function sendCode(langid, text) {
     return buildActionsFromMappings([{
