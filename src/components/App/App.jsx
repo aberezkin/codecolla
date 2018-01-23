@@ -37,7 +37,6 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        console.log(`MOUNTED: ${this.props.isSessionActive}`);
         if (!this.props.isSessionActive)
             this.sessionHandler(this.props.isSessionActive);
     }
