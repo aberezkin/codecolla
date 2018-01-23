@@ -8,6 +8,7 @@ import { Map } from 'immutable';
 import ChangeEvent from '../../utilities/ChangeEvent';
 import './Editor.styl';
 import { generateCursorMarker } from '../../utilities/Helpers';
+import 'brace/ext/searchbox';
 
 const EDIT_INSERT = 'insert';
 const EDIT_REMOVE = 'remove';
@@ -74,11 +75,24 @@ class Editor extends Component {
                 onChange={this.onChange}
                 name="EditorCore"
                 editorProps={{ $blockScrolling: 'Infinity' }}
-                commands={[{
-                    name: 'commandCtrlZ',
-                    bindKey: { win: 'Ctrl-z', mac: 'Command-z', linux: 'Ctrl-z' },
-                    exec: () => { console.log('Ctrl-z'); },
-                }]}
+                commands={[
+                    {
+                        name: 'commandCtrlZ',
+                        bindKey: { win: 'Ctrl-z', mac: 'Command-z', linux: 'Ctrl-z' },
+                        exec: () => { console.log('Ctrl-z'); },
+                    },
+                    {
+                        name: "unfind",
+                        bindKey: {
+                            win: "Ctrl-F",
+                            mac: "Command-F"
+                        },
+                        exec: function(editor, line) {
+                            return false;
+                        },
+                        readOnly: true
+                    }
+                ]}
             />
         );
     }
