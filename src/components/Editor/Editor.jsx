@@ -64,6 +64,7 @@ class Editor extends Component {
     render() {
         return (
             <AceEditor
+                ref='editor'
                 onLoad={this.onLoad}
                 mode={this.props.language}
                 theme={this.props.theme}
@@ -71,7 +72,7 @@ class Editor extends Component {
                 height={this.props.height}
                 value={this.props.text}
                 onChange={this.onChange}
-                name="UNIQUE_ID_OF_DIV"
+                name="EditorCore"
                 editorProps={{ $blockScrolling: 'Infinity' }}
                 commands={[{
                     name: 'commandCtrlZ',
