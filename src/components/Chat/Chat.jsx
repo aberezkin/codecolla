@@ -15,6 +15,14 @@ class Chat extends Component {
         };
     }
 
+    componentDidMount() {
+        this.updateScroll();
+    }
+
+    componentDidUpdate() {
+        this.updateScroll();
+    }
+
     onKeyDown(event) {
         if (event.keyCode === 13 && event.ctrlKey && this.state.textareaValue !== '')
             this.sendMessage();
@@ -35,6 +43,10 @@ class Chat extends Component {
         this.props.onMessage(elem);
     }
 
+    updateScroll() {
+        this.refs.messageBox.scrollTop = this.refs.messageBox.scrollHeight;
+    }
+
     render() {
         return (
             <div className={CHAT_CLASSNAME}
@@ -42,24 +54,16 @@ class Chat extends Component {
                  style={this.props.style}
                  onKeyDown={event => this.onKeyDown(event)}
             >
-                <div className="MessageBox">
+                <div ref="messageBox" className="MessageBox">
                     {
-                        this.props.messages.map(message => {
-                            let chat = document.querySelector(`.${CHAT_CLASSNAME}`);
-                            if (chat.contains(document.activeElement))
-                                setInterval(() => {
-                                    let messageBox = chat.querySelector('.MessageBox');
-                                    messageBox.scrollTop = messageBox.scrollHeight;
-                                }, 1000);
-                            return (
+                        this.props.messages.map(message => (
                                 <Message
                                     key={message.date.getTime()}
                                     author={message.author}
                                     content={message.content}
                                     date={message.date}
                                 />
-                            );
-                        }
+                            )
                         )
                     }
                 </div>
