@@ -191,12 +191,17 @@ export const OPEN_URL = 'OPEN URL';
 export const SAVE_AS = 'SAVE AS';
 export const SAVE_ALL = 'SAVE ALL';
 export const OPEN_SETTINGS = 'OPEN SETTINGS';
+export const OPEN_FILE = 'OPEN FILE';
 
 export const COMPILE_RUBY = 'COMPILE RUBY';
 export const COMPILE_CPP = 'COMPILE CPP';
 export const POST_FULFIL = 'react-redux-fetch/POST_FULFIL';
 export const POST_REJECT = 'react-redux-fetch/POST_REJECT';
 
+export const SET_FILE = 'SET FILE';
+export function onFileOpen(files) {
+    return createAction(SET_FILE, files);
+}
 
 export const ADD_HOTKEY = 'ADD HOTKEY';
 export function addHotKey(command, hotkey, handler) {

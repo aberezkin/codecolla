@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { MenuBar, Checkable, MenuItem, Separator, SubMenu } from '../MenuBar';
 import {
+    SET_FILE,
     TOGGLE_STATUS_BAR,
     TOGGLE_CHAT,
     CREATE_NEW,
     OPEN_SMTH,
+    OPEN_FILE,
     OPEN_URL,
     SAVE_AS,
     SAVE_ALL,
@@ -18,15 +20,26 @@ import './Menu.styl';
 class Menu extends Component {
     constructor(props) {
         super(props);
+        this.onMenuOptionHandler = this.onMenuOptionHandler.bind(this);
+        this.onFileOpen = this.onFileOpen.bind(this);
     }
 
     onMenuOptionHandler(command) {
         this.props.onMenuOptionHandler(command);
     }
 
+    onFileOpen(files) {
+        this.props.onFileOpen(files);
+    }
+
     render() {
         return (
             <div className="menu-wrapper">
+                <input style={{display:'none'}} 
+                    id="openFile" 
+                    type="file" 
+                    name="openFile" 
+                    onChange={event => this.onFileOpen(event.target.files)}/>
                 <MenuBar
                     onSelect={command => this.onMenuOptionHandler(command)}
                     style={this.props.style}
@@ -34,7 +47,7 @@ class Menu extends Component {
                     <MenuItem label="File">
                         <SubMenu>
                             <MenuItem label="New" command={CREATE_NEW} />
-                            <MenuItem label="Open..." command={OPEN_SMTH} />
+                            <MenuItem title="Open file" command={OPEN_FILE} />
                             <MenuItem label="Open URL" command={OPEN_URL} />
                             <Separator />
                             <MenuItem label="Save as..." command={SAVE_AS} />
@@ -94,6 +107,7 @@ class Menu extends Component {
 
 Menu.propTypes = {
     onMenuOptionHandler: PropTypes.func.isRequired,
+    onFileOpen: PropTypes.func.isRequired,
     style: PropTypes.objectOf(PropTypes.string),
     isStatusBarVisible : PropTypes.bool.isRequired,
     isChatVisible: PropTypes.bool.isRequired,
