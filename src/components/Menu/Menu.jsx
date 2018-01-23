@@ -10,6 +10,7 @@ import {
     SAVE_AS,
     SAVE_ALL,
     OPEN_SETTINGS,
+    TOGGLE_SEARCH_BOX,
     TOGGLE_INVITE_MODAL,
     COMPILE_CODE,
 } from '../../actions';
@@ -21,7 +22,10 @@ class Menu extends Component {
     }
 
     onMenuOptionHandler(command) {
-        this.props.onMenuOptionHandler(command);
+        if (command === TOGGLE_SEARCH_BOX)
+            this.props.hotKeysHandlers[TOGGLE_SEARCH_BOX]();
+        else
+            this.props.onMenuOptionHandler(command);
     }
 
     render() {
@@ -44,7 +48,13 @@ class Menu extends Component {
                         </SubMenu>
                     </MenuItem>
                     <MenuItem label="Edit">
-                        <SubMenu />
+                        <SubMenu>
+                            <MenuItem
+                                label="Find"
+                                command={TOGGLE_SEARCH_BOX}
+                                hotkey={this.props.hotKeysMap[TOGGLE_SEARCH_BOX]}
+                            />
+                        </SubMenu>
                     </MenuItem>
                     <MenuItem label="View">
                         <SubMenu>
@@ -98,6 +108,7 @@ Menu.propTypes = {
     isStatusBarVisible : PropTypes.bool.isRequired,
     isChatVisible: PropTypes.bool.isRequired,
     hotKeysMap: PropTypes.objectOf(PropTypes.string),
+    hotKeysHandlers: PropTypes.objectOf(PropTypes.func),
 };
 
 Menu.defaultProps = {
@@ -106,6 +117,7 @@ Menu.defaultProps = {
         height: '20px',
     },
     hotKeysMap: {},
+    hotKeysHandlers: {},
 };
 
 export default Menu;
