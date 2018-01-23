@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import AceEditor from 'react-ace';
 import PropTypes from 'prop-types';
+import { Map } from 'immutable';
 import ChangeEvent from '../../utilities/ChangeEvent';
 import './Editor.styl';
 import { generateCursorMarker } from '../../utilities/Helpers';
@@ -91,7 +92,7 @@ Editor.propTypes = {
     text: PropTypes.string,
     width: PropTypes.string,
     height: PropTypes.string,
-    cursors: PropTypes.objectOf(PropTypes.string).isRequired,
+    cursors: PropTypes.instanceOf(Map).isRequired,
 };
 
 Editor.defaultProps = {

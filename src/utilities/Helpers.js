@@ -87,3 +87,8 @@ export function generateCursorMarker(session, pos, name) {
 export function generateSetterReducer(actionType, defaultValue) {
     return (state = defaultValue, action) => (action.type === actionType ? action.payload : state);
 }
+
+export function atomsToString(atoms) {
+    return atoms.map(atom => atom.get('text'))
+        .join('\n');
+}

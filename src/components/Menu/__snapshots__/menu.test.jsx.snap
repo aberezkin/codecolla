@@ -15,6 +15,7 @@ exports[`menu component render MenuBar 1`] = `
       isTopLevel={true}
       key=".$0"
       onSelect={[Function]}
+      style={Object {}}
       title="Test"
     >
       <li
@@ -31,7 +32,17 @@ exports[`menu component render MenuBar 1`] = `
           style={Object {}}
           tabIndex="0"
         >
-          Test
+          <div
+            className="image"
+            style={
+              Object {
+                "display": "none",
+              }
+            }
+          />
+          <label>
+            Test
+          </label>
         </span>
       </li>
     </MenuItem>

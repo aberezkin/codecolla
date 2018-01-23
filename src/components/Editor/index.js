@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
+import { atomsToString } from '../../utilities/Helpers.js';
 import { insertEvent, removeEvent, setIsTransferAllowed, moveCursor } from '../../actions/index';
 import Editor from './Editor';
 
 const mapStateToProps = state => ({
-    text: state.text.map(atom => atom.get('text'))
-        .reduce((acc, line) => `${acc}\n${line}`),
+    text: atomsToString(state.text),
     isTransferAllowed: state.isTransferAllowed,
     theme: state.preferences.theme,
     language: state.preferences.editor.language,

@@ -63,12 +63,13 @@ Checkable.propTypes = {
     title: PropTypes.string.isRequired,
     command: PropTypes.string,
     onSelect: PropTypes.func,
-    checked: PropTypes.bool.isRequired,
+    checked: PropTypes.bool,
 };
 
 Checkable.defaultProps = {
     onSelect() {},
     command: '',
+    checked: false,
 };
 
 export default Checkable;
