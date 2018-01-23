@@ -11,12 +11,13 @@ exports[`menu component render MenuBar 1`] = `
   >
     <MenuItem
       command="test"
+      hotkey=""
       isMenuBarActive={false}
       isTopLevel={true}
       key=".$0"
+      label="Test"
       onSelect={[Function]}
       style={Object {}}
-      title="Test"
     >
       <li
         className="MenuItem"
@@ -26,7 +27,7 @@ exports[`menu component render MenuBar 1`] = `
         onMouseOver={[Function]}
       >
         <span
-          className="title"
+          className="container"
           onClick={[Function]}
           role="button"
           style={Object {}}
@@ -43,6 +44,14 @@ exports[`menu component render MenuBar 1`] = `
           <label>
             Test
           </label>
+          <div
+            className="hotkey"
+            style={
+              Object {
+                "display": "none",
+              }
+            }
+          />
         </span>
       </li>
     </MenuItem>
