@@ -163,10 +163,10 @@ DataConnection.prototype.close = function() {
 
 /** Allows user to send data. */
 DataConnection.prototype.send = function(data, chunked) {
-  if (!this.open) {
-    this.emit('error', new Error('Connection is not open. You should listen for the `open` event before sending messages.'));
-    return;
-  }
+  // if (!this.open) {
+  //   this.emit('error', new Error('Connection is not open. You should listen for the `open` event before sending messages.'));
+  //   return;
+  // }
   if (this._reliable) {
     // Note: reliable shim sending will make it so that you cannot customize
     // serialization.

@@ -11,6 +11,7 @@ import { MENU_BAR_CLASSNAME } from '../MenuBar/MenuBar';
 import Menu from '../Menu';
 import { CHAT_CLASSNAME } from '../Chat/Chat';
 import HomePage from '../HomePage';
+import { HOME_PAGE_CLASSNAME } from '../HomePage/HomePage';
 import Invite from '../Invite';
 import SplitPane from 'react-split-pane';
 
@@ -24,21 +25,40 @@ export default class App extends Component {
         this.state = {
             wrapper: {
                 width: `${getPageWidth()}px`,
-                height: `${getPageHeight() - 40}px`,
+                height: `${getPageHeight() - 35}px`,
             },
             editor: {
                 width: `${getPageWidth()}px`,
-                height: `${getPageHeight() - 40}px`,
+                height: `${getPageHeight() - 35}px`,
             },
         };
 
         window.addEventListener('resize', this.resize, true);
     }
 
+    componentDidMount() {
+        if (!this.props.isSessionActive) {
+            this.sessionHandler(this.props.isSessionActive);
+            this.resize();
+        }
+    }
+
     componentDidUpdate(prevProps) {
         if (prevProps.isStatusBarVisible !== this.props.isStatusBarVisible ||
             prevProps.isChatVisible !== this.props.isChatVisible)
             this.resize();
+        if (!prevProps.isSessionActive)
+            this.sessionHandler(prevProps.isSessionActive);
+    }
+
+    sessionHandler(prevSessionProp) {
+        let reactEditor = this.refs.editorWrapper.wrappedInstance.refs.editor;
+        if (!prevSessionProp && this.props.isSessionActive) {
+            reactEditor.editor.focus();
+            let line = reactEditor.editor.getSession().getValue().split("\n").length + 1;
+            reactEditor.editor.gotoLine(line);
+        } else if (!this.props.isSessionActive)
+            document.querySelector(`.${HOME_PAGE_CLASSNAME}`).focus();
     }
 
     resize() {
@@ -62,7 +82,9 @@ export default class App extends Component {
         return (
             <div>
                 <div className={`${APP_CLASSNAME} ace-${this.props.theme.replace(/_/g, '-')}`}>
-                    <HomePage style={{ display: (!this.props.isSessionActive) ? '' : 'none' }} />
+                    <HomePage
+                        style={{ display: (!this.props.isSessionActive) ? '' : 'none' }}
+                    />
                     <Menu />
                     <div className="wrapper" style={this.state.wrapper}>
                         <SplitPane
@@ -74,11 +96,11 @@ export default class App extends Component {
                             onChange={size => this.setState({editor: {width: `${getPageWidth() - size}px`}})}
                         >
                             <Editor
-                                ref={editor => { this.editorRef = editor; }}
+                                ref="editorWrapper"
                                 height={this.state.editor.height}
                                 width={this.state.editor.width}
                             />
-                            <Chat />
+                            <Chat style={{ display: (this.props.isChatVisible) ? '' : 'none' }} />
                         </SplitPane>
                     </div>
                     <StatusBar style={{ display: (this.props.isStatusBarVisible) ? '' : 'none' }} />

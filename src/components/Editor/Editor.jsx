@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import AceEditor from 'react-ace';
 import PropTypes from 'prop-types';
+import { Map } from 'immutable';
 import ChangeEvent from '../../utilities/ChangeEvent';
 import './Editor.styl';
 import { generateCursorMarker } from '../../utilities/Helpers';
@@ -32,7 +33,7 @@ class Editor extends Component {
             // markers.forEach(id => this.editor.session.removeMarker(markers[id].id));
 
             this.setState({ markerIds: cursors.map(cursor =>
-                generateCursorMarker(this.editor.session, cursor).id) });
+                generateCursorMarker(this.editor.session, cursor.pos, cursor.name).id) });
         }
     }
 
@@ -63,6 +64,7 @@ class Editor extends Component {
     render() {
         return (
             <AceEditor
+                ref='editor'
                 onLoad={this.onLoad}
                 mode={this.props.language}
                 theme={this.props.theme}
@@ -70,7 +72,7 @@ class Editor extends Component {
                 height={this.props.height}
                 value={this.props.text}
                 onChange={this.onChange}
-                name="UNIQUE_ID_OF_DIV"
+                name="EditorCore"
                 editorProps={{ $blockScrolling: 'Infinity' }}
                 commands={[{
                     name: 'commandCtrlZ',
@@ -91,7 +93,7 @@ Editor.propTypes = {
     text: PropTypes.string,
     width: PropTypes.string,
     height: PropTypes.string,
-    cursors: PropTypes.objectOf(PropTypes.string).isRequired,
+    cursors: PropTypes.instanceOf(Map).isRequired,
 };
 
 Editor.defaultProps = {

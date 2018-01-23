@@ -1,4 +1,4 @@
-import { broadcastActions, broadcastActionsToPeer, setLanguage,
+import { broadcastActions, broadcastActionsToPeer, SAVE_AS, setLanguage,
     INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
     SET_LINE, SEND_ALL_TEXT, SET_TEXT, OPEN_FILE, SET_FILE,
     setText } from '../actions/index';
@@ -22,6 +22,25 @@ const EXTENSION_LANGS = new Map([
     ['.sql', 'mysql'      ],
     [ '.pl', 'perl'       ],
     [ '.rs', 'rust'       ],
+]);
+
+const LANGS_EXTENSION = new Map([
+    ['python'     ,  '.py'],
+    ['ruby'       ,  '.rb'],
+    ['clojure'    , '.clj'],
+    ['php'        , '.php'],
+    ['javascript' ,  '.js'],
+    ['scala'      ,  '.sc'],
+    ['go'         ,  '.go'],
+    ['c_cpp'      , '.cpp'],
+    ['java'       ,'.java'],
+    ['VB.NET'     ,  '.vb'],
+    ['csharp'     ,  '.cs'],
+    ['sh'         ,  '.sh'],
+    ['Objective-C',   '.c'],
+    ['sql'      , '.sql'],
+    ['perl'       ,  '.pl'],
+    ['rust'       ,  '.rs'],
 ]);
 
 function breakUpTextAtom(atom, pos, pasteText) {
@@ -48,33 +67,34 @@ function removeTextFromAtom(atom, from = 0, to = Number.MAX_VALUE) {
 }
 
 function generateInsertActions(atoms, event) {
-    const isFirstLineSlice = event.startCol !== 0 || event.startRow === event.endRow;
     const actions = [];
     // if insert /n in middle of line
     let tailOfText = '';
     if (event.text[0] === '' || event.text.length > 1) {
         const atom = atoms.get(event.startRow);
-        const pos = isFirstLineSlice ? event.startCol : 0;
         actions.push(setLine(
             event.startRow,
-            breakUpTextAtom(atom, pos, event.text[0]),
+            breakUpTextAtom(atom, 
+                event.startCol, 
+                event.text[0]),
         ));
-        tailOfText = atom.get('text').slice(pos);
-    } else
+        tailOfText = atom.get('text').slice(event.startCol);
+    } else {
         actions.push(setLine(
             event.startRow,
             insertTextToAtom(
                 atoms.get(event.startRow),
-                isFirstLineSlice ? event.startCol : 0, event.text[0],
+                event.startCol, 
+                event.text[0],
             ),
         ));
+    }
 
-
-    for (let i = 0 + isFirstLineSlice; i < (event.text.length + isFirstLineSlice) - 1; i += 1) {
-        const atom = {
+    for (let i = 1; i < event.text.length; i += 1) {
+            const atom = {
             id: generateLineId(),
-            text: i === (event.text.length + isFirstLineSlice) - 2 ?
-                event.text[i] + tailOfText : event.text[i],
+            text: i === event.text.length - 1 ?
+                  event.text[i] + tailOfText : event.text[i],
             time: 1,
         };
         actions.push(insertLine(event.startRow + i, atom));
@@ -151,16 +171,31 @@ const textMiddleware = store => next => action => {
             break;
         }
         case SEND_ALL_TEXT: {
-            // Need some modifications.
             const setTextAction = {
                 type: SET_TEXT,
                 payload: store.getState().text,
             };
-            const actions = {
-                id: action.payload,
-                broadcastedAction: [setTextAction],
-            };
-            store.dispatch(broadcastActionsToPeer(actions));
+            store.dispatch(broadcastActionsToPeer(action.payload, setTextAction));
+            break;
+        }
+        case SAVE_AS: {
+            const textToSave = state => state.text.toArray().map(i => i.toObject().text).join('\n');
+        
+            let textToSaveAsBlob = new Blob([textToSave], {type:'text/plain'});
+            let textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+            let fileNameToSaveAs = 'newfile' + 
+                LANGS_EXTENSION.get(store.getState().preferences.editor.language);
+         
+            let downloadLink = document.createElement('a');
+            downloadLink.download = fileNameToSaveAs;
+            downloadLink.innerHTML = 'Download File';
+            downloadLink.href = textToSaveAsURL;
+            downloadLink.onclick = this.destroyClickedElement;
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+         
+            downloadLink.click();
+            
             break;
         }
         case OPEN_FILE: {
