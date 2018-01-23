@@ -32,7 +32,7 @@ class Editor extends Component {
             // markers.forEach(id => this.editor.session.removeMarker(markers[id].id));
 
             this.setState({ markerIds: cursors.map(cursor =>
-                generateCursorMarker(this.editor.session, cursor).id) });
+                generateCursorMarker(this.editor.session, cursor.pos, cursor.name).id) });
         }
     }
 
