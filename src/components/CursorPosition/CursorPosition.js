@@ -21,7 +21,6 @@ class CursorPosition extends Component {
 }
 
 CursorPosition.propTypes = {
-    default: PropTypes.string.isRequired, // selected option
     textColor: PropTypes.string,
 };
 

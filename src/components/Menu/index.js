@@ -5,6 +5,7 @@ import { createSimpleAction, addHotKey } from '../../actions/index';
 const mapStateToProps = state => ({
     isStatusBarVisible : state.preferences.isStatusBarVisible,
     isChatVisible: state.preferences.isChatVisible,
+    isFullscreen: state.preferences.isFullscreen,
     hotKeysMap: state.preferences.hotkeys.map,
 });
 

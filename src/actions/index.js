@@ -182,6 +182,7 @@ export function handleMenuCommand(command) {
     return createAction(command, false);
 }
 
+export const TOGGLE_FULLSCREEN = 'TOGGLE FULLSCREEN';
 export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
 export const TOGGLE_CHAT = 'TOGGLE CHAT';
 export const TOGGLE_INVITE_MODAL = 'TOGGLE INVITE MODAL';

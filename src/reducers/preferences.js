@@ -11,6 +11,7 @@ import {
     ENTER_SESSION,
     ADD_HOTKEY,
     createSimpleAction,
+    TOGGLE_FULLSCREEN,
 } from '../actions';
 
 const theme = generateSetterReducer(SET_THEME, 'monokai');
@@ -26,6 +27,14 @@ const isChatVisible = (state = false, action) => {
 const isStatusBarVisible = (state = true, action) => {
     switch (action.type) {
         case TOGGLE_STATUS_BAR:
+            return !state;
+        default: return state;
+    }
+};
+
+const isFullscreen = (state = false, action) => {
+    switch (action.type) {
+        case TOGGLE_FULLSCREEN:
             return !state;
         default: return state;
     }
@@ -91,4 +100,5 @@ export default combineReducers({
     isStatusBarVisible,
     isSessionActive,
     isInviteModalOpen,
+    isFullscreen,
 });
