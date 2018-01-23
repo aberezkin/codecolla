@@ -1,7 +1,28 @@
 import { broadcastActions, broadcastActionsToPeer, SAVE_AS, setLanguage,
     INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
-    SET_LINE, SEND_ALL_TEXT, SET_TEXT } from '../actions/index';
+    SET_LINE, SEND_ALL_TEXT, SET_TEXT, OPEN_FILE, SET_FILE,
+    setText } from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
+
+const EXTENSION_LANGS = new Map([
+    [ '.py', 'python'     ],
+    [ '.rb', 'ruby'       ],
+    ['.clj', 'clojure'    ],
+    ['.php', 'php'        ],
+    [ '.js', 'javascript' ],
+    [ '.sc', 'scala'      ],
+    [ '.go', 'go'         ],
+    ['.cpp', 'c_cpp'      ],
+    [  '.h', 'c_cpp'      ],
+    ['.java','java'       ],
+    [ '.vb', 'VB.NET'     ],
+    [ '.cs', 'csharp'     ],
+    [ '.sh', 'sh'         ],
+    [  '.c', 'Objective-C'],
+    ['.sql', 'mysql'      ],
+    [ '.pl', 'perl'       ],
+    [ '.rs', 'rust'       ],
+]);
 
 const LANGS_EXTENSION = new Map([
     ['python'     ,  '.py'],
@@ -175,6 +196,33 @@ const textMiddleware = store => next => action => {
          
             downloadLink.click();
             
+            break;
+        }
+        case OPEN_FILE: {
+            let openFile = document.getElementById('openFile');
+            openFile.click();
+            break;
+        }
+        case SET_FILE: {
+            var text = '';
+            let files = action.payload;
+            if(files.length) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    text = e.target.result;
+                };
+                
+                reader.onloadend = function(e) {
+                    let setAction = setText(text) 
+                    store.dispatch(setAction);
+                    store.dispatch(broadcastActions([setAction]));
+                }
+                let nameFmt = files[0].name.substr(files[0].name.indexOf('.')); 
+                let lang = EXTENSION_LANGS.get(nameFmt) === undefined ? 'text' : EXTENSION_LANGS.get(nameFmt);
+ +              store.dispatch(setLanguage(lang));
+                reader.readAsBinaryString(files[0]);
+                
+            }
             break;
         }
         default: next(action);
