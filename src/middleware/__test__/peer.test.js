@@ -26,7 +26,6 @@ class ConnectionMock {
 
     isEventified() {
         return (
-            this.listeners[CONNECTION_OPEN] &&
             this.listeners[DATA_TRANSFER] &&
             this.listeners[PEER_ERROR] &&
             this.listeners[CONNECTION_CLOSE]
@@ -41,7 +40,7 @@ describe('eventifyConnection test', () => {
         let connection = new ConnectionMock();
 
         const dispatch = jest.fn();
-        connection = eventifyConnection(connection, isSeed || false, dispatch);
+        connection = eventifyConnection(connection, dispatch);
 
         return {
             connection,
