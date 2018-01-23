@@ -26,11 +26,9 @@ export default class HotKeysWrapper extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if (this.props.hotKeysMap !== nextProps.hotKeysMap ||
+        return (this.props.hotKeysMap !== nextProps.hotKeysMap ||
             this.props.hotKeysHandlers !== nextProps.hotKeysHandlers
-        )
-            return true;
-        return false;
+        );
     }
 
     render() {
