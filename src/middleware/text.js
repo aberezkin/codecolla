@@ -27,33 +27,34 @@ function removeTextFromAtom(atom, from = 0, to = Number.MAX_VALUE) {
 }
 
 function generateInsertActions(atoms, event) {
-    const isFirstLineSlice = event.startCol !== 0 || event.startRow === event.endRow;
     const actions = [];
     // if insert /n in middle of line
     let tailOfText = '';
     if (event.text[0] === '' || event.text.length > 1) {
         const atom = atoms.get(event.startRow);
-        const pos = isFirstLineSlice ? event.startCol : 0;
         actions.push(setLine(
             event.startRow,
-            breakUpTextAtom(atom, pos, event.text[0]),
+            breakUpTextAtom(atom, 
+                event.startCol, 
+                event.text[0]),
         ));
-        tailOfText = atom.get('text').slice(pos);
-    } else
+        tailOfText = atom.get('text').slice(event.startCol);
+    } else {
         actions.push(setLine(
             event.startRow,
             insertTextToAtom(
                 atoms.get(event.startRow),
-                isFirstLineSlice ? event.startCol : 0, event.text[0],
+                event.startCol, 
+                event.text[0],
             ),
         ));
+    }
 
-
-    for (let i = 0 + isFirstLineSlice; i < (event.text.length + isFirstLineSlice) - 1; i += 1) {
-        const atom = {
+    for (let i = 1; i < event.text.length; i += 1) {
+            const atom = {
             id: generateLineId(),
-            text: i === (event.text.length + isFirstLineSlice) - 2 ?
-                event.text[i] + tailOfText : event.text[i],
+            text: i === event.text.length - 1 ?
+                  event.text[i] + tailOfText : event.text[i],
             time: 1,
         };
         actions.push(insertLine(event.startRow + i, atom));
