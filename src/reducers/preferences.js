@@ -5,11 +5,13 @@ import {
     SET_LANGUAGE,
     SET_LINEFEED,
     SET_THEME,
-    TOGGLE_CHAT, TOGGLE_INVITE_MODAL,
+    TOGGLE_CHAT,
+    TOGGLE_INVITE_MODAL,
     TOGGLE_STATUS_BAR,
     ENTER_SESSION,
     ADD_HOTKEY,
-} from '../actions/index';
+    createSimpleAction,
+} from '../actions';
 
 const theme = generateSetterReducer(SET_THEME, 'monokai');
 
@@ -55,9 +57,10 @@ const editor = combineReducers({ language, linefeed, encoding });
 const hotKeys = (state = {}, action) => {
     switch (action.type) {
         case ADD_HOTKEY: {
-            let obj = {};
-            obj[action.payload.command] = action.payload.hotkey;
-            return Object.assign(obj, state);
+            return {
+                ...state,
+                [action.payload.command] : action.payload.hotkey,
+            };
         }
         default:
             return state;
@@ -67,9 +70,10 @@ const hotKeys = (state = {}, action) => {
 const hotKeysHandlers = (state = {}, action) => {
     switch (action.type) {
         case ADD_HOTKEY: {
-            let obj = {};
-            obj[action.payload.command] = action.payload.handler;
-            return Object.assign(obj, state);
+            return {
+                ...state,
+                [action.payload.command] : action.payload.handler,
+            };
         }
         default:
             return state;

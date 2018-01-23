@@ -63,6 +63,7 @@ class Editor extends Component {
     render() {
         return (
             <AceEditor
+                ref='editor'
                 onLoad={this.onLoad}
                 mode={this.props.language}
                 theme={this.props.theme}

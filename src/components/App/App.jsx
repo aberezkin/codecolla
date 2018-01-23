@@ -36,15 +36,27 @@ export default class App extends Component {
         window.addEventListener('resize', this.resize, true);
     }
 
+    componentDidMount() {
+        console.log(`MOUNTED: ${this.props.isSessionActive}`);
+        if (!this.props.isSessionActive)
+            this.sessionHandler(this.props.isSessionActive);
+    }
+
     componentDidUpdate(prevProps) {
         if (prevProps.isStatusBarVisible !== this.props.isStatusBarVisible ||
             prevProps.isChatVisible !== this.props.isChatVisible)
             this.resize();
-        if (this.props.isSessionActive) {
-            this.editorRef.focus(); //To focus the ace editor
-            let line = this.editorRef.getSession().getValue().split("\n").length; // To count total no. of lines
-            editor.gotoLine(line); //Go to end of document
-        } else
+        if (!prevProps.isSessionActive)
+            this.sessionHandler(prevProps.isSessionActive);
+    }
+
+    sessionHandler(prevSessionProp) {
+        let reactEditor = this.refs.editorWrapper.wrappedInstance.refs.editor;
+        if (!prevSessionProp && this.props.isSessionActive) {
+            reactEditor.editor.focus();
+            let line = reactEditor.editor.getSession().getValue().split("\n").length;
+            reactEditor.editor.gotoLine(line);
+        } else if (!this.props.isSessionActive)
             document.querySelector(`.${HOME_PAGE_CLASSNAME}`).focus();
     }
 
@@ -83,11 +95,11 @@ export default class App extends Component {
                             onChange={size => this.setState({editor: {width: `${getPageWidth() - size}px`}})}
                         >
                             <Editor
-                                ref={editor => { this.editorRef = editor; }}
+                                ref="editorWrapper"
                                 height={this.state.editor.height}
                                 width={this.state.editor.width}
                             />
-                            <Chat />
+                            <Chat style={{ display: (this.props.isChatVisible) ? '' : 'none' }} />
                         </SplitPane>
                     </div>
                     <StatusBar style={{ display: (this.props.isStatusBarVisible) ? '' : 'none' }} />
