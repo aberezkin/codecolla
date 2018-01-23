@@ -7,7 +7,6 @@ class CursorPosition extends Component {
     }
 
     render() {
-        console.log('CURSOR:: ',this.props.position);
         return (
             <div className="CursorPosition">
                 <span className="Position">
