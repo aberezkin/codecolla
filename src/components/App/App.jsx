@@ -25,11 +25,11 @@ export default class App extends Component {
         this.state = {
             wrapper: {
                 width: `${getPageWidth()}px`,
-                height: `${getPageHeight() - 40}px`,
+                height: `${getPageHeight() - 35}px`,
             },
             editor: {
                 width: `${getPageWidth()}px`,
-                height: `${getPageHeight() - 40}px`,
+                height: `${getPageHeight() - 35}px`,
             },
         };
 
@@ -37,8 +37,10 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        if (!this.props.isSessionActive)
+        if (!this.props.isSessionActive) {
             this.sessionHandler(this.props.isSessionActive);
+            this.resize();
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -53,7 +55,7 @@ export default class App extends Component {
         let reactEditor = this.refs.editorWrapper.wrappedInstance.refs.editor;
         if (!prevSessionProp && this.props.isSessionActive) {
             reactEditor.editor.focus();
-            let line = reactEditor.editor.getSession().getValue().split("\n").length;
+            let line = reactEditor.editor.getSession().getValue().split("\n").length + 1;
             reactEditor.editor.gotoLine(line);
         } else if (!this.props.isSessionActive)
             document.querySelector(`.${HOME_PAGE_CLASSNAME}`).focus();
