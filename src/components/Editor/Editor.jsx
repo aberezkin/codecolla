@@ -70,7 +70,7 @@ class Editor extends Component {
                 height={this.props.height}
                 value={this.props.text}
                 onChange={this.onChange}
-                name="UNIQUE_ID_OF_DIV"
+                name="EditorCore"
                 editorProps={{ $blockScrolling: 'Infinity' }}
                 commands={[{
                     name: 'commandCtrlZ',

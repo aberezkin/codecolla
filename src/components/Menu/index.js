@@ -11,7 +11,6 @@ const mapStateToProps = state => ({
 // TODO: move this to individual selectors
 const mapDispatchToProps = dispatch => ({
     onMenuOptionHandler: command => dispatch(createSimpleAction(command)),
-    addHotKey: (command, hotkey, handler) => dispatch(addHotKey(command, hotkey, handler)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);

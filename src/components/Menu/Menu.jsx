@@ -19,18 +19,6 @@ class Menu extends Component {
     constructor(props) {
         super(props);
         this.onMenuOptionHandler = this.onMenuOptionHandler.bind(this);
-        this.props.addHotKey(TOGGLE_CHAT, 'alt+o', (event) => {
-            event.preventDefault();
-            this.props.onMenuOptionHandler(TOGGLE_CHAT);
-        });
-        this.props.addHotKey(TOGGLE_STATUS_BAR, 'ctrl+b', (event) => {
-            event.preventDefault();
-            this.props.onMenuOptionHandler(TOGGLE_STATUS_BAR);
-        });
-        this.props.addHotKey(TOGGLE_INVITE_MODAL, 'ctrl+i', (event) => {
-            event.preventDefault();
-            this.props.onMenuOptionHandler(TOGGLE_INVITE_MODAL);
-        });
     }
 
     onMenuOptionHandler(command) {
@@ -110,7 +98,6 @@ Menu.propTypes = {
     style: PropTypes.objectOf(PropTypes.string),
     isStatusBarVisible : PropTypes.bool.isRequired,
     isChatVisible: PropTypes.bool.isRequired,
-    addHotKey: PropTypes.func.isRequired,
     hotKeysMap: PropTypes.objectOf(PropTypes.string),
 };
 

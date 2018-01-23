@@ -11,8 +11,8 @@ import { MENU_BAR_CLASSNAME } from '../MenuBar/MenuBar';
 import Menu from '../Menu';
 import { CHAT_CLASSNAME } from '../Chat/Chat';
 import HomePage from '../HomePage';
+import { HOME_PAGE_CLASSNAME } from '../HomePage/HomePage';
 import Invite from '../Invite';
-import {HotKeys} from 'react-hotkeys';
 
 export const APP_CLASSNAME = 'App';
 
@@ -39,6 +39,12 @@ export default class App extends Component {
         if (prevProps.isStatusBarVisible !== this.props.isStatusBarVisible ||
             prevProps.isChatVisible !== this.props.isChatVisible)
             this.resize();
+        if (this.props.isSessionActive) {
+            this.editorRef.focus(); //To focus the ace editor
+            let line = this.editorRef.getSession().getValue().split("\n").length; // To count total no. of lines
+            editor.gotoLine(line); //Go to end of document
+        } else
+            document.querySelector(`.${HOME_PAGE_CLASSNAME}`).focus();
     }
 
     resize() {
@@ -60,26 +66,24 @@ export default class App extends Component {
 
     render() {
         return (
-            <HotKeys
-                keyMap={this.props.hotKeysMap}
-                handlers={this.props.hotKeysHandlers}
-                autofocus>
+            <div>
                 <div className={`${APP_CLASSNAME} ace-${this.props.theme.replace(/_/g, '-')}`}>
-                    <HomePage style={{ display: (!this.props.isSessionActive) ? '' : 'none' }} />
+                    <HomePage
+                        style={{ display: (!this.props.isSessionActive) ? '' : 'none' }}
+                    />
                     <Menu />
                     <div className="wrapper" style={this.state.wrapper}>
                         <Editor
                             ref={(editor) => { this.editorRef = editor; }}
                             height={this.state.editor.height}
                             width={this.state.editor.width}
-                            autofocus={this.props.isSessionActive}
                         />
                         <Chat style={{ display: (this.props.isChatVisible) ? '' : 'none' }} />
                     </div>
                     <StatusBar style={{ display: (this.props.isStatusBarVisible) ? '' : 'none' }} />
                 </div>
                 <Invite peerId="hello" />
-            </HotKeys>
+            </div>
         );
     }
 }
@@ -89,11 +93,4 @@ App.propTypes = {
     isChatVisible: PropTypes.bool.isRequired,
     isSessionActive: PropTypes.bool.isRequired,
     theme: PropTypes.string.isRequired,
-    hotKeysMap: PropTypes.objectOf(PropTypes.string),
-    hotKeysHandlers: PropTypes.objectOf(PropTypes.func),
-};
-
-App.defaultProps = {
-    hotKeysMap: {},
-    hotKeysHandlers: {},
 };
