@@ -2,7 +2,7 @@ import { TOGGLE_FULLSCREEN } from '../actions/index';
 import { toggleFullScreen } from '../utilities/Helpers';
 
 
-const textMiddleware = store => next => action => {
+const fullscreenMiddleware = store => next => action => {
     switch (action.type) {
         case TOGGLE_FULLSCREEN: {
             toggleFullScreen();   
@@ -13,4 +13,4 @@ const textMiddleware = store => next => action => {
     }
 };
 
-export default textMiddleware;
+export default fullscreenMiddleware;
