@@ -14,6 +14,7 @@ import HomePage from '../HomePage';
 import { HOME_PAGE_CLASSNAME } from '../HomePage/HomePage';
 import Invite from '../Invite';
 import SplitPane from 'react-split-pane';
+import {TOGGLE_SEARCH_BOX} from "../../actions";
 
 export const APP_CLASSNAME = 'App';
 
@@ -40,6 +41,11 @@ export default class App extends Component {
         if (!this.props.isSessionActive) {
             this.sessionHandler(this.props.isSessionActive);
             this.resize();
+            this.props.addHotKey(TOGGLE_SEARCH_BOX, 'ctrl+f', (event) => {
+                let editor = this.refs.editorWrapper.wrappedInstance.refs.editor.editor;
+                editor.execCommand('find');
+                return false;
+            });
         }
     }
 
@@ -116,4 +122,5 @@ App.propTypes = {
     isChatVisible: PropTypes.bool.isRequired,
     isSessionActive: PropTypes.bool.isRequired,
     theme: PropTypes.string.isRequired,
+    addHotKey: PropTypes.func.isRequired,
 };

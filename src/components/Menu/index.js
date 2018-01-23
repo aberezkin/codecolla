@@ -8,6 +8,7 @@ const mapStateToProps = state => ({
     isStatusBarVisible : state.preferences.isStatusBarVisible,
     isChatVisible: state.preferences.isChatVisible,
     hotKeysMap: state.preferences.hotkeys.map,
+    hotKeysHandlers: state.preferences.hotkeys.handlers,
 });
 
 // TODO: move this to individual selectors

@@ -191,6 +191,7 @@ export const OPEN_URL = 'OPEN URL';
 export const SAVE_AS = 'SAVE AS';
 export const SAVE_ALL = 'SAVE ALL';
 export const OPEN_SETTINGS = 'OPEN SETTINGS';
+export const TOGGLE_SEARCH_BOX = 'TOGGLE SEARCH BOX';
 export const OPEN_FILE = 'OPEN FILE';
 
 export const COMPILE_RUBY = 'COMPILE RUBY';

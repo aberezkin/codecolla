@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import App from './App';
+import {addHotKey} from "../../actions";
 
 const mapStateToProps = state => ({
     theme: state.preferences.theme,
@@ -8,4 +9,9 @@ const mapStateToProps = state => ({
     isSessionActive: state.preferences.isSessionActive,
 });
 
-export default connect(mapStateToProps)(App);
+// TODO: move this to individual selectors
+const mapDispatchToProps = dispatch => ({
+    addHotKey: (name, hotkey, handler) => dispatch(addHotKey(name, hotkey, handler)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
