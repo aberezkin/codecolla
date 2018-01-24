@@ -7,6 +7,7 @@ import {
     SET_THEME,
     TOGGLE_CHAT,
     TOGGLE_INVITE_MODAL,
+    TOGGLE_URL_MODAL,
     TOGGLE_ABOUT_MODAL,
     TOGGLE_STATUS_BAR,
     ENTER_SESSION,
@@ -40,10 +41,17 @@ const isInviteModalOpen = (state = false, action) => {
     }
 };
 
+const isURLModalOpen = (state = false, action) => {
+    switch (action.type) {
+        case TOGGLE_URL_MODAL:
+            return !state;
+        default: return state;
+    }
+};
+
 const isAboutModalOpen = (state = false, action) => {
     return action.type === TOGGLE_ABOUT_MODAL ? !state : state;
 }
-
 const isSessionActive = (state = false, action) => {
     switch (action.type) {
         case ENTER_SESSION:
@@ -96,5 +104,6 @@ export default combineReducers({
     isStatusBarVisible,
     isSessionActive,
     isInviteModalOpen,
+    isURLModalOpen,
     isAboutModalOpen,
 });
