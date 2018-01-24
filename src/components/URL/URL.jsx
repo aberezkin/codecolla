@@ -94,7 +94,6 @@ class URL extends React.Component {
 }
 
 URL.propTypes = {
-    onRequestClose: PropTypes.func.isRequired,
     openUrl: PropTypes.func.isRequired,
 };
 
