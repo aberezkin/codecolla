@@ -53,7 +53,7 @@ class Menu extends Component {
                     <MenuItem label="File">
                         <SubMenu>
                             <MenuItem label="New" command={CREATE_NEW} />
-                            <MenuItem title="Open file" command={OPEN_FILE} />
+                            <MenuItem label="Open file" command={OPEN_FILE} />
                             <MenuItem label="Open URL" command={OPEN_URL} />
                             <Separator />
                             <MenuItem label="Save as..." command={SAVE_AS} />
@@ -90,11 +90,10 @@ class Menu extends Component {
                                 hotkey={this.props.hotKeysMap[TOGGLE_STATUS_BAR]}
                                 checked={this.props.isStatusBarVisible}
                             />
-                            <Checkable
+                            <MenuItem
                                 label="Fullscreen"
                                 command={TOGGLE_FULLSCREEN}
                                 hotkey={this.props.hotKeysMap[TOGGLE_FULLSCREEN]}
-                                checked={this.props.isFullscreen}
                             />
                         </SubMenu>
                     </MenuItem>

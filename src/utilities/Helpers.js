@@ -19,8 +19,8 @@ function stringToColor(str) {
 
 
 export function toggleFullScreen() {
-    if (!document.fullscreenElement &&    // alternative standard method
-        !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
+    if (!document.fullscreenElement &&
+        !document.mozFullScreenElement && !document.webkitFullscreenElement) {
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
       } else if (document.documentElement.mozRequestFullScreen) {
@@ -37,8 +37,7 @@ export function toggleFullScreen() {
         document.webkitCancelFullScreen();
       }
     }
-  }
-  
+}
 
 export function getPageHeight() {
     return document.documentElement.clientHeight;

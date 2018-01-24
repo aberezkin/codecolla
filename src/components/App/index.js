@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import App from './App';
-import {addHotKey} from "../../actions";
+import { addHotKey } from "../../actions";
 
 const mapStateToProps = state => ({
     theme: state.preferences.theme,

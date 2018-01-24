@@ -1,11 +1,11 @@
-import { TOGGLE_FULLSCREEN } from '../actions/index';
+import { TOGGLE_FULLSCREEN, TOGGLE_FULLSCREEN_MODE, createSimpleAction } from '../actions/index';
 import { toggleFullScreen } from '../utilities/Helpers';
 
 
 const fullscreenMiddleware = store => next => action => {
     switch (action.type) {
         case TOGGLE_FULLSCREEN: {
-            toggleFullScreen();   
+            toggleFullScreen();
             next(action);
             break;
         }
