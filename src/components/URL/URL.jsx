@@ -30,8 +30,9 @@ class URL extends React.Component {
             inputValue: '',
         };
         this.updateInputValue = this.updateInputValue.bind(this);
-        this.onPressBtn = this.onPressBtn.bind(this);
+        this.loadContent = this.loadContent.bind(this);
         this.httpGet = this.httpGet.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
     }
 
     httpGet(url) {
@@ -58,10 +59,17 @@ class URL extends React.Component {
             inputValue: evt.target.value
         });
     }
-    onPressBtn() {
+
+    loadContent() {
         this.httpGet(this.state.inputValue);
     }
+
+    onKeyDown(event) {
+        if (event.keyCode === 13) this.loadContent();
+    }
+
     render() {
+        if (this.input) this.input.focus();
         return (
             <URLModal
                 className={{
@@ -79,14 +87,19 @@ class URL extends React.Component {
             >
                 <h1>Enter URL</h1>
                 <input
+                    ref={(el) => {this.input = el}}
                     type="text"
                     className="link"
                     value={this.state.inputValue} 
                     onChange={this.updateInputValue}
+                    onKeyDown={(event) => {this.onKeyDown(event);}}
                 />
-                <Button className="open-button" 
+                <Button 
+                    className="open-button" 
                     right
-                    onClick={this.onPressBtn}>Load
+                    onClick={this.loadContent}
+                >
+                    Load
                 </Button>
             </URLModal>
         );
