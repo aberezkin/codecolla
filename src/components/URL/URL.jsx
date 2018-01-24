@@ -46,6 +46,7 @@ class URL extends React.Component {
         xmlhttp.onreadystatechange = () => {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 this.props.openUrl(xmlhttp.responseText);
+                this.setState({ inputValue: '' });
                 this.props.toggle();
                 return;
             }
@@ -82,7 +83,7 @@ class URL extends React.Component {
                     afterOpen: 'dropdown-open',
                     beforeClose: 'dropdown-close',
                 }}
-                
+                onAfterOpen={() => { this.input.focus() }}
                 ariaHideApp={false}
             >
                 <h1>Enter URL</h1>
