@@ -4,7 +4,8 @@ import {HotKeys} from 'react-hotkeys';
 import App from '../App';
 import {
     TOGGLE_CHAT,
-    TOGGLE_INVITE_MODAL
+    TOGGLE_INVITE_MODAL,
+    TOGGLE_FULLSCREEN
 } from "../../actions";
 
 export default class HotKeysWrapper extends Component {
@@ -22,6 +23,16 @@ export default class HotKeysWrapper extends Component {
         this.props.addHotKey(TOGGLE_INVITE_MODAL, 'ctrl+i', (event) => {
             event.preventDefault();
             this.props.simpleAction(TOGGLE_INVITE_MODAL);
+        });
+
+        this.props.addHotKey(TOGGLE_INVITE_MODAL, 'ctrl+i', (event) => {
+            event.preventDefault();
+            this.props.simpleAction(TOGGLE_INVITE_MODAL);
+        });
+
+        this.props.addHotKey(TOGGLE_FULLSCREEN, 'f10', (event) => {
+            event.preventDefault();
+            this.props.simpleAction(TOGGLE_FULLSCREEN);
         });
     }
 
