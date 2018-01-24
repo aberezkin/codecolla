@@ -27,7 +27,6 @@ export default class HotKeysWrapper extends Component {
 
         this.props.addHotKey(TOGGLE_INVITE_MODAL, 'f11', (event) => {
             event.preventDefault();
-            console.log('!!!!!!!!!!');
             this.props.simpleAction(TOGGLE_FULLSCREEN);
         });
     }

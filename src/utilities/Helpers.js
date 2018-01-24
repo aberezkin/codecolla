@@ -19,7 +19,7 @@ function stringToColor(str) {
 
 
 export function toggleFullScreen() {
-    if (!document.fullscreenElement &&
+    if (!document.fullScreenElement &&
         !document.mozFullScreenElement && !document.webkitFullscreenElement) {
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
