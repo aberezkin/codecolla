@@ -53,7 +53,7 @@ class Menu extends Component {
                     <MenuItem label="File">
                         <SubMenu>
                             <MenuItem label="New" command={CREATE_NEW} />
-                            <MenuItem title="Open file" command={OPEN_FILE} />
+                            <MenuItem label="Open file" command={OPEN_FILE} />
                             <MenuItem label="Open URL" command={TOGGLE_URL_MODAL} />
                             <Separator />
                             <MenuItem label="Save as..." command={SAVE_AS} />

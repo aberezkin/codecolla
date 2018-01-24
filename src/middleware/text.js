@@ -225,7 +225,7 @@ const textMiddleware = store => next => action => {
                 }
                 let nameFmt = files[0].name.substr(files[0].name.indexOf('.')); 
                 let lang = EXTENSION_LANGS.get(nameFmt) === undefined ? 'text' : EXTENSION_LANGS.get(nameFmt);
-                store.dispatch(setLanguage(lang));
+ +              store.dispatch(setLanguage(lang));
                 reader.readAsBinaryString(files[0]);
                 
             }

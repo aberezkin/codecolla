@@ -52,7 +52,6 @@ const isURLModalOpen = (state = false, action) => {
 const isAboutModalOpen = (state = false, action) => {
     return action.type === TOGGLE_ABOUT_MODAL ? !state : state;
 }
-
 const isSessionActive = (state = false, action) => {
     switch (action.type) {
         case ENTER_SESSION:

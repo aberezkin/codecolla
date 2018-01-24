@@ -36,6 +36,7 @@ class URL extends React.Component {
         xmlhttp.onreadystatechange = () => {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 this.props.openUrl(xmlhttp.responseText);
+                this.props.toggle();
                 return;
             }
         }
@@ -74,7 +75,7 @@ class URL extends React.Component {
                     value={this.state.inputValue} 
                     onChange={this.updateInputValue}
                 />
-                <Button className="copy-button" 
+                <Button className="open-button" 
                     right
                     onClick={this.onPressBtn}>Load
                 </Button>

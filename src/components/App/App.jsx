@@ -12,10 +12,9 @@ import Menu from '../Menu';
 import { CHAT_CLASSNAME } from '../Chat/Chat';
 import HomePage from '../HomePage';
 import { HOME_PAGE_CLASSNAME } from '../HomePage/HomePage';
-import URL from '../URL';
 import Invite from '../Invite/Invite';
+import URL from '../URL';
 import About from '../About/About';
-
 import SplitPane from 'react-split-pane';
 import {TOGGLE_SEARCH_BOX} from "../../actions";
 
