@@ -13,7 +13,7 @@ import { CHAT_CLASSNAME } from '../Chat/Chat';
 import HomePage from '../HomePage';
 import { HOME_PAGE_CLASSNAME } from '../HomePage/HomePage';
 import Invite from '../Invite/Invite';
-import URL from '../URL';
+import URL from '../URL/URL';
 import About from '../About/About';
 import SplitPane from 'react-split-pane';
 import {TOGGLE_SEARCH_BOX} from "../../actions";

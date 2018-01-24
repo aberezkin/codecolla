@@ -6,13 +6,22 @@ import Modal from 'react-modal';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Button from '../Button';
 import './URL.styl';
+import { createConnectedModal } from '../../higher-order-components/redux-connected-modal'
+import { TOGGLE_URL_MODAL } from '../../actions';
 
-const mapStateToModalProps = state => ({
-    isOpen: state.preferences.isURLModalOpen,
+import { createSimpleAction, openUrl } from '../../actions';
+const mapDispatchToProps = dispatch => ({
+    toggle: () => dispatch(createSimpleAction(TOGGLE_URL_MODAL)),
+    openUrl: (url) => dispatch(openUrl(url)),
 });
 
-const URLModal = connect(mapStateToModalProps)(Modal);
+/*
+const mapStateToModalProps = state => ({
+    isOpen: state.preferences.isURLModalOpen,
+});*/
 
+//const URLModal = connect(mapStateToModalProps)(Modal);
+const URLModal = createConnectedModal('isURLModalOpen', TOGGLE_URL_MODAL);
 
 class URL extends React.Component {
     constructor(props) {
@@ -65,7 +74,7 @@ class URL extends React.Component {
                     afterOpen: 'dropdown-open',
                     beforeClose: 'dropdown-close',
                 }}
-                onRequestClose={() => this.props.toggle()}
+                
                 ariaHideApp={false}
             >
                 <h1>Enter URL</h1>
@@ -85,8 +94,9 @@ class URL extends React.Component {
 }
 
 URL.propTypes = {
-    toggle: PropTypes.func.isRequired,
+    onRequestClose: PropTypes.func.isRequired,
     openUrl: PropTypes.func.isRequired,
 };
 
-export default URL;
+export default connect(null, mapDispatchToProps)(URL);
+//export default URL;
