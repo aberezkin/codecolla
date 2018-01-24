@@ -13,6 +13,7 @@ import { CHAT_CLASSNAME } from '../Chat/Chat';
 import HomePage from '../HomePage';
 import { HOME_PAGE_CLASSNAME } from '../HomePage/HomePage';
 import Invite from '../Invite/Invite';
+import URL from '../URL/URL';
 import About from '../About/About';
 import SplitPane from 'react-split-pane';
 import {TOGGLE_SEARCH_BOX} from "../../actions";
@@ -113,6 +114,7 @@ export default class App extends Component {
                     <StatusBar style={{ display: (this.props.isStatusBarVisible) ? '' : 'none' }} />
                 </div>
                 <Invite peerId="hello" />
+                <URL />
                 <About />
             </div>
         );

@@ -12,3 +12,4 @@ export const createConnectedModal = (location, actionType) => {
 
     return connect(mapStateToProps, mapDispatchToProps)(Modal);
 }
+

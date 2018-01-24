@@ -8,7 +8,6 @@ function djb2(str){
     return hash;
 }
 
-
 function stringToColor(str) {
     let hash = djb2(str);
     let r = (hash & 0xFF0000) >> 16;

@@ -15,7 +15,11 @@
   left 0
   right 0
   bottom 0
-  background inherit
+  background linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+      linear-gradient(315deg, rgba(65, 88, 208, .75) 0%, rgba(200, 80, 192, .75) 46%, rgba(255, 204, 112, .75) 100%),
+      url('img/background.jpg') no-repeat center center fixed
+  background-size cover
+
   display flex
   flex-direction column
   outline none
@@ -34,17 +38,19 @@
       width 280px
       outline none
       margin-top 40px
+      border-radius 3px
     #CreateNewSession
+      border-radius 3px
       width 298px
       margin-top 10px
       color inherit
       background inherit
-      border-color rgb(255, 63, 5)
+      border-color rgb(255, 204, 112)
       text-align center
       height fit-content
       cursor pointer
       outline none
       transition background-color 0.2s linear, color 0.2s linear
       &:hover
-        color white
-        background rgb(255, 63, 5)
+        color black
+        background rgb(255, 204, 112)

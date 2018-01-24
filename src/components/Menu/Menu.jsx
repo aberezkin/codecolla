@@ -17,6 +17,7 @@ import {
     TOGGLE_ABOUT_MODAL,
     COMPILE_CODE,
     TOGGLE_FULLSCREEN,
+    TOGGLE_URL_MODAL,
 } from '../../actions';
 import './Menu.styl';
 
@@ -54,7 +55,7 @@ class Menu extends Component {
                         <SubMenu>
                             <MenuItem label="New" command={CREATE_NEW} />
                             <MenuItem label="Open file" command={OPEN_FILE} />
-                            <MenuItem label="Open URL" command={OPEN_URL} />
+                            <MenuItem label="Open URL" command={TOGGLE_URL_MODAL} />
                             <Separator />
                             <MenuItem label="Save as..." command={SAVE_AS} />
                             <MenuItem label="Save all" command={SAVE_ALL} />

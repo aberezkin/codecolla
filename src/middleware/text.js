@@ -1,7 +1,7 @@
 import { broadcastActions, broadcastActionsToPeer, SAVE_AS, setLanguage,
     INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
     SET_LINE, SEND_ALL_TEXT, SET_TEXT, OPEN_FILE, SET_FILE,
-    setText } from '../actions/index';
+    setText, OPEN_URL } from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
 
 const EXTENSION_LANGS = new Map([
@@ -196,6 +196,12 @@ const textMiddleware = store => next => action => {
          
             downloadLink.click();
             
+            break;
+        }
+        case OPEN_URL: {
+            let setAction = setText(action.payload) 
+            store.dispatch(setAction);
+            store.dispatch(broadcastActions([setAction]));
             break;
         }
         case OPEN_FILE: {
