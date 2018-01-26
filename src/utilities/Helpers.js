@@ -16,6 +16,18 @@ function stringToColor(str) {
     return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
 }
 
+export function isFullscreen() {
+    let maxHeight = window.screen.height,
+    maxWidth = window.screen.width,
+    curHeight = window.innerHeight,
+    curWidth = window.innerWidth;
+    
+    if (maxWidth === curWidth && maxHeight === curHeight) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 export function toggleFullScreen() {
     if (!document.fullScreenElement &&

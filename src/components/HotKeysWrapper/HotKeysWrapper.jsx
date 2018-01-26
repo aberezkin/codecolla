@@ -6,6 +6,7 @@ import {
     TOGGLE_CHAT,
     TOGGLE_INVITE_MODAL,
     TOGGLE_FULLSCREEN,
+    TOGGLE_FULLSCREEN_SWITCH,
 } from "../../actions";
 
 export default class HotKeysWrapper extends Component {
@@ -25,9 +26,10 @@ export default class HotKeysWrapper extends Component {
             this.props.simpleAction(TOGGLE_INVITE_MODAL);
         });
 
-        this.props.addHotKey(TOGGLE_INVITE_MODAL, 'f11', (event) => {
+        this.props.addHotKey(TOGGLE_FULLSCREEN, 'f11', (event) => {
             event.preventDefault();
             this.props.simpleAction(TOGGLE_FULLSCREEN);
+            return false;
         });
     }
 

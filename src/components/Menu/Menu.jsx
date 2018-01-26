@@ -91,10 +91,11 @@ class Menu extends Component {
                                 hotkey={this.props.hotKeysMap[TOGGLE_STATUS_BAR]}
                                 checked={this.props.isStatusBarVisible}
                             />
-                            <MenuItem
+                            <Checkable
                                 label="Fullscreen"
                                 command={TOGGLE_FULLSCREEN}
                                 hotkey={this.props.hotKeysMap[TOGGLE_FULLSCREEN]}
+                                checked={this.props.isFullscreen}
                             />
                         </SubMenu>
                     </MenuItem>
