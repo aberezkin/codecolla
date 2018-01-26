@@ -4,14 +4,6 @@ import PropTypes from 'prop-types';
 class MenuItem extends Component {
     constructor(props) {
         super(props);
-        this.onClick = this.onClick.bind(this);
-        this.onMouseOut = this.onMouseOut.bind(this);
-        this.onMouseOver = this.onMouseOver.bind(this);
-        this.renderMenuItem = this.renderMenuItem.bind(this);
-        this.bindCloseHandlers = this.bindCloseHandlers.bind(this);
-        this.unbindCloseHandlers = this.unbindCloseHandlers.bind(this);
-        this.unbindCloseHandlers = this.unbindCloseHandlers.bind(this);
-        this.onSelect = this.onSelect.bind(this);
         this.onDocumentClick = this.onDocumentClick.bind(this);
         this.state = {
             open: false,
@@ -86,7 +78,7 @@ class MenuItem extends Component {
         if (this.state.open)
             return React.cloneElement(child, {
                 isMenuBarActive: this.props.isMenuBarActive,
-                onSelect: this.onSelect, // callback for all commands
+                onSelect: command => this.onSelect(command), // callback for all commands
             });
 
         return null;
@@ -98,25 +90,27 @@ class MenuItem extends Component {
             <li
                 ref={(node) => { this.node = node; }}
                 className={`MenuItem${length > 0 ? ' submenu' : ''}`}
-                onMouseOver={this.onMouseOver}
-                onFocus={this.onMouseOver}
-                onMouseOut={this.onMouseOut}
-                onBlur={this.onMouseOut}
+                onMouseOver={event => this.onMouseOver(event)}
+                onFocus={event => this.onMouseOver(event)}
+                onMouseOut={event => this.onMouseOut(event)}
+                onBlur={event => this.onMouseOut(event)}
             >
                 <span
                     tabIndex="0"
                     role="button"
                     className="container"
                     style={this.state.containerStyle}
-                    onClick={this.onClick}
+                    onClick={event => this.onClick(event)}
                 >
-                    <div className="image" style={{display: (this.props.isTopLevel ? 'none': ''), ...this.props.style}}></div>
+                    <div className="image"
+                         style={{display: (this.props.isTopLevel ? 'none': ''), ...this.props.style}}
+                    ></div>
                     <label>{this.props.label}</label>
                     <div className="hotkey" style={{display: (this.props.hotkey === '' ? 'none' : '')}}>
                         {this.props.hotkey.replace(/\b[a-z]/g,function(c){return c.toUpperCase();})}
                     </div>
                 </span>
-                {React.Children.map(this.props.children, this.renderMenuItem)}
+                {React.Children.map(this.props.children, child => this.renderMenuItem(child))}
             </li>
         );
     }
