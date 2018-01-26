@@ -6,10 +6,6 @@ export const MENU_BAR_CLASSNAME = 'MenuBar';
 class MenuBar extends Component {
     constructor(props) {
         super(props);
-        this.renderMenuItem = this.renderMenuItem.bind(this);
-        this.bindSetInactiveHandler = this.bindSetInactiveHandler.bind(this);
-        this.unbindSetInactiveHandler = this.unbindSetInactiveHandler.bind(this);
-        this.onClick = this.onClick.bind(this);
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
         this.state = { isActive: false };
     }
@@ -48,8 +44,12 @@ class MenuBar extends Component {
 
     render() {
         return (
-            <ul className={MENU_BAR_CLASSNAME} onClick={this.onClick} role="menu">
-                {React.Children.map(this.props.children, this.renderMenuItem)}
+            <ul className={MENU_BAR_CLASSNAME}
+                onClick={event => this.onClick(event)}
+                role="menu"
+                ref="menu"
+            >
+                {React.Children.map(this.props.children, child => this.renderMenuItem(child))}
             </ul>
         );
     }
