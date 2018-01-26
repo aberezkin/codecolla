@@ -4,10 +4,6 @@ import PropTypes from 'prop-types';
 class Checkable extends Component {
     constructor(props) {
         super(props);
-        this.onClick = this.onClick.bind(this);
-        this.onSelect = this.onSelect.bind(this);
-        this.onMouseOver = this.onMouseOver.bind(this);
-        this.onMouseOut = this.onMouseOut.bind(this);
         this.state = { containerStyle: {} };
     }
 
@@ -31,10 +27,6 @@ class Checkable extends Component {
         this.setState({ containerStyle: {} });
     }
 
-    onSelect(command) {
-        this.props.onSelect(command);
-    }
-
     render() {
         return (
             <li className="Checkable">
@@ -42,9 +34,9 @@ class Checkable extends Component {
                     tabIndex="0"
                     role="button"
                     className="container"
-                    onClick={this.onClick}
-                    onMouseOver={this.onMouseOver}
-                    onMouseOut={this.onMouseOut}
+                    onClick={event => this.onClick(event)}
+                    onMouseOver={event => this.onMouseOver(event)}
+                    onMouseOut={event => this.onMouseOut(event)}
                     style={this.state.containerStyle}
                 >
                     <input
@@ -53,7 +45,8 @@ class Checkable extends Component {
                         readOnly
                     />
                     <label>{this.props.label}</label>
-                    <div className="hotkey" style={{display: (this.props.hotkey === '' ? 'none' : '')}}>
+                    <div className="hotkey"
+                         style={{display: (this.props.hotkey === '' ? 'none' : '')}}>
                         {this.props.hotkey.replace(/\b[a-z]/g,function(c){return c.toUpperCase();})}
                     </div>
                 </span>
