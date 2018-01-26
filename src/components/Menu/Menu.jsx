@@ -14,9 +14,9 @@ import {
     OPEN_SETTINGS,
     TOGGLE_SEARCH_BOX,
     TOGGLE_INVITE_MODAL,
+    TOGGLE_GIST_MODAL,
     TOGGLE_ABOUT_MODAL,
     COMPILE_CODE,
-    GET_GIST,
     TOGGLE_URL_MODAL,
 } from '../../actions';
 import './Menu.styl';
@@ -101,18 +101,16 @@ class Menu extends Component {
                     </MenuItem>
                     <MenuItem label="Tools">
                         <SubMenu>
-<<<<<<< HEAD
-                            <MenuItem title="Chat" command={TOGGLE_CHAT} />
-                            <MenuItem title="Compile" command={COMPILE_CODE} />
-                            <MenuItem title="Pull gist" command={GET_GIST} />
-=======
                             <MenuItem
                                 label="Invite a friend"
                                 command={TOGGLE_INVITE_MODAL}
                                 hotkey={this.props.hotKeysMap[TOGGLE_INVITE_MODAL]}
                             />
+                            <MenuItem
+                            label="Pull gist"
+                            command={TOGGLE_GIST_MODAL}
+                            />
                             <MenuItem label="Compile" command={COMPILE_CODE} />
->>>>>>> cf18f5eae265d48147d56f2e943594d2e53896d9
                         </SubMenu>
                     </MenuItem>
                     <MenuItem label="Help">

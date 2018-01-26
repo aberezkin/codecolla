@@ -199,6 +199,7 @@ export function handleMenuCommand(command) {
 export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
 export const TOGGLE_CHAT = 'TOGGLE CHAT';
 export const TOGGLE_INVITE_MODAL = 'TOGGLE INVITE MODAL';
+export const TOGGLE_GIST_MODAL = 'TOGGLE GIST MODAL';
 export const TOGGLE_URL_MODAL = 'TOGGLE URL MODAL';
 export const TOGGLE_ABOUT_MODAL = 'TOGGLE ABOUT MODAL';
 export const CREATE_NEW = 'CREATE NEW';
