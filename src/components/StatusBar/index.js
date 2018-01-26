@@ -7,6 +7,7 @@ const mapStateToProps = state => ({
     language: state.preferences.editor.language,
     linefeed: state.preferences.editor.linefeed,
     encoding: state.preferences.editor.encoding,
+    cursorPosition: state.cursorPosition,
 });
 
 // TODO: move this to individual selectors

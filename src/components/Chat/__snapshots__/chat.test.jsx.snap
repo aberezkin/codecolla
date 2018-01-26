@@ -1,61 +1,172 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`chat component should render chat 1`] = `
-<div
-  className="Chat"
+<Chat
+  isVisible={true}
+  messages={
+    Array [
+      Object {
+        "author": "me",
+        "content": "Hello!",
+        "date": 2017-12-22T14:53:13.141Z,
+      },
+      Object {
+        "author": "you",
+        "content": "Hi!",
+        "date": 2017-12-22T14:53:13.241Z,
+      },
+      Object {
+        "author": "me",
+        "content": "How are you?",
+        "date": 2017-12-22T14:53:14.141Z,
+      },
+    ]
+  }
+  nickname="john"
+  onMessage={[Function]}
   style={Object {}}
 >
   <div
-    className="MessageBox"
+    className="Chat"
+    onKeyDown={[Function]}
+    style={Object {}}
+    tabIndex="0"
   >
-    <Message
-      author="me"
-      color="black"
-      content="Hello!"
-      date={2017-12-22T14:53:13.141Z}
-      key="1513954393141"
-    />
-    <Message
-      author="you"
-      color="black"
-      content="Hi!"
-      date={2017-12-22T14:53:13.241Z}
-      key="1513954393241"
-    />
-    <Message
-      author="me"
-      color="black"
-      content="How are you?"
-      date={2017-12-22T14:53:14.141Z}
-      key="1513954394141"
-    />
-  </div>
-  <div
-    className="InputBox"
-  >
-    <TextareaAutosize
-      className="InputArea"
-      maxRows={5}
-      minRows={1}
-      onChange={[Function]}
-      onHeightChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="Write your message..."
-      tabIndex="0"
-      useCacheForDOMMeasurements={false}
-      value=""
-    />
     <div
-      className="SendButton"
-      onClick={[Function]}
-      onKeyDown={[Function]}
-      role="button"
-      tabIndex="0"
+      className="MessageBox"
     >
-      <span>
-        \\&gt;
-      </span>
+      <Message
+        author="me"
+        color="black"
+        content="Hello!"
+        date={2017-12-22T14:53:13.141Z}
+        key="1513954393141"
+      >
+        <div
+          className="Message"
+        >
+          <div
+            className="author"
+            style={
+              Object {
+                "color": "black",
+              }
+            }
+          >
+            me
+          </div>
+          <div
+            className="content"
+          >
+            Hello!
+          </div>
+          <div
+            className="date"
+          >
+            12:53:13 AM
+          </div>
+        </div>
+      </Message>
+      <Message
+        author="you"
+        color="black"
+        content="Hi!"
+        date={2017-12-22T14:53:13.241Z}
+        key="1513954393241"
+      >
+        <div
+          className="Message"
+        >
+          <div
+            className="author"
+            style={
+              Object {
+                "color": "black",
+              }
+            }
+          >
+            you
+          </div>
+          <div
+            className="content"
+          >
+            Hi!
+          </div>
+          <div
+            className="date"
+          >
+            12:53:13 AM
+          </div>
+        </div>
+      </Message>
+      <Message
+        author="me"
+        color="black"
+        content="How are you?"
+        date={2017-12-22T14:53:14.141Z}
+        key="1513954394141"
+      >
+        <div
+          className="Message"
+        >
+          <div
+            className="author"
+            style={
+              Object {
+                "color": "black",
+              }
+            }
+          >
+            me
+          </div>
+          <div
+            className="content"
+          >
+            How are you?
+          </div>
+          <div
+            className="date"
+          >
+            12:53:14 AM
+          </div>
+        </div>
+      </Message>
+    </div>
+    <div
+      className="InputBox"
+    >
+      <TextareaAutosize
+        className="InputArea"
+        maxRows={5}
+        minRows={1}
+        onChange={[Function]}
+        onHeightChange={[Function]}
+        placeholder="Write your message..."
+        useCacheForDOMMeasurements={false}
+        value=""
+      >
+        <textarea
+          className="InputArea"
+          onChange={[Function]}
+          placeholder="Write your message..."
+          style={
+            Object {
+              "height": -20,
+            }
+          }
+          value=""
+        />
+      </TextareaAutosize>
+      <div
+        className="SendButton"
+        onClick={[Function]}
+        role="button"
+      >
+        <span>
+          \\&gt;
+        </span>
+      </div>
     </div>
   </div>
-</div>
+</Chat>
 `;

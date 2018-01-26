@@ -1,9 +1,10 @@
 import '../utilities/Peerjs';
-import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS, ADD_MESSAGE,
-    BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer, CONNECT_TO_ALL_PEERS, connectToAllPeers,
-    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor, addMessage } from '../actions/index';
-import { DELETE_CURSOR, MOVE_CURSOR,
-    ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
+import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS, ADD_MESSAGE, broadcastActionsToPeer,
+    BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer, CONNECT_TO_ALL_PEERS, connectToAllPeers, setText,
+    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor } from '../actions/index';
+import { DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
+import { atomsToString } from '../utilities/Helpers'
+import { HANDLE_INITIALS, handleInitials } from '../actions/peer';
 
 export const CONNECTION_EVENT = 'connection';
 export const CONNECTION_OPEN = 'open';
@@ -12,7 +13,6 @@ export const DATA_TRANSFER = 'data';
 export const PEER_ERROR = 'error';
 
 const localPeer = new Peer({ key: 'e0twf5gs81lzbyb9' });
-let sayHelloToOtherPeers = false;
 
 const createMessage = (author, text, date = new Date()) => ({
     author,
@@ -21,33 +21,23 @@ const createMessage = (author, text, date = new Date()) => ({
 });
 
 function eventifyConnection(connection, dispatch, peer) {
-    connection.on(CONNECTION_OPEN, () => {
-        // TODO: migrate this to dispatch
-        if (sayHelloToOtherPeers) {
-            sayHelloToOtherPeers = false;
-            dispatch(broadcastActions([connectToAllPeers(peer.id)]));
-        }
-    });
-
+    let isConnected = false;
     connection.on(DATA_TRANSFER, (data) => {
         const eventArray = JSON.parse(data);
         const firstEvent = eventArray[0];
         // TODO: Send ONLY redux actions and just dispatch them
         switch (firstEvent.type) {
-            case DELETE_CURSOR:
-            case MOVE_CURSOR:
-            case SET_CURSOR:
-            case ADD_CURSOR: {
-                dispatch(eventArray);
+            case HANDLE_INITIALS: {
+                if (!isConnected) {
+                    isConnected = true;
+                    const { payload } = firstEvent;
+                    dispatch(setText(payload.text));
+                    dispatch(payload.peers.map(id => addPeerFromId(id)));
+                }
                 break;
             }
             case PEER_ADDITION: {
                 dispatch(addPeer(peer.connect(firstEvent.data)));
-                break;
-            }
-            case CONNECT_TO_ALL_PEERS: {
-                dispatch(broadcastActions([addPeerFromId(firstEvent.payload)]));
-                dispatch(sendAllText(connection.peer));
                 break;
             }
             case ADD_MESSAGE: {
@@ -80,19 +70,30 @@ function eventifyConnection(connection, dispatch, peer) {
 const peersMiddleware = peer => store => next => action => {
     switch (action.type) {
         case INIT_PEER:
-            peer.on(CONNECTION_EVENT, connection => store.dispatch(addPeer(connection)));
+            peer.on(CONNECTION_EVENT, (connection) => {
+                connection.open = true;
+                const state = store.getState();
+
+                const peers = state.peers.connections.map(conn => conn.peer);
+                store.dispatch(addPeer(connection));
+
+                store.dispatch(broadcastActionsToPeer(
+                    connection.peer,
+                    [handleInitials(peers, state.text)]
+                ))
+            });
             peer.on(CONNECTION_OPEN, (id) => {
-                // eslint-disable-next-line no-console
                 console.log('pid: ', id);
                 store.dispatch([setPeerId(id), addMessage(createMessage("pid:", id))]);
             });
             break;
-        case ADD_PEER_FROM_ID:
+        case ADD_PEER_FROM_ID: {
             // Just modify action before eventifying connection
-            // eslint-disable-next-line no-param-reassign
-            sayHelloToOtherPeers = action.payload.needAllPeers;
-            action = addPeer(peer.connect(action.payload.id));
+            const state = store.getState();
+            if (action.payload === state.peers.id) break;
+            action = addPeer(peer.connect(action.payload));
             // eslint-disable-next-line no-fallthrough
+        }
         case ADD_PEER:
             next(addPeer(eventifyConnection(
                 action.payload,
@@ -109,7 +110,7 @@ const peersMiddleware = peer => store => next => action => {
         case BROADCAST_DATA_TO_PEER:
             store.getState().peers.connections
                 .find(conn => conn.peer === action.payload.id)
-                .send(JSON.stringify(action.payload.broadcastedAction));
+                .send(JSON.stringify(action.payload.actions));
             break;
         default: next(action);
     }

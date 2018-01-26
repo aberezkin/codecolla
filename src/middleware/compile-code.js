@@ -9,6 +9,7 @@ import {
     POST_REJECT,
     RESOURCE_COMPILEBOX,
 } from '../actions';
+import { atomsToString } from '../utilities/Helpers.js';
 
 const LANGS = new Map([
     ['python', 0],
@@ -34,7 +35,7 @@ const createMessage = (author, text, date = new Date()) => ({
     content: text,
     date,
 });
-const getText = state => state.text.toArray().map(i => i.toObject().text).join('\n');
+const getText = state => atomsToString(state.text);
 const getLanguage = (state) => {
     const langName = state.preferences.editor.language;
     if (!LANGS.has(langName))

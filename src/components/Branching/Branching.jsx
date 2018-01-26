@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { AnimatedSwitch } from 'react-router-transition';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import RouteConnector from '../RouteConnector';
-import App from '../App';
+import HotKeysWrapper from '../HotKeysWrapper';
 
 const text =
-    `function hello() {
-    console.log('Hello, World!');
-}`;
+    'console.log(\'Hello, World!\')';
 
 // TODO: This component was reacted just to avoid merge conflicts with current PRs.
 // TODO: Specifically https://github.com/aberezkin/codecolla/pull/42
@@ -29,7 +27,7 @@ export default class Branching extends Component {
                         atActive={{ opacity: 1 }}
                         className="switch-wrapper"
                     >
-                        <Route exact path="/" component={App} />
+                        <Route exact path="/" component={HotKeysWrapper} />
                         <Route path="/connect/:id" component={RouteConnector} />
                     </AnimatedSwitch>
                 </Router>
