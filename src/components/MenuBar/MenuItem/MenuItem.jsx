@@ -24,6 +24,8 @@ class MenuItem extends Component {
 
     onClick(event) {
         event.preventDefault();
+        if (this.props.disabled)
+            return false;
         if (this.props.isTopLevel && !this.state.open)
             this.setState({
                 open: true,
@@ -34,10 +36,13 @@ class MenuItem extends Component {
             });
         if (this.props.command !== '')
             this.props.onSelect(this.props.command);
+        return false;
     }
 
     onMouseOver() {
         if (!this.props.isMenuBarActive)
+            return;
+        if (this.props.disabled)
             return;
         this.setState({
             containerStyle: {
@@ -105,7 +110,7 @@ class MenuItem extends Component {
                     <div className="image"
                          style={{display: (this.props.isTopLevel ? 'none': ''), ...this.props.style}}
                     ></div>
-                    <label>{this.props.label}</label>
+                    <label className={this.props.disabled ? 'disabled' : ''}>{this.props.label}</label>
                     <div className="hotkey" style={{display: (this.props.hotkey === '' ? 'none' : '')}}>
                         {this.props.hotkey.replace(/\b[a-z]/g,function(c){return c.toUpperCase();})}
                     </div>
@@ -125,6 +130,7 @@ MenuItem.propTypes = {
     children: PropTypes.node,
     hotkey: PropTypes.string,
     style: PropTypes.objectOf(PropTypes.string),
+    disabled: PropTypes.bool,
 };
 
 MenuItem.defaultProps = {
@@ -135,6 +141,7 @@ MenuItem.defaultProps = {
     hotkey: '',
     children: [],
     style: {},
+    disabled: false,
 };
 
 

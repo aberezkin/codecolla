@@ -15,12 +15,13 @@ class Checkable extends Component {
     }
 
     onMouseOver() {
-        this.setState({
-            containerStyle: {
-                backgroundColor: 'lightblue',
-                color: 'white',
-            },
-        });
+        if (!this.props.disabled)
+            this.setState({
+                containerStyle: {
+                    backgroundColor: 'lightblue',
+                    color: 'white',
+                },
+            });
     }
 
     onMouseOut() {
@@ -44,7 +45,7 @@ class Checkable extends Component {
                         checked={this.props.checked}
                         readOnly
                     />
-                    <label>{this.props.label}</label>
+                    <label className={`${this.props.disabled ? 'disabled' : ''}`}>{this.props.label}</label>
                     <div className="hotkey"
                          style={{display: (this.props.hotkey === '' ? 'none' : '')}}>
                         {this.props.hotkey.replace(/\b[a-z]/g,function(c){return c.toUpperCase();})}
@@ -61,6 +62,7 @@ Checkable.propTypes = {
     onSelect: PropTypes.func,
     checked: PropTypes.bool,
     hotkey: PropTypes.string,
+    disabled: PropTypes.bool,
 };
 
 Checkable.defaultProps = {
@@ -68,6 +70,7 @@ Checkable.defaultProps = {
     command: '',
     checked: false,
     hotkey: '',
+    disabled: false,
 };
 
 export default Checkable;
