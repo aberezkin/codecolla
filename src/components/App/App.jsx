@@ -12,8 +12,8 @@ import Menu from '../Menu';
 import { CHAT_CLASSNAME } from '../Chat/Chat';
 import HomePage from '../HomePage';
 import { HOME_PAGE_CLASSNAME } from '../HomePage/HomePage';
-import Invite from '../Invite/Invite';
 import Gist from '../Gist';
+import Invite from '../Invite';
 import URL from '../URL/URL';
 import About from '../About/About';
 import SplitPane from 'react-split-pane';
@@ -114,8 +114,8 @@ export default class App extends Component {
                     </div>
                     <StatusBar style={{ display: (this.props.isStatusBarVisible) ? '' : 'none' }} />
                 </div>
-                <Invite peerId="hello" />
                 <Gist />
+                <Invite />
                 <URL />
                 <About />
             </div>
