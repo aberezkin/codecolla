@@ -6,7 +6,6 @@ export const SUB_MENU_CLASSNAME = 'SubMenu';
 class SubMenu extends Component {
     constructor(props) {
         super(props);
-        this.renderMenuItem = this.renderMenuItem.bind(this);
     }
 
     renderMenuItem(child) {
@@ -20,7 +19,7 @@ class SubMenu extends Component {
     render() {
         return (
             <ul className={`${SUB_MENU_CLASSNAME}`}>
-                {React.Children.map(this.props.children, this.renderMenuItem)}
+                {React.Children.map(this.props.children, child => this.renderMenuItem(child))}
             </ul>
         );
     }
