@@ -10,11 +10,6 @@ const copypasteMiddleware = store => next => action => {
             next(action);
             break;
         }
-        case TOGGLE_PASTE: {
-
-            next(action);
-            break;
-        }
         case TOGGLE_CUT: {
             document.execCommand("cut"); 
             next(action);

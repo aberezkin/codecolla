@@ -52,10 +52,24 @@ const isURLModalOpen = (state = false, action) => {
     }
 };
 
-const isPasteCopyСut = (state = false, action) => {
+const isPaste = (state = false, action) => {
     switch (action.type) {
         case TOGGLE_PASTE:
+            return !state;
+        default: return state;
+    }
+};
+
+const isCopy = (state = false, action) => {
+    switch (action.type) {
         case TOGGLE_COPY:
+            return state;
+        default: return state;
+    }
+};
+
+const isСut = (state = false, action) => {
+    switch (action.type) {
         case TOGGLE_CUT:
             return state;
         default: return state;
@@ -119,5 +133,7 @@ export default combineReducers({
     isInviteModalOpen,
     isURLModalOpen,
     isAboutModalOpen,
-    isPasteCopyСut,
+    isPaste,
+    isCopy,
+    isСut,
 });
