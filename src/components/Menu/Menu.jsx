@@ -17,6 +17,9 @@ import {
     TOGGLE_ABOUT_MODAL,
     COMPILE_CODE,
     TOGGLE_URL_MODAL,
+    TOGGLE_PASTE,
+    TOGGLE_COPY,
+    TOGGLE_CUT,
 } from '../../actions';
 import './Menu.styl';
 
@@ -68,6 +71,21 @@ class Menu extends Component {
                                 label="Find"
                                 command={TOGGLE_SEARCH_BOX}
                                 hotkey={this.props.hotKeysMap[TOGGLE_SEARCH_BOX]}
+                            />
+                            <MenuItem
+                                label="Copy"
+                                command={TOGGLE_COPY}
+                                hotkey={this.props.hotKeysMap[TOGGLE_COPY]}
+                            />
+                            <MenuItem
+                                label="Cut"
+                                command={TOGGLE_CUT}
+                                hotkey={this.props.hotKeysMap[TOGGLE_CUT]}
+                            />
+                            <MenuItem
+                                label="Paste"
+                                command={TOGGLE_PASTE}
+                                hotkey={this.props.hotKeysMap[TOGGLE_PASTE]}
                             />
                         </SubMenu>
                     </MenuItem>
