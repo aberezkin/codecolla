@@ -4,9 +4,15 @@ import {HotKeys} from 'react-hotkeys';
 import App from '../App';
 import {
     TOGGLE_CHAT,
+    TOGGLE_STATUS_BAR,
     TOGGLE_INVITE_MODAL,
     TOGGLE_FULLSCREEN,
     TOGGLE_FULLSCREEN_SWITCH,
+    COMPILE_CODE,
+    OPEN_FILE,
+    TOGGLE_URL_MODAL,
+    TOGGLE_GIST_MODAL,
+    SAVE_AS,
 } from "../../actions";
 
 export default class HotKeysWrapper extends Component {
@@ -14,23 +20,28 @@ export default class HotKeysWrapper extends Component {
         super(props);
     }
 
+    addHotKey(binding, command) {
+        this.props.addHotKey(command, binding, (event) => {
+            event.preventDefault();
+            this.props.simpleAction(command);
+        });
+    }
+
     componentDidMount() {
-        this.props.addHotKey(TOGGLE_CHAT, 'alt+1', (event) => {
-            event.preventDefault();
-            console.log('toggle chat');
-            this.props.simpleAction(TOGGLE_CHAT);
-        });
+        this.addHotKey('alt+1', TOGGLE_CHAT);
+        this.addHotKey('alt+2', TOGGLE_STATUS_BAR);
 
-        this.props.addHotKey(TOGGLE_INVITE_MODAL, 'ctrl+i', (event) => {
-            event.preventDefault();
-            this.props.simpleAction(TOGGLE_INVITE_MODAL);
-        });
+        this.addHotKey('ctrl+o', OPEN_FILE);
+        this.addHotKey('ctrl+shift+o', TOGGLE_URL_MODAL);
+        this.addHotKey('ctrl+g', TOGGLE_GIST_MODAL);
 
-        this.props.addHotKey(TOGGLE_FULLSCREEN, 'f11', (event) => {
-            event.preventDefault();
-            this.props.simpleAction(TOGGLE_FULLSCREEN);
-            return false;
-        });
+        this.addHotKey('ctrl+s', SAVE_AS);
+
+        this.addHotKey('ctrl+i', TOGGLE_INVITE_MODAL);
+        this.addHotKey('ctrl+b', COMPILE_CODE);
+
+        this.addHotKey('f11', TOGGLE_FULLSCREEN);
+
     }
 
     shouldComponentUpdate(nextProps) {

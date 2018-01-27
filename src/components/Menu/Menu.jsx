@@ -54,44 +54,47 @@ class Menu extends Component {
                 >
                     <MenuItem label="File">
                         <SubMenu>
-                            <MenuItem label="New" command={CREATE_NEW} />
-                            <MenuItem label="Open file" command={OPEN_FILE} />
-                            <MenuItem label="Open URL" command={TOGGLE_URL_MODAL} />
+                            <MenuItem 
+                                label="Open file" 
+                                command={OPEN_FILE}
+                                hotkey={this.props.hotKeysMap[OPEN_FILE]}
+                            />
+                            <MenuItem 
+                                label="Open URL" 
+                                command={TOGGLE_URL_MODAL} 
+                                hotkey={this.props.hotKeysMap[TOGGLE_URL_MODAL]}
+                            />
+                            <MenuItem 
+                                label="Open gist" 
+                                command={TOGGLE_GIST_MODAL} 
+                                hotkey={this.props.hotKeysMap[TOGGLE_GIST_MODAL]}
+                            />
                             <Separator />
-                            <MenuItem label="Save as..." command={SAVE_AS} />
-                            <MenuItem label="Save all" command={SAVE_ALL} />
-                            <Separator />
-                            <MenuItem label="Settings" command={OPEN_SETTINGS} />
-                        </SubMenu>
-                    </MenuItem>
-                    <MenuItem label="Edit">
-                        <SubMenu>
-                            <MenuItem
-                                label="Find"
-                                command={TOGGLE_SEARCH_BOX}
-                                hotkey={this.props.hotKeysMap[TOGGLE_SEARCH_BOX]}
+                            <MenuItem 
+                                label="Save as..." 
+                                command={SAVE_AS} 
+                                hotkey={this.props.hotKeysMap[SAVE_AS]}
                             />
                         </SubMenu>
                     </MenuItem>
+                    <MenuItem label="Edit">
+                        <SubMenu />
+                    </MenuItem>
                     <MenuItem label="View">
                         <SubMenu>
-                            <MenuItem label="Tool Windows">
-                                <SubMenu>
-                                    <Checkable
-                                        label="Chat"
-                                        command={TOGGLE_CHAT}
-                                        hotkey={this.props.hotKeysMap[TOGGLE_CHAT]}
-                                        checked={this.props.isChatVisible}
-                                    />
-                                </SubMenu>
-                            </MenuItem>
-                            <Separator />
+                            <Checkable
+                                label="Chat"
+                                command={TOGGLE_CHAT}
+                                hotkey={this.props.hotKeysMap[TOGGLE_CHAT]}
+                                checked={this.props.isChatVisible}
+                            />
                             <Checkable
                                 label="Status bar"
                                 command={TOGGLE_STATUS_BAR}
                                 hotkey={this.props.hotKeysMap[TOGGLE_STATUS_BAR]}
                                 checked={this.props.isStatusBarVisible}
                             />
+                            <Separator />
                             <Checkable
                                 label="Fullscreen"
                                 command={TOGGLE_FULLSCREEN}
@@ -101,10 +104,13 @@ class Menu extends Component {
                         </SubMenu>
                     </MenuItem>
                     <MenuItem label="Navigate">
-                        <SubMenu />
-                    </MenuItem>
-                    <MenuItem label="Refactor">
-                        <SubMenu />
+                        <SubMenu>
+                            <MenuItem
+                                label="Find"
+                                command={TOGGLE_SEARCH_BOX}
+                                hotkey={this.props.hotKeysMap[TOGGLE_SEARCH_BOX]}
+                            />
+                        </SubMenu>
                     </MenuItem>
                     <MenuItem label="Tools">
                         <SubMenu>
@@ -114,10 +120,10 @@ class Menu extends Component {
                                 hotkey={this.props.hotKeysMap[TOGGLE_INVITE_MODAL]}
                             />
                             <MenuItem
-                            label="Pull gist"
-                            command={TOGGLE_GIST_MODAL}
+                                label="Compile" 
+                                command={COMPILE_CODE} 
+                                hotkey={this.props.hotKeysMap[COMPILE_CODE]}
                             />
-                            <MenuItem label="Compile" command={COMPILE_CODE} />
                         </SubMenu>
                     </MenuItem>
                     <MenuItem label="Help">
