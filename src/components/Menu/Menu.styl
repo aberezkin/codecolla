@@ -28,8 +28,6 @@
     > *
       outline none
       user-select none
-    .MenuItem .container, .Checkable .container
-      display block
 .Separator
   margin 4px auto
   width 95%
@@ -64,16 +62,18 @@
   position relative
   color inherit
   .container
-    display block
+    display flex
     color inherit
     white-space nowrap
     justify-content space-between
     padding 3px 7px
     outline none
     user-select none
+    label
+      margin-right auto
     .hotkey
-      display inline-block
       margin-left 20px
+      display inline-block
       opacity 0.5
 .SubMenu .SubMenu
   top -1px
