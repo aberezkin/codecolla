@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getPageHeight, getPageWidth } from '../../utilities/Helpers';
+import { getPageHeight, getPageWidth, isFullscreen } from '../../utilities/Helpers';
 import Editor from '../Editor';
 import StatusBar from '../StatusBar';
 import Chat from '../Chat';
@@ -12,6 +12,7 @@ import Menu from '../Menu';
 import { CHAT_CLASSNAME } from '../Chat/Chat';
 import HomePage from '../HomePage';
 import { HOME_PAGE_CLASSNAME } from '../HomePage/HomePage';
+import Gist from '../Gist';
 import Invite from '../Invite';
 import URL from '../URL/URL';
 import About from '../About/About';
@@ -70,6 +71,8 @@ export default class App extends Component {
     }
 
     resize() {
+        this.props.isFullMode(isFullscreen());
+
         const statusBar = document.querySelector(`.${APP_CLASSNAME} .${STATUS_BAR_CLASSNAME}`);
         const menuBar = document.querySelector(`.${APP_CLASSNAME} .${MENU_BAR_CLASSNAME}`);
         const chat = document.querySelector(`.${APP_CLASSNAME} .${CHAT_CLASSNAME}`);
@@ -113,6 +116,7 @@ export default class App extends Component {
                     </div>
                     <StatusBar style={{ display: (this.props.isStatusBarVisible) ? '' : 'none' }} />
                 </div>
+                <Gist />
                 <Invite />
                 <URL />
                 <About />

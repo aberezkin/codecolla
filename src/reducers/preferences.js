@@ -7,12 +7,15 @@ import {
     SET_THEME,
     TOGGLE_CHAT,
     TOGGLE_INVITE_MODAL,
+    TOGGLE_GIST_MODAL,
     TOGGLE_URL_MODAL,
     TOGGLE_ABOUT_MODAL,
     TOGGLE_STATUS_BAR,
     ENTER_SESSION,
     ADD_HOTKEY,
     createSimpleAction,
+    TOGGLE_FULLSCREEN,
+    TOGGLE_FULLSCREEN_SWITCH,
 } from '../actions';
 
 const theme = generateSetterReducer(SET_THEME, 'monokai');
@@ -33,9 +36,42 @@ const isStatusBarVisible = (state = true, action) => {
     }
 };
 
+function isFS() {
+    let maxHeight = window.screen.height,
+    maxWidth = window.screen.width,
+    curHeight = window.innerHeight,
+    curWidth = window.innerWidth;
+
+    console.log(window.screen.height,'=', window.innerHeight);
+    
+    if (maxWidth === curWidth && maxHeight === curHeight) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+const isFullscreen = (state = false, action) => {
+    switch (action.type) {
+        case TOGGLE_FULLSCREEN:
+            return setTimeout(isFS, 200);
+        case TOGGLE_FULLSCREEN_SWITCH:
+            return action.payload;
+        default: return state;
+    }
+};
+
 const isInviteModalOpen = (state = false, action) => {
     switch (action.type) {
         case TOGGLE_INVITE_MODAL:
+            return !state;
+        default: return state;
+    }
+};
+
+const isGistModalOpen = (state = false, action) => {
+    switch (action.type) {
+        case TOGGLE_GIST_MODAL:
             return !state;
         default: return state;
     }
@@ -104,6 +140,8 @@ export default combineReducers({
     isStatusBarVisible,
     isSessionActive,
     isInviteModalOpen,
+    isGistModalOpen,
+    isFullscreen,
     isURLModalOpen,
     isAboutModalOpen,
 });

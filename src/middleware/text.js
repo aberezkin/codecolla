@@ -179,7 +179,7 @@ const textMiddleware = store => next => action => {
             break;
         }
         case SAVE_AS: {
-            const textToSave = state => state.text.toArray().map(i => i.toObject().text).join('\n');
+            const textToSave = store.getState().text.toArray().map(i => i.toObject().text).join('\n');
         
             let textToSaveAsBlob = new Blob([textToSave], {type:'text/plain'});
             let textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
