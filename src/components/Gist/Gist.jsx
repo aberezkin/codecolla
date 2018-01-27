@@ -15,17 +15,17 @@ class Gist extends Component{
 
     onClick(obj){
         const innerLink = this.refs.gistLink.value;
+        
         const linkPattern = /https:\/\/gist.github.com\/[a-zA-Z][0-9a-zA-Z]*\/[0-9a-f]{10,}/;
         const idPattern = /[0-9a-f]{32}$/;
+
         if (innerLink.search(linkPattern) === 0){
             const res = innerLink.match(idPattern)[0];
             this.props.getGist(res);
             this.refs.error.textContent = "";
             this.refs.gistLink.value = "";
-        }
-        else{
-            console.log(this.refs)
-            this.refs.error.textContent = "wrong link!";
+        } else {
+            this.refs.error.textContent = "That's an invalid link!";
         }
     }
 
@@ -44,7 +44,7 @@ class Gist extends Component{
                 }}
                 ariaHideApp={false}
             >
-                <h1>Write gist link!</h1>
+                <h1>Give us the gist URL!</h1>
                 <input
                     id="gistLink"
                     ref="gistLink"
@@ -52,11 +52,11 @@ class Gist extends Component{
                     className="link"
                 /><br />
                 <p className="error-mes" ref="error" color="red" /><br />
-                <button
+                <Button
                     onClick={event => (this.onClick(event))}
                 >
                     Get gist!
-                </button>
+                </Button>
             </GistModal>
         );
     }
