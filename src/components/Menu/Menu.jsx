@@ -123,6 +123,7 @@ class Menu extends Component {
                                 label="Compile" 
                                 command={COMPILE_CODE} 
                                 hotkey={this.props.hotKeysMap[COMPILE_CODE]}
+                                disabled={!this.props.compileLanguages.has(this.props.language)}
                             />
                         </SubMenu>
                     </MenuItem>
@@ -149,6 +150,8 @@ Menu.propTypes = {
     isChatVisible: PropTypes.bool.isRequired,
     hotKeysMap: PropTypes.objectOf(PropTypes.string),
     hotKeysHandlers: PropTypes.objectOf(PropTypes.func),
+    language: PropTypes.string,
+    compileLanguages: PropTypes.instanceOf(Map),
 };
 
 Menu.defaultProps = {
@@ -156,8 +159,10 @@ Menu.defaultProps = {
         width: '100%',
         height: '20px',
     },
+    language: '',
     hotKeysMap: {},
     hotKeysHandlers: {},
+    compileLanguages: new Map,
 };
 
 export default Menu;
