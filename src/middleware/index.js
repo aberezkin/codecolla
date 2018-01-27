@@ -6,11 +6,8 @@ import chat from './chat';
 import text from './text';
 import cursor from './cursor';
 import compileCode from './compile-code';
-<<<<<<< HEAD
 import gistGetter from './gist-getter';
-=======
 import fullscreen from './fullscreen';
->>>>>>> master
 
 const middlewares = [
     fetchMiddleware, // it must be first!!!
