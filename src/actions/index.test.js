@@ -176,7 +176,7 @@ describe('several arguments actions', () => {
                 name: RESOURCE_GIST,
             },
             request: {
-                url: 'http://api.github.com/gists/2usl212',
+                url: 'https://api.github.com/gists/2usl212',
             },
         };
 

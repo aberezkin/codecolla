@@ -84,7 +84,7 @@ const peersMiddleware = peer => store => next => action => {
             });
             peer.on(CONNECTION_OPEN, (id) => {
                 console.log('pid: ', id);
-                store.dispatch([setPeerId(id), addMessage(createMessage("pid:", id))]);
+                store.dispatch(setPeerId(id));
             });
             break;
         case ADD_PEER_FROM_ID: {
