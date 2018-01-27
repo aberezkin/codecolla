@@ -53,13 +53,14 @@ function eventifyConnection(connection, dispatch, peer) {
 
     connection.on(PEER_ERROR, (err) => {
         console.log('ERROR', err);
-        dispatch(removePeer(connection.peer));
-        dispatch(deleteCursor(connection.peer));
+        // dispatch(removePeer(connection.peer));
+        // dispatch(deleteCursor(connection.peer));
     });
 
     connection.on(CONNECTION_CLOSE, () => {
-        dispatch(removePeer(connection.peer));
-        dispatch(deleteCursor(connection.peer));
+        console.log('Peer disconnected');
+        // dispatch(removePeer(connection.peer));
+        // dispatch(deleteCursor(connection.peer));
     });
 
     return connection;
