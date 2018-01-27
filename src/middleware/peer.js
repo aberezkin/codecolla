@@ -14,6 +14,12 @@ export const PEER_ERROR = 'error';
 
 const localPeer = new Peer({ key: 'e0twf5gs81lzbyb9' });
 
+const createMessage = (author, text, date = new Date()) => ({
+    author,
+    content: text,
+    date,
+});
+
 function eventifyConnection(connection, dispatch, peer) {
     let isConnected = false;
     connection.on(DATA_TRANSFER, (data) => {
@@ -72,7 +78,7 @@ const peersMiddleware = peer => store => next => action => {
                 store.dispatch(addPeer(connection));
 
                 store.dispatch(broadcastActionsToPeer(
-                    connection.peer, 
+                    connection.peer,
                     [handleInitials(peers, state.text)]
                 ))
             });

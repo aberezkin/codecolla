@@ -163,9 +163,12 @@ export function enterSession(nickname) {
 // Reset to needed server-ip
 export const SEND_URL = 'http://52.231.193.194:8080/compile';
 export const COMPILE_CODE = 'COMPILE CODE';
+export const RESOURCE_COMPILEBOX = 'compileBox';
+export const RESOURCE_GIST = 'gist';
+
 export function sendCode(langid, text) {
     return buildActionsFromMappings([{
-        resource: 'compileBox',
+        resource: RESOURCE_COMPILEBOX,
         method: 'post',
         request: {
             url: SEND_URL,
@@ -176,6 +179,17 @@ export function sendCode(langid, text) {
             },
         },
     }]).compileBoxPost();
+}
+
+export const GET_GIST = 'GET GIST';
+export function getGist(gistId) {
+    return buildActionsFromMappings([{
+        resource: RESOURCE_GIST,
+        method: 'get',
+        request: {
+            url: `https://api.github.com/gists/${gistId}`,
+        },
+    }]).gistGet();
 }
 
 export function handleMenuCommand(command) {
@@ -190,6 +204,7 @@ export const TOGGLE_FULLSCREEN = 'TOGGLE FULLSCREEN';
 export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
 export const TOGGLE_CHAT = 'TOGGLE CHAT';
 export const TOGGLE_INVITE_MODAL = 'TOGGLE INVITE MODAL';
+export const TOGGLE_GIST_MODAL = 'TOGGLE GIST MODAL';
 export const TOGGLE_URL_MODAL = 'TOGGLE URL MODAL';
 export const TOGGLE_ABOUT_MODAL = 'TOGGLE ABOUT MODAL';
 export const CREATE_NEW = 'CREATE NEW';
@@ -206,6 +221,8 @@ export const OPEN_FILE = 'OPEN FILE';
 
 export const COMPILE_RUBY = 'COMPILE RUBY';
 export const COMPILE_CPP = 'COMPILE CPP';
+export const GET_FULFIL = 'react-redux-fetch/GET_FULFIL';
+export const GET_REJECT = 'react-redux-fetch/GET_REJECT';
 export const POST_FULFIL = 'react-redux-fetch/POST_FULFIL';
 export const POST_REJECT = 'react-redux-fetch/POST_REJECT';
 

@@ -14,6 +14,7 @@ import {
     OPEN_SETTINGS,
     TOGGLE_SEARCH_BOX,
     TOGGLE_INVITE_MODAL,
+    TOGGLE_GIST_MODAL,
     TOGGLE_ABOUT_MODAL,
     COMPILE_CODE,
     TOGGLE_FULLSCREEN,
@@ -42,10 +43,10 @@ class Menu extends Component {
     render() {
         return (
             <div className="menu-wrapper">
-                <input style={{display:'none'}} 
-                    id="openFile" 
-                    type="file" 
-                    name="openFile" 
+                <input style={{display:'none'}}
+                    id="openFile"
+                    type="file"
+                    name="openFile"
                     onChange={event => this.onFileOpen(event.target.files)}/>
                 <MenuBar
                     onSelect={command => this.onMenuOptionHandler(command)}
@@ -112,12 +113,16 @@ class Menu extends Component {
                                 command={TOGGLE_INVITE_MODAL}
                                 hotkey={this.props.hotKeysMap[TOGGLE_INVITE_MODAL]}
                             />
+                            <MenuItem
+                            label="Pull gist"
+                            command={TOGGLE_GIST_MODAL}
+                            />
                             <MenuItem label="Compile" command={COMPILE_CODE} />
                         </SubMenu>
                     </MenuItem>
                     <MenuItem label="Help">
                         <SubMenu>
-                            <MenuItem 
+                            <MenuItem
                                 label="About Codecolla"
                                 command={TOGGLE_ABOUT_MODAL}
                             />
@@ -129,6 +134,7 @@ class Menu extends Component {
     }
 }
 
+//<!-- <MenuItem title="Invite a friend" command={TOGGLE_INVITE_MODAL} />-->
 Menu.propTypes = {
     onMenuOptionHandler: PropTypes.func.isRequired,
     onFileOpen: PropTypes.func.isRequired,
