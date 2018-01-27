@@ -16,6 +16,7 @@ import {
     TOGGLE_INVITE_MODAL,
     TOGGLE_ABOUT_MODAL,
     COMPILE_CODE,
+    TOGGLE_FULLSCREEN,
     TOGGLE_URL_MODAL,
 } from '../../actions';
 import './Menu.styl';
@@ -89,6 +90,12 @@ class Menu extends Component {
                                 command={TOGGLE_STATUS_BAR}
                                 hotkey={this.props.hotKeysMap[TOGGLE_STATUS_BAR]}
                                 checked={this.props.isStatusBarVisible}
+                            />
+                            <Checkable
+                                label="Fullscreen"
+                                command={TOGGLE_FULLSCREEN}
+                                hotkey={this.props.hotKeysMap[TOGGLE_FULLSCREEN]}
+                                checked={this.props.isFullscreen}
                             />
                         </SubMenu>
                     </MenuItem>

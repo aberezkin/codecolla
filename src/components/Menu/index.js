@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 const mapStateToProps = state => ({
     isStatusBarVisible : state.preferences.isStatusBarVisible,
     isChatVisible: state.preferences.isChatVisible,
+    isFullscreen: state.preferences.isFullscreen,
     hotKeysMap: state.preferences.hotkeys.map,
     hotKeysHandlers: state.preferences.hotkeys.handlers,
 });

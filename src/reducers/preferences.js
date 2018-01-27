@@ -13,6 +13,8 @@ import {
     ENTER_SESSION,
     ADD_HOTKEY,
     createSimpleAction,
+    TOGGLE_FULLSCREEN,
+    TOGGLE_FULLSCREEN_SWITCH,
 } from '../actions';
 
 const theme = generateSetterReducer(SET_THEME, 'monokai');
@@ -29,6 +31,31 @@ const isStatusBarVisible = (state = true, action) => {
     switch (action.type) {
         case TOGGLE_STATUS_BAR:
             return !state;
+        default: return state;
+    }
+};
+
+function isFS() {
+    let maxHeight = window.screen.height,
+    maxWidth = window.screen.width,
+    curHeight = window.innerHeight,
+    curWidth = window.innerWidth;
+
+    console.log(window.screen.height,'=', window.innerHeight);
+    
+    if (maxWidth === curWidth && maxHeight === curHeight) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+const isFullscreen = (state = false, action) => {
+    switch (action.type) {
+        case TOGGLE_FULLSCREEN:
+            return setTimeout(isFS, 200);
+        case TOGGLE_FULLSCREEN_SWITCH:
+            return action.payload;
         default: return state;
     }
 };
@@ -104,6 +131,7 @@ export default combineReducers({
     isStatusBarVisible,
     isSessionActive,
     isInviteModalOpen,
+    isFullscreen,
     isURLModalOpen,
     isAboutModalOpen,
 });

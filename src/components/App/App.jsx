@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getPageHeight, getPageWidth } from '../../utilities/Helpers';
+import { getPageHeight, getPageWidth, isFullscreen } from '../../utilities/Helpers';
 import Editor from '../Editor';
 import StatusBar from '../StatusBar';
 import Chat from '../Chat';
@@ -70,6 +70,8 @@ export default class App extends Component {
     }
 
     resize() {
+        this.props.isFullMode(isFullscreen());
+
         const statusBar = document.querySelector(`.${APP_CLASSNAME} .${STATUS_BAR_CLASSNAME}`);
         const menuBar = document.querySelector(`.${APP_CLASSNAME} .${MENU_BAR_CLASSNAME}`);
         const chat = document.querySelector(`.${APP_CLASSNAME} .${CHAT_CLASSNAME}`);
