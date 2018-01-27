@@ -15,6 +15,7 @@ import { HOME_PAGE_CLASSNAME } from '../HomePage/HomePage';
 import Invite from '../Invite';
 import URL from '../URL/URL';
 import About from '../About/About';
+import Paste from '../Paste/Paste';
 import SplitPane from 'react-split-pane';
 import {TOGGLE_SEARCH_BOX} from "../../actions";
 
@@ -116,6 +117,7 @@ export default class App extends Component {
                 <Invite />
                 <URL />
                 <About />
+                <Paste />
             </div>
         );
     }

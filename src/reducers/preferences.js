@@ -13,6 +13,9 @@ import {
     ENTER_SESSION,
     ADD_HOTKEY,
     createSimpleAction,
+    TOGGLE_COPY,
+    TOGGLE_PASTE,
+    TOGGLE_CUT,
 } from '../actions';
 
 const theme = generateSetterReducer(SET_THEME, 'monokai');
@@ -45,6 +48,30 @@ const isURLModalOpen = (state = false, action) => {
     switch (action.type) {
         case TOGGLE_URL_MODAL:
             return !state;
+        default: return state;
+    }
+};
+
+const isPaste = (state = false, action) => {
+    switch (action.type) {
+        case TOGGLE_PASTE:
+            return !state;
+        default: return state;
+    }
+};
+
+const isCopy = (state = false, action) => {
+    switch (action.type) {
+        case TOGGLE_COPY:
+            return state;
+        default: return state;
+    }
+};
+
+const isСut = (state = false, action) => {
+    switch (action.type) {
+        case TOGGLE_CUT:
+            return state;
         default: return state;
     }
 };
@@ -106,4 +133,7 @@ export default combineReducers({
     isInviteModalOpen,
     isURLModalOpen,
     isAboutModalOpen,
+    isPaste,
+    isCopy,
+    isСut,
 });
