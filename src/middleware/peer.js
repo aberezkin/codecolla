@@ -1,7 +1,7 @@
 import '../utilities/Peerjs';
 import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS, ADD_MESSAGE,
     BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer, CONNECT_TO_ALL_PEERS, connectToAllPeers,
-    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor } from '../actions/index';
+    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor, resetHistory } from '../actions/index';
 import { DELETE_CURSOR, MOVE_CURSOR,
     ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
 
@@ -14,7 +14,7 @@ export const PEER_ERROR = 'error';
 const localPeer = new Peer({ key: 'e0twf5gs81lzbyb9' });
 let sayHelloToOtherPeers = false;
 
-function eventifyConnection(connection, dispatch, peer) {
+function eventifyConnection(connection, dispatch, peer, store) {
     connection.on(CONNECTION_OPEN, () => {
         // TODO: migrate this to dispatch
         if (sayHelloToOtherPeers) {
@@ -50,6 +50,11 @@ function eventifyConnection(connection, dispatch, peer) {
                 break;
             }
             default: {
+                if (eventArray[0].isDirectAction)
+                    store.getState().stepBack.history.otherUsersActionCnt += 1;
+                else
+                    store.getState().stepBack.history.otherUsersActionCnt -= 1;
+                eventArray[0].isOtherUserAction = true;
                 dispatch(eventArray);
             }
         }
@@ -90,6 +95,7 @@ const peersMiddleware = peer => store => next => action => {
                 .connections.find(peer => peer == action.payload.id)) {
                     break;
             }
+            store.dispatch(resetHistory());
             action = addPeer(peer.connect(action.payload.id));
             // eslint-disable-next-line no-fallthrough
         case ADD_PEER:
@@ -97,6 +103,7 @@ const peersMiddleware = peer => store => next => action => {
                 action.payload,
                 store.dispatch,
                 peer,
+                store
             )));
             break;
         case BROADCAST_ACTIONS:

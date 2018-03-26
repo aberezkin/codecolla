@@ -1,6 +1,6 @@
 import { broadcastActions, broadcastActionsToPeer,
     INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
-    SET_LINE, SEND_ALL_TEXT, SET_TEXT, stepBackAddAction } from '../actions/index';
+    SET_LINE, SEND_ALL_TEXT, SET_TEXT, stepBackAddAction, stepBackPrepaerStack} from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
 
 function breakUpTextAtom(atom, pos, pasteText) {
@@ -48,6 +48,7 @@ function generateInsertActions(atoms, event) {
         ));
         tailOfText = atom.get('text').slice(event.startCol);
     } else {
+   
         actionHistory.push(setLine(event.startRow, 
             atoms.get(event.startRow)));
 
@@ -124,6 +125,15 @@ function generateRemoveActions(atoms, event) {
 // TODO: with these we can use only reducers and operate with the state itself
 // TODO: it can complicate column merging though
 // eslint-disable-next-line arrow-parens
+
+function modifyActHistory (actions, store)
+{
+    actions.actions[0].isDirectAction = true;
+    actions.actionHistory[0].isDirectAction = false;
+    actions.howMuchActMustBeCanceled = store.getState().stepBack.history.otherUsersActionCnt;
+    store.getState().stepBack.history.otherUsersActionCnt = 0;
+}
+
 const textMiddleware = store => next => action => {
     switch (action.type) {
         case INSERT_EVENT: {
@@ -133,30 +143,35 @@ const textMiddleware = store => next => action => {
                 newA.payload.atom.peer = store.getState().peers.id;
                 return newA;
             });
+            modifyActHistory(actions, store);
+     
             store.dispatch(broadcastActions(actions.actions));
-
-            store.dispatch(stepBackAddAction(actions.actionHistory));
+            ClearStackHead();
+            store.dispatch(stepBackAddAction(actions));
 
             next(actions.actions);
             break;
         }
         case REMOVE_EVENT: {
             const actions = generateRemoveActions(store.getState().text, action.payload);
+            modifyActHistory(actions, store);
             store.dispatch(broadcastActions(actions.actions));
-
-            store.dispatch(stepBackAddAction(actions.actionHistory));
-
+            ClearStackHead();
+            store.dispatch(stepBackAddAction(actions));
             next(generateRemoveActions(store.getState().text, action.payload).actions);
             break;
         }
         case SET_LINE: {
             const { time } = store.getState().text.get(action.payload.line);
             const line = store.getState().text.get(action.payload.line);
+
             if (action.payload.atom.time < time) {
+                modifyActHistory(actions, store);
                 store.dispatch(broadcastActions(line));
                 break;
             } else if ((action.payload.atom.time === time) &&
                 (store.getState().peers.id > action.payload.atom.peer)) {
+                modifyActHistory(actions, store);
                 store.dispatch(broadcastActions(line));
                 break;
             }
@@ -173,10 +188,16 @@ const textMiddleware = store => next => action => {
                 id: action.payload,
                 broadcastedAction: [setTextAction],
             };
+
             store.dispatch(broadcastActionsToPeer(actions));
             break;
         }
         default: next(action);
+    }
+    function ClearStackHead ()
+    {
+        while (store.getState().stepBack.history.pointer > 0)
+            store.dispatch(stepBackPrepaerStack());
     }
 };
 

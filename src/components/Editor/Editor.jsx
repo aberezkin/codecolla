@@ -19,6 +19,7 @@ class Editor extends Component {
         this.onLoad = this.onLoad.bind(this);
         this.onCursorChange = this.onCursorChange.bind(this);
         this.ctrlZShortcut = this.ctrlZShortcut.bind(this);
+        this.ctrlShiftZShortcut = this.ctrlShiftZShortcut.bind(this);
 
         this.isCursorTransfer = true;
         this.state = { markerIds: [] };
@@ -62,8 +63,12 @@ class Editor extends Component {
 
     ctrlZShortcut() {
         console.log('Ctrl-z');
-        
         this.props.stepBackShortcut();
+    }
+
+    ctrlShiftZShortcut() {
+        console.log('Ctrl-Shift-z');
+        this.props.stepForwardShortcut();
     }
 
     render() {
@@ -83,7 +88,13 @@ class Editor extends Component {
                     name: 'commandCtrlZ',
                     bindKey: { win: 'Ctrl-z', mac: 'Command-z', linux: 'Ctrl-z' },
                     exec: this.ctrlZShortcut,
+                }, 
+                {
+                    name: 'commandCtrlShiftZ',
+                    bindKey: { win: 'Ctrl-Shift-z', mac: 'Command-Shift-z', linux: 'Ctrl-Shift-z' },
+                    exec: this.ctrlShiftZShortcut,
                 }]}
+                
             />
         );
     }

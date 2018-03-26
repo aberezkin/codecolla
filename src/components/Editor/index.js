@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { insertEvent, removeEvent,
-    stepBackAction, setIsTransferAllowed, moveCursor } from '../../actions/index';
+    stepBackAction, setIsTransferAllowed, moveCursor,stepForwardAction} from '../../actions/index';
 import Editor from './Editor';
 
 const mapStateToProps = state => ({
@@ -18,7 +18,8 @@ const mapDispatchToProps = dispatch => ({
     onInsert: e => dispatch(insertEvent(e)),
     onRemove: e => dispatch(removeEvent(e)),
     moveCursor: id => pos => dispatch(moveCursor(id, pos)),
-    stepBackShortcut: () => dispatch(stepBackAction())
+    stepBackShortcut: () => dispatch(stepBackAction()),
+    stepForwardShortcut: () => dispatch(stepForwardAction()),
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({
