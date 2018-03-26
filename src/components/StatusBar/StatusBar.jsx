@@ -5,6 +5,7 @@ import languages from '../../utilities/HighlightLanguages';
 import themes from '../../utilities/ColorSchemes';
 import Connector from '../Connector';
 import ListSelector from '../ListSelector/ListSelector';
+import CursorPosition from '../CursorPosition/CursorPosition';
 
 export const STATUS_BAR_CLASSNAME = 'StatusBar';
 
@@ -44,30 +45,33 @@ class StatusBar extends Component {
         return (
             <div className={STATUS_BAR_CLASSNAME} style={this.props.style}>
                 <div className="Left">
-                    <Connector />
+                    <CursorPosition
+                        position={this.props.cursorPosition}
+                        textColor={this.state.textColor}
+                    />
                 </div>
                 <div className="Right">
                     <ListSelector
                         options={['CRLF', 'LF', 'CR']}
-                        default={this.props.linefeed}
+                        active={this.props.linefeed}
                         onChange={this.props.setLinefeed}
                         textColor={this.state.textColor}
                     />
                     <ListSelector
                         options={['UTF-8', 'CP-866', 'CP-1255']}
-                        default={this.props.encoding}
+                        active={this.props.encoding}
                         onChange={this.props.setEncoding}
                         textColor={this.state.textColor}
                     />
                     <ListSelector
                         options={languages}
-                        default={this.props.language}
+                        active={this.props.language}
                         onChange={this.props.setLanguage}
                         textColor={this.state.textColor}
                     />
                     <ListSelector
                         options={themes}
-                        default={this.props.theme}
+                        active={this.props.theme}
                         onChange={this.changeTheme}
                         textColor={this.state.textColor}
                     />

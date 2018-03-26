@@ -1,7 +1,48 @@
-import { broadcastActions, broadcastActionsToPeer,
+import { broadcastActions, broadcastActionsToPeer, SAVE_AS, setLanguage,
     INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
-    SET_LINE, SEND_ALL_TEXT, SET_TEXT, stepBackAddAction, stepBackPrepaerStack} from '../actions/index';
+
+    SET_LINE, SEND_ALL_TEXT, SET_TEXT, OPEN_FILE, SET_FILE,
+    setText, OPEN_URL, stepBackAddAction, stepBackPrepaerStack} from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
+
+const EXTENSION_LANGS = new Map([
+    [ '.py', 'python'     ],
+    [ '.rb', 'ruby'       ],
+    ['.clj', 'clojure'    ],
+    ['.php', 'php'        ],
+    [ '.js', 'javascript' ],
+    [ '.sc', 'scala'      ],
+    [ '.go', 'go'         ],
+    ['.cpp', 'c_cpp'      ],
+    [  '.h', 'c_cpp'      ],
+    ['.java','java'       ],
+    [ '.vb', 'VB.NET'     ],
+    [ '.cs', 'csharp'     ],
+    [ '.sh', 'sh'         ],
+    [  '.c', 'Objective-C'],
+    ['.sql', 'mysql'      ],
+    [ '.pl', 'perl'       ],
+    [ '.rs', 'rust'       ],
+]);
+
+const LANGS_EXTENSION = new Map([
+    ['python'     ,  '.py'],
+    ['ruby'       ,  '.rb'],
+    ['clojure'    , '.clj'],
+    ['php'        , '.php'],
+    ['javascript' ,  '.js'],
+    ['scala'      ,  '.sc'],
+    ['go'         ,  '.go'],
+    ['c_cpp'      , '.cpp'],
+    ['java'       ,'.java'],
+    ['VB.NET'     ,  '.vb'],
+    ['csharp'     ,  '.cs'],
+    ['sh'         ,  '.sh'],
+    ['Objective-C',   '.c'],
+    ['sql'      , '.sql'],
+    ['perl'       ,  '.pl'],
+    ['rust'       ,  '.rs'],
+]);
 
 function breakUpTextAtom(atom, pos, pasteText) {
     const oldText = atom.get('text');
@@ -61,11 +102,12 @@ function generateInsertActions(atoms, event) {
             ),
         ));
     }
+
     for (let i = 1; i < event.text.length; i += 1) {
-        const atom = {
+            const atom = {
             id: generateLineId(),
             text: i === event.text.length - 1 ?
-                event.text[i] + tailOfText : event.text[i],
+                  event.text[i] + tailOfText : event.text[i],
             time: 1,
         };
         actions.push(insertLine(event.startRow + i, atom));
@@ -179,17 +221,64 @@ const textMiddleware = store => next => action => {
             break;
         }
         case SEND_ALL_TEXT: {
-            // Need some modifications.
             const setTextAction = {
                 type: SET_TEXT,
                 payload: store.getState().text,
             };
-            const actions = {
-                id: action.payload,
-                broadcastedAction: [setTextAction],
-            };
-
-            store.dispatch(broadcastActionsToPeer(actions));
+            store.dispatch(broadcastActionsToPeer(action.payload, setTextAction));
+            break;
+        }
+        case SAVE_AS: {
+            const textToSave = store.getState().text.toArray().map(i => i.toObject().text).join('\n');
+        
+            let textToSaveAsBlob = new Blob([textToSave], {type:'text/plain'});
+            let textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+            let fileNameToSaveAs = 'newfile' + 
+                LANGS_EXTENSION.get(store.getState().preferences.editor.language);
+         
+            let downloadLink = document.createElement('a');
+            downloadLink.download = fileNameToSaveAs;
+            downloadLink.innerHTML = 'Download File';
+            downloadLink.href = textToSaveAsURL;
+            downloadLink.onclick = this.destroyClickedElement;
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+         
+            downloadLink.click();
+            
+            break;
+        }
+        case OPEN_URL: {
+            let setAction = setText(action.payload) 
+            store.dispatch(setAction);
+            store.dispatch(broadcastActions([setAction]));
+            break;
+        }
+        case OPEN_FILE: {
+            let openFile = document.getElementById('openFile');
+            openFile.click();
+            break;
+        }
+        case SET_FILE: {
+            var text = '';
+            let files = action.payload;
+            if(files.length) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    text = e.target.result;
+                };
+                
+                reader.onloadend = function(e) {
+                    let setAction = setText(text) 
+                    store.dispatch(setAction);
+                    store.dispatch(broadcastActions([setAction]));
+                }
+                let nameFmt = files[0].name.substr(files[0].name.indexOf('.')); 
+                let lang = EXTENSION_LANGS.get(nameFmt) === undefined ? 'text' : EXTENSION_LANGS.get(nameFmt);
+                store.dispatch(setLanguage(lang));
+                reader.readAsBinaryString(files[0]);
+                
+            }
             break;
         }
         default: next(action);

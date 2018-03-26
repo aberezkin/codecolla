@@ -5,7 +5,7 @@ export function createSimpleAction(type) {
     return { type };
 }
 
-function createAction(type, payload = undefined) {
+export function createAction(type, payload = undefined) {
     return { type, payload };
 }
 
@@ -83,13 +83,13 @@ export function setPeerId(id) {
 }
 
 export const MOVE_CURSOR = 'MOVE CURSOR';
-export function moveCursor(id, pos) {
-    return createAction(MOVE_CURSOR, { id, pos });
+export function moveCursor(id, pos, name) {
+    return createAction(MOVE_CURSOR, { id, pos, name });
 }
 
 export const ADD_CURSOR = 'ADD CURSOR';
-export function addCursor(pos) {
-    return createAction(ADD_CURSOR, pos);
+export function addCursor(id, pos, name) {
+    return createAction(ADD_CURSOR, {id, pos, name});
 }
 
 export const DELETE_CURSOR = 'DELETE CURSOR';
@@ -98,8 +98,8 @@ export function deleteCursor(pos) {
 }
 
 export const SET_CURSOR = 'SET CURSOR';
-export function setCursor(pos) {
-    return createAction(SET_CURSOR, pos);
+export function setCursor(cursor) {
+    return createAction(SET_CURSOR, cursor);
 }
 
 export const SET_IS_SEED = 'SET IS SEED';
@@ -143,15 +143,8 @@ export function addPeer(connection) {
 }
 
 export const ADD_PEER_FROM_ID = 'ADD PEER FROM ID';
-export function addPeerFromId(id, needAllPeers) {
-    if (needAllPeers === undefined)
-        needAllPeers = false;
-    return createAction(ADD_PEER_FROM_ID, { id, needAllPeers });
-}
-
-export const CONNECT_TO_ALL_PEERS = 'CONNECT TO ALL PEERS';
-export function connectToAllPeers(connect) {
-    return createAction(CONNECT_TO_ALL_PEERS, connect);
+export function addPeerFromId(id) {
+    return createAction(ADD_PEER_FROM_ID, id);
 }
 
 export const REMOVE_PEER = 'REMOVE PEER';
@@ -167,8 +160,8 @@ export function broadcastActions(actions) {
 }
 
 export const BROADCAST_DATA_TO_PEER = 'BROADCAST DATA FOR PEER';
-export function broadcastActionsToPeer(data) {
-    return createAction(BROADCAST_DATA_TO_PEER, data);
+export function broadcastActionsToPeer(id, actions) {
+    return createAction(BROADCAST_DATA_TO_PEER, {id, actions});
 }
 
 export const INSERT_EVENT = 'INSERT_EVENT';
@@ -231,11 +224,14 @@ export function enterSession(nickname) {
 }
 
 // Reset to needed server-ip
-export const SEND_URL = 'http://example.ru/compile';
+export const SEND_URL = 'http://52.231.193.194:8080/compile';
 export const COMPILE_CODE = 'COMPILE CODE';
+export const RESOURCE_COMPILEBOX = 'compileBox';
+export const RESOURCE_GIST = 'gist';
+
 export function sendCode(langid, text) {
     return buildActionsFromMappings([{
-        resource: 'compileBox',
+        resource: RESOURCE_COMPILEBOX,
         method: 'post',
         request: {
             url: SEND_URL,
@@ -248,21 +244,57 @@ export function sendCode(langid, text) {
     }]).compileBoxPost();
 }
 
+export const GET_GIST = 'GET GIST';
+export function getGist(gistId) {
+    return buildActionsFromMappings([{
+        resource: RESOURCE_GIST,
+        method: 'get',
+        request: {
+            url: `https://api.github.com/gists/${gistId}`,
+        },
+    }]).gistGet();
+}
+
 export function handleMenuCommand(command) {
     return createAction(command, false);
 }
 
+export const TOGGLE_FULLSCREEN_SWITCH = 'TOGGLE FULLSCREEN SWITCH';
+export function isFullMode(fs) {
+    return createAction(TOGGLE_FULLSCREEN_SWITCH, fs);
+}
+export const TOGGLE_FULLSCREEN = 'TOGGLE FULLSCREEN';
 export const TOGGLE_STATUS_BAR = 'TOGGLE STATUS BAR';
 export const TOGGLE_CHAT = 'TOGGLE CHAT';
 export const TOGGLE_INVITE_MODAL = 'TOGGLE INVITE MODAL';
+export const TOGGLE_GIST_MODAL = 'TOGGLE GIST MODAL';
+export const TOGGLE_URL_MODAL = 'TOGGLE URL MODAL';
+export const TOGGLE_ABOUT_MODAL = 'TOGGLE ABOUT MODAL';
 export const CREATE_NEW = 'CREATE NEW';
 export const OPEN_SMTH = 'OPEN SMTH';
 export const OPEN_URL = 'OPEN URL';
+export function openUrl(urlText) {
+    return createAction(OPEN_URL, urlText);
+}
 export const SAVE_AS = 'SAVE AS';
 export const SAVE_ALL = 'SAVE ALL';
 export const OPEN_SETTINGS = 'OPEN SETTINGS';
+export const TOGGLE_SEARCH_BOX = 'TOGGLE SEARCH BOX';
+export const OPEN_FILE = 'OPEN FILE';
 
 export const COMPILE_RUBY = 'COMPILE RUBY';
 export const COMPILE_CPP = 'COMPILE CPP';
+export const GET_FULFIL = 'react-redux-fetch/GET_FULFIL';
+export const GET_REJECT = 'react-redux-fetch/GET_REJECT';
 export const POST_FULFIL = 'react-redux-fetch/POST_FULFIL';
 export const POST_REJECT = 'react-redux-fetch/POST_REJECT';
+
+export const SET_FILE = 'SET FILE';
+export function onFileOpen(files) {
+    return createAction(SET_FILE, files);
+}
+
+export const ADD_HOTKEY = 'ADD HOTKEY';
+export function addHotKey(command, hotkey, handler) {
+    return createAction(ADD_HOTKEY, {command, hotkey, handler});
+}

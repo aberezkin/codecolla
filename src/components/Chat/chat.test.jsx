@@ -6,10 +6,11 @@ const setup = (propOverrides) => {
         messages: [],
         onMessage: jest.fn(),
         isVisible: true,
+        nickname: 'john',
         ...propOverrides,
     };
 
-    const wrapper = shallow((<Chat {...props} />));
+    const wrapper = mount((<Chat {...props} />));
 
     return {
         props,

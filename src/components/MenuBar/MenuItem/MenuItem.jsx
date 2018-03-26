@@ -15,7 +15,7 @@ class MenuItem extends Component {
         this.onDocumentClick = this.onDocumentClick.bind(this);
         this.state = {
             open: false,
-            titleStyle: {},
+            containerStyle: {},
         };
     }
 
@@ -35,7 +35,7 @@ class MenuItem extends Component {
         if (this.props.isTopLevel && !this.state.open)
             this.setState({
                 open: true,
-                titleStyle: {
+                containerStyle: {
                     backgroundColor: 'lightblue',
                     color: 'white',
                 },
@@ -48,7 +48,7 @@ class MenuItem extends Component {
         if (!this.props.isMenuBarActive)
             return;
         this.setState({
-            titleStyle: {
+            containerStyle: {
                 backgroundColor: 'lightblue',
                 color: 'white',
             },
@@ -60,18 +60,18 @@ class MenuItem extends Component {
     onMouseOut(event) {
         if (!this.props.isMenuBarActive)
             return;
-        this.setState({ titleStyle: {} });
+        this.setState({ containerStyle: {} });
         if (!this.node.contains(event.relatedTarget))
             this.setState({ open: false });
     }
 
     onDocumentClick() {
-        this.setState({ open: false, titleStyle: {} });
+        this.setState({ open: false, containerStyle: {} });
     }
 
     onSelect(command) {
         this.props.onSelect(command);
-        this.setState({ open: false, titleStyle: {} });
+        this.setState({ open: false, containerStyle: {} });
     }
 
     bindCloseHandlers() {
@@ -106,11 +106,15 @@ class MenuItem extends Component {
                 <span
                     tabIndex="0"
                     role="button"
-                    className="title"
-                    style={this.state.titleStyle}
+                    className="container"
+                    style={this.state.containerStyle}
                     onClick={this.onClick}
                 >
-                    {this.props.title}
+                    <div className="image" style={{display: (this.props.isTopLevel ? 'none': ''), ...this.props.style}}></div>
+                    <label>{this.props.label}</label>
+                    <div className="hotkey" style={{display: (this.props.hotkey === '' ? 'none' : '')}}>
+                        {this.props.hotkey.replace(/\b[a-z]/g,function(c){return c.toUpperCase();})}
+                    </div>
                 </span>
                 {React.Children.map(this.props.children, this.renderMenuItem)}
             </li>
@@ -119,12 +123,14 @@ class MenuItem extends Component {
 }
 
 MenuItem.propTypes = {
-    title: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
     command: PropTypes.string,
     isTopLevel: PropTypes.bool,
     isMenuBarActive: PropTypes.bool,
     onSelect: PropTypes.func,
     children: PropTypes.node,
+    hotkey: PropTypes.string,
+    style: PropTypes.objectOf(PropTypes.string),
 };
 
 MenuItem.defaultProps = {
@@ -132,7 +138,9 @@ MenuItem.defaultProps = {
     isMenuBarActive: false,
     onSelect() {},
     command: '',
+    hotkey: '',
     children: [],
+    style: {},
 };
 
 

@@ -2,16 +2,23 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { MenuBar, Checkable, MenuItem, Separator, SubMenu } from '../MenuBar';
 import {
+    SET_FILE,
     TOGGLE_STATUS_BAR,
     TOGGLE_CHAT,
     CREATE_NEW,
     OPEN_SMTH,
+    OPEN_FILE,
     OPEN_URL,
     SAVE_AS,
     SAVE_ALL,
     OPEN_SETTINGS,
+    TOGGLE_SEARCH_BOX,
     TOGGLE_INVITE_MODAL,
+    TOGGLE_GIST_MODAL,
+    TOGGLE_ABOUT_MODAL,
     COMPILE_CODE,
+    TOGGLE_FULLSCREEN,
+    TOGGLE_URL_MODAL,
 } from '../../actions';
 import './Menu.styl';
 
@@ -19,57 +26,113 @@ class Menu extends Component {
     constructor(props) {
         super(props);
         this.onMenuOptionHandler = this.onMenuOptionHandler.bind(this);
+        this.onFileOpen = this.onFileOpen.bind(this);
     }
 
     onMenuOptionHandler(command) {
-        this.props.onMenuOptionHandler(command);
+        if (command === TOGGLE_SEARCH_BOX)
+            this.props.hotKeysHandlers[TOGGLE_SEARCH_BOX]();
+        else
+            this.props.onMenuOptionHandler(command);
+    }
+
+    onFileOpen(files) {
+        this.props.onFileOpen(files);
     }
 
     render() {
         return (
             <div className="menu-wrapper">
-                <MenuBar onSelect={this.onMenuOptionHandler} style={this.props.style}>
-                    <MenuItem title="File">
+                <input style={{display:'none'}}
+                    id="openFile"
+                    type="file"
+                    name="openFile"
+                    onChange={event => this.onFileOpen(event.target.files)}/>
+                <MenuBar
+                    onSelect={command => this.onMenuOptionHandler(command)}
+                    style={this.props.style}
+                >
+                    <MenuItem label="File">
                         <SubMenu>
-                            <MenuItem title="New" command={CREATE_NEW} />
-                            <MenuItem title="Open..." command={OPEN_SMTH} />
-                            <MenuItem title="Open URL" command={OPEN_URL} />
+                            <MenuItem 
+                                label="Open file" 
+                                command={OPEN_FILE}
+                                hotkey={this.props.hotKeysMap[OPEN_FILE]}
+                            />
+                            <MenuItem 
+                                label="Open URL" 
+                                command={TOGGLE_URL_MODAL} 
+                                hotkey={this.props.hotKeysMap[TOGGLE_URL_MODAL]}
+                            />
+                            <MenuItem 
+                                label="Open gist" 
+                                command={TOGGLE_GIST_MODAL} 
+                                hotkey={this.props.hotKeysMap[TOGGLE_GIST_MODAL]}
+                            />
                             <Separator />
-                            <MenuItem title="Save as..." command={SAVE_AS} />
-                            <MenuItem title="Save all" command={SAVE_ALL} />
-                            <Separator />
-                            <MenuItem title="Settings" command={OPEN_SETTINGS} />
+                            <MenuItem 
+                                label="Save as..." 
+                                command={SAVE_AS} 
+                                hotkey={this.props.hotKeysMap[SAVE_AS]}
+                            />
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem title="Edit">
+                    <MenuItem label="Edit">
                         <SubMenu />
                     </MenuItem>
-                    <MenuItem title="View">
+                    <MenuItem label="View">
                         <SubMenu>
-                            <MenuItem title="Tools">
-                                <SubMenu>
-                                    <MenuItem title="Chat" command={TOGGLE_CHAT} />
-                                </SubMenu>
-                            </MenuItem>
+                            <Checkable
+                                label="Chat"
+                                command={TOGGLE_CHAT}
+                                hotkey={this.props.hotKeysMap[TOGGLE_CHAT]}
+                                checked={this.props.isChatVisible}
+                            />
+                            <Checkable
+                                label="Status bar"
+                                command={TOGGLE_STATUS_BAR}
+                                hotkey={this.props.hotKeysMap[TOGGLE_STATUS_BAR]}
+                                checked={this.props.isStatusBarVisible}
+                            />
                             <Separator />
-                            <Checkable title="Status bar" command={TOGGLE_STATUS_BAR} />
+                            <Checkable
+                                label="Fullscreen"
+                                command={TOGGLE_FULLSCREEN}
+                                hotkey={this.props.hotKeysMap[TOGGLE_FULLSCREEN]}
+                                checked={this.props.isFullscreen}
+                            />
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem title="Navigate">
-                        <SubMenu />
-                    </MenuItem>
-                    <MenuItem title="Refactor">
-                        <SubMenu />
-                    </MenuItem>
-                    <MenuItem title="Tools">
+                    <MenuItem label="Navigate">
                         <SubMenu>
-                            <MenuItem title="Invite a friend" command={TOGGLE_INVITE_MODAL} />
-                            <MenuItem title="Chat" command={TOGGLE_CHAT} />
-                            <MenuItem title="Compile" command={COMPILE_CODE} />
+                            <MenuItem
+                                label="Find"
+                                command={TOGGLE_SEARCH_BOX}
+                                hotkey={this.props.hotKeysMap[TOGGLE_SEARCH_BOX]}
+                            />
                         </SubMenu>
                     </MenuItem>
-                    <MenuItem title="Help">
-                        <SubMenu />
+                    <MenuItem label="Tools">
+                        <SubMenu>
+                            <MenuItem
+                                label="Invite a friend"
+                                command={TOGGLE_INVITE_MODAL}
+                                hotkey={this.props.hotKeysMap[TOGGLE_INVITE_MODAL]}
+                            />
+                            <MenuItem
+                                label="Compile" 
+                                command={COMPILE_CODE} 
+                                hotkey={this.props.hotKeysMap[COMPILE_CODE]}
+                            />
+                        </SubMenu>
+                    </MenuItem>
+                    <MenuItem label="Help">
+                        <SubMenu>
+                            <MenuItem
+                                label="About Codecolla"
+                                command={TOGGLE_ABOUT_MODAL}
+                            />
+                        </SubMenu>
                     </MenuItem>
                 </MenuBar>
             </div>
@@ -77,9 +140,15 @@ class Menu extends Component {
     }
 }
 
+//<!-- <MenuItem title="Invite a friend" command={TOGGLE_INVITE_MODAL} />-->
 Menu.propTypes = {
     onMenuOptionHandler: PropTypes.func.isRequired,
+    onFileOpen: PropTypes.func.isRequired,
     style: PropTypes.objectOf(PropTypes.string),
+    isStatusBarVisible : PropTypes.bool.isRequired,
+    isChatVisible: PropTypes.bool.isRequired,
+    hotKeysMap: PropTypes.objectOf(PropTypes.string),
+    hotKeysHandlers: PropTypes.objectOf(PropTypes.func),
 };
 
 Menu.defaultProps = {
@@ -87,6 +156,8 @@ Menu.defaultProps = {
         width: '100%',
         height: '20px',
     },
+    hotKeysMap: {},
+    hotKeysHandlers: {},
 };
 
 export default Menu;

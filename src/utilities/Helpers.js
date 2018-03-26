@@ -1,5 +1,55 @@
 import { Map } from 'immutable';
 
+function djb2(str){
+    let hash = 5381;
+    for (let i = 0; i < str.length; i++) {
+      hash = ((hash << 5) + hash) + str.charCodeAt(i);
+    }
+    return hash;
+}
+
+function stringToColor(str) {
+    let hash = djb2(str);
+    let r = (hash & 0xFF0000) >> 16;
+    let g = (hash & 0x00FF00) >> 8;
+    let b = hash & 0x0000FF;
+    return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
+}
+
+export function isFullscreen() {
+    let maxHeight = window.screen.height,
+    maxWidth = window.screen.width,
+    curHeight = window.innerHeight,
+    curWidth = window.innerWidth;
+    
+    if (maxWidth === curWidth && maxHeight === curHeight) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+export function toggleFullScreen() {
+    if (!document.fullScreenElement &&
+        !document.mozFullScreenElement && !document.webkitFullscreenElement) {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.mozRequestFullScreen) {
+        document.documentElement.mozRequestFullScreen();
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+      }
+    } else {
+      if (document.cancelFullScreen) {
+        document.cancelFullScreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen();
+      }
+    }
+}
+
 export function getPageHeight() {
     return document.documentElement.clientHeight;
 }
@@ -25,9 +75,11 @@ export function generateAtom(text, time) {
     });
 }
 
-export function generateCursorMarker(session, pos) {
+export function generateCursorMarker(session, pos, name) {
     const marker = {};
     marker.cursors = [pos];
+
+    let hash = stringToColor(name);
     // Function keyword used purposefully this should point to marker
     /* eslint-disable no-shadow */
     marker.update = function update(html, markerLayer, session, config) {
@@ -46,7 +98,9 @@ export function generateCursorMarker(session, pos) {
                 // can add any html here
                 html.push(`<div style='
                         position: absolute;
-                        border-left: 2px solid gold;
+                        border-left-width: 2px;
+                        border-left-style: solid;
+                        border-left-color: ${hash};
                         height: ${height}px;
                         top: ${top}px;
                         left: ${left}px; 
@@ -65,4 +119,9 @@ export function generateCursorMarker(session, pos) {
 
 export function generateSetterReducer(actionType, defaultValue) {
     return (state = defaultValue, action) => (action.type === actionType ? action.payload : state);
+}
+
+export function atomsToString(atoms) {
+    return atoms.map(atom => atom.get('text'))
+        .join('\n');
 }

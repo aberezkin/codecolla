@@ -7,6 +7,8 @@ import text from './text';
 import cursor from './cursor';
 import stepBack from './stepBackShortcut';
 import compileCode from './compile-code';
+import gistGetter from './gist-getter';
+import fullscreen from './fullscreen';
 
 const middlewares = [
     fetchMiddleware, // it must be first!!!
@@ -16,6 +18,8 @@ const middlewares = [
     cursor,
     compileCode,
     stepBack,
+    gistGetter,
+    fullscreen,
     multi, // it must be last!!!
 ];
 

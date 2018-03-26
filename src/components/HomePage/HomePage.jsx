@@ -2,21 +2,30 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './HomePage.styl';
 
-export const HOME_PAGE = 'HomePage';
+export const HOME_PAGE_CLASSNAME = 'HomePage';
 
 class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = { nickname: '' };
+        this.nicknameRegEx = /^[a-zA-Z0-9]+$/;
     }
 
     onSelect() {
-        this.isNickNameValid = this.state.nickname === '' || this.state.nickname.match(/^[^0-9]\w+$/) !== null;
-        document.querySelector(`.${HOME_PAGE} .wrapper input`).style.boxShadow = !this.isNickNameValid ? '0 0 10px red' : '0 0 10px #3b53ff';
+        this.isNickNameValid = this.state.nickname === '' || this.state.nickname.match(this.nicknameRegEx) !== null;
+        document.querySelector(`.${HOME_PAGE_CLASSNAME} input`).style.boxShadow = !this.isNickNameValid ?
+            '0 0 10px red' : '0 0 10px #3b53ff';
     }
 
     onBlur() {
-        document.querySelector(`.${HOME_PAGE} .wrapper input`).style.boxShadow = !this.isNickNameValid ? '0 0 10px red' : 'none';
+        document.querySelector(`.${HOME_PAGE_CLASSNAME} input`).style.boxShadow = !this.isNickNameValid ? '0 0 10px red' : 'none';
+    }
+
+    onKeyDown(event) {
+        if (this.props.style.display === 'none')
+            return;
+        if (event.keyCode === 13) this.enterSession();
+        else document.querySelector(`.${HOME_PAGE_CLASSNAME} input`).focus();
     }
 
     enterSession() {
@@ -26,7 +35,11 @@ class HomePage extends Component {
 
     render() {
         return (
-            <div className={HOME_PAGE} style={this.props.style}>
+            <div className={HOME_PAGE_CLASSNAME}
+                 style={this.props.style}
+                 tabIndex={0}
+                 onKeyDown={event => this.onKeyDown(event)}
+            >
                 <div className="wrapper">
                     <div id="Logo">CodeColla</div>
                     <input
@@ -39,7 +52,7 @@ class HomePage extends Component {
                     />
                     <button
                         id="CreateNewSession"
-                        onClick={(event) => { this.enterSession(event); }}
+                        onClick={event => this.enterSession(event)}
                     >
                         Start coding
                     </button>

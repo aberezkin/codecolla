@@ -10,15 +10,23 @@ class Chat extends Component {
     constructor(props) {
         super(props);
         this.sendMessage = this.sendMessage.bind(this);
-        this.onKeyDown = this.onKeyDown.bind(this);
         this.state = {
             textareaValue: '',
         };
     }
 
+    componentDidMount() {
+        this.updateScroll();
+    }
+
+    componentDidUpdate() {
+        this.updateScroll();
+    }
+
     onKeyDown(event) {
         if (event.keyCode === 13 && event.ctrlKey && this.state.textareaValue !== '')
             this.sendMessage();
+        else document.querySelector(`.${CHAT_CLASSNAME} .InputArea`).focus();
     }
 
     sendMessage() {
@@ -35,19 +43,28 @@ class Chat extends Component {
         this.props.onMessage(elem);
     }
 
+    updateScroll() {
+        this.refs.messageBox.scrollTop = this.refs.messageBox.scrollHeight;
+    }
+
     render() {
         return (
-            <div className={CHAT_CLASSNAME} style={this.props.style}>
-                <div className="MessageBox">
+            <div className={CHAT_CLASSNAME}
+                 tabIndex='0'
+                 style={this.props.style}
+                 onKeyDown={event => this.onKeyDown(event)}
+            >
+                <div ref="messageBox" className="MessageBox">
                     {
                         this.props.messages.map(message => (
-                            <Message
-                                key={message.date.getTime()}
-                                author={message.author}
-                                content={message.content}
-                                date={message.date}
-                            />
-                        ))
+                                <Message
+                                    key={message.date.getTime()}
+                                    author={message.author}
+                                    content={message.content}
+                                    date={message.date}
+                                />
+                            )
+                        )
                     }
                 </div>
                 <div className="InputBox">
@@ -56,17 +73,13 @@ class Chat extends Component {
                         placeholder="Write your message..."
                         value={this.state.textareaValue}
                         onChange={event => this.setState({ textareaValue: event.target.value })}
-                        onKeyDown={this.onKeyDown}
                         minRows={1}
                         maxRows={5}
-                        tabIndex="0"
                     />
                     <div
                         className="SendButton"
                         onClick={this.sendMessage}
-                        onKeyDown={this.onKeyDown}
                         role="button"
-                        tabIndex="0"
                     >
                         <span>\&gt;</span>
                     </div>

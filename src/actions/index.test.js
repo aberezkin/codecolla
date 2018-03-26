@@ -10,7 +10,7 @@ import { CONNECT_TO_ALL_PEERS, SET_LINEFEED, SET_IS_TRANSFER_ALLOWED,
     setLanguage, setTheme, addPeer, addPeerFromId, removePeer,
     insertEvent, removeEvent, removeLine, sendMessage,
     addMessage, broadcastActions, initPeer, setLine, setText, insertLine,
-    sendCode, handleMenuCommand, SEND_URL } from './index';
+    sendCode, handleMenuCommand, SEND_URL, getGist, RESOURCE_GIST } from './index';
 
 const testSyncActionCreator = (actionCreator, payload, expectedValue) => {
     it(`should create ${expectedValue.type} action`, () => {
@@ -22,8 +22,6 @@ const testPayloadActionCreator = (actionCreator, type, payload) =>
     testSyncActionCreator(actionCreator, payload, { type, payload });
 
 describe('simple payload action creators', () => {
-    testPayloadActionCreator(connectToAllPeers, CONNECT_TO_ALL_PEERS, false);
-    testPayloadActionCreator(connectToAllPeers, CONNECT_TO_ALL_PEERS, true);
     testPayloadActionCreator(setIsTransferAllowed, SET_IS_TRANSFER_ALLOWED, false);
     testPayloadActionCreator(setIsTransferAllowed, SET_IS_TRANSFER_ALLOWED, true);
     testPayloadActionCreator(setLinefeed, SET_LINEFEED, 'LF');
@@ -71,8 +69,13 @@ describe('test cursor actions', () => {
     });
 
     it(`should create ${ADD_CURSOR} action`, () => {
-        expect(addCursor({ row: 1, col: 1 })).toEqual({
-            type: ADD_CURSOR, payload: { row: 1, col: 1 },
+        expect(addCursor('asd', { row: 1, col: 1 }, 'john')).toEqual({
+            type: ADD_CURSOR, 
+            payload: {
+                id: 'asd',
+                pos: { row: 1, col: 1 },
+                name: 'john',
+            },
         });
     });
     it(`should create ${DELETE_CURSOR} action`, () => {
@@ -100,10 +103,13 @@ describe('test send all text action', () => {
 describe('test broadcast data to peer action', () => {
     const eq = {
         type: BROADCAST_DATA_TO_PEER,
-        payload: 'qwerty',
+        payload: {
+            id: 'john',
+            actions: []
+        },
     };
     it(`should create ${BROADCAST_DATA_TO_PEER} action`, () => {
-        expect(broadcastActionsToPeer('qwerty')).toEqual(eq);
+        expect(broadcastActionsToPeer('john', [])).toEqual(eq);
     });
 });
 
@@ -159,6 +165,22 @@ describe('several arguments actions', () => {
         };
 
         expect(sendCode(1, 'puts [123]\n')).toEqual(expectedValue);
+    });
+
+    const GET_REQUEST = 'react-redux-fetch/GET_REQUEST';
+    it(`should create ${GET_REQUEST} action`, () => {
+        const expectedValue = {
+            type: GET_REQUEST,
+            method: 'get',
+            resource: {
+                name: RESOURCE_GIST,
+            },
+            request: {
+                url: 'https://api.github.com/gists/2usl212',
+            },
+        };
+
+        expect(getGist('2usl212')).toEqual(expectedValue);
     });
 });
 
