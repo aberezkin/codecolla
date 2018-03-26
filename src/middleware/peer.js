@@ -67,6 +67,11 @@ function eventifyConnection(connection, dispatch, peer, store) {
                 break;
             }
             default: {
+                if (eventArray[0].moveFromHistory)
+                    if (eventArray[0].isDirectAction)
+                        store.getState().stepBack.history.actionsOfOtherUsersFromHistoryCnt += 1;
+                    else
+                        store.getState().stepBack.history.actionsOfOtherUsersFromHistoryCnt -= 1;
                 if (eventArray[0].isDirectAction)
                     store.getState().stepBack.history.otherUsersActionCnt += 1;
                 else
