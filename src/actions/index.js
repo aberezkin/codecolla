@@ -9,6 +9,69 @@ export function createAction(type, payload = undefined) {
     return { type, payload };
 }
 
+
+export const STEP_BACK_ADD_LINE_TO_SET = 'STEP BACK ADD LINE TO SET';
+export function stepBackAddLineToSet(elem) {
+    return createAction(STEP_BACK_ADD_LINE_TO_SET, elem)
+}
+
+export const STEP_BACK_DELETE_LINE_FROM_SET = 'STEP BACK DELETE LINE FROM SET';
+export function stepBackDeleteLineFromSet(elem) {
+    return createAction(STEP_BACK_DELETE_LINE_FROM_SET, elem)
+}
+
+export const STEP_BACK_CLEAR_SET = 'STEP BACK CLEAR SET';
+export function stepBackClearSet(elem) {
+    return createAction(STEP_BACK_CLEAR_SET, elem)
+}
+
+export const STEP_BACK_CHECK_ACTION = 'STEP BACK CHECK ACTION';
+export function stepBackCheckAction(stepBack) {
+    return createAction(STEP_BACK_CHECK_ACTION, stepBack)
+}
+
+export const STEP_BACK_CLEAR_ACTION = 'STEP BACK CLEAR ACTION';
+export function stepBackClearAction(stepBack) {
+    return createAction(STEP_BACK_CLEAR_ACTION, stepBack)
+}
+
+export const STEP_BACK_DELETE_ACTION = 'STEP BACK DELETE ACTION';
+export function stepBackDeleteAction(stepBack) {
+    return createAction(STEP_BACK_DELETE_ACTION, stepBack)
+}
+
+export const STEP_BACK_PREPAER_STACK = 'STEP BACK PREPAER STACK';
+export function stepBackPrepaerStack() {
+    return createAction(STEP_BACK_PREPAER_STACK, true)
+}
+
+export const STEP_BACK_ADD_ACTION = 'STEP BACK ADD ACTION';
+export function stepBackAddAction(action) {
+    return createAction(STEP_BACK_ADD_ACTION, action)
+}
+
+export const RESET_HISTORY = 'RESET HISTORY';
+export function resetHistory() {
+    return createAction(RESET_HISTORY, true)
+}
+
+export const STEP_BACK_ACTION = 'STEP BACK ACTION';
+export function stepBackAction() {
+    return createAction(STEP_BACK_ACTION, true)
+}
+
+export const STEP_FORWARD_ACTION = 'STEP FORWARD ACTION';
+export function stepForwardAction() {
+    return createAction(STEP_FORWARD_ACTION, true)
+}
+
+export const STEP_FORWARD_RETURN_ACTION = 'STEP FORWARD RETURN ACTION';
+export function stepForwardReturnAction() {
+    return createAction(STEP_FORWARD_RETURN_ACTION, true)
+}
+
+/////////////////////////////////////////////////
+
 export const SEND_ALL_TEXT = 'SENT ALL TEXT';
 export function sendAllText(peerId) {
     return createAction(SEND_ALL_TEXT, peerId);

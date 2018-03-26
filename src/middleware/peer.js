@@ -1,7 +1,8 @@
 import '../utilities/Peerjs';
+
 import { ADD_PEER, ADD_PEER_FROM_ID, addPeer, BROADCAST_ACTIONS, ADD_MESSAGE, broadcastActionsToPeer,
     BROADCAST_DATA_TO_PEER, INIT_PEER, removePeer, CONNECT_TO_ALL_PEERS, connectToAllPeers, setText,
-    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor } from '../actions/index';
+    setPeerId, sendAllText, broadcastActions, addPeerFromId, SET_CURSOR, deleteCursor, resetHistory} from '../actions/index';
 import { DELETE_CURSOR, MOVE_CURSOR, ADD_CURSOR, PEER_ADDITION } from '../utilities/ChangeEvent';
 import { atomsToString } from '../utilities/Helpers'
 import { HANDLE_INITIALS, handleInitials } from '../actions/peer';
@@ -14,13 +15,14 @@ export const PEER_ERROR = 'error';
 
 const localPeer = new Peer({ key: 'e0twf5gs81lzbyb9' });
 
+
 const createMessage = (author, text, date = new Date()) => ({
     author,
     content: text,
     date,
 });
 
-function eventifyConnection(connection, dispatch, peer) {
+function eventifyConnection(connection, dispatch, peer, store) {
     let isConnected = false;
     connection.on(DATA_TRANSFER, (data) => {
         const eventArray = JSON.parse(data);
@@ -45,7 +47,31 @@ function eventifyConnection(connection, dispatch, peer) {
                 dispatch(firstEvent);
                 break;
             }
+            case DELETE_CURSOR:
+            {
+                dispatch(eventArray);
+                break;
+            }
+            case MOVE_CURSOR:
+            {
+                dispatch(eventArray);
+                break;
+            }
+            case SET_CURSOR:
+            {
+                dispatch(eventArray);
+                break;
+            }
+            case ADD_CURSOR: {
+                dispatch(eventArray);
+                break;
+            }
             default: {
+                if (eventArray[0].isDirectAction)
+                    store.getState().stepBack.history.otherUsersActionCnt += 1;
+                else
+                    store.getState().stepBack.history.otherUsersActionCnt -= 1;
+                eventArray[0].isOtherUserAction = true;
                 dispatch(eventArray);
             }
         }
@@ -100,6 +126,7 @@ const peersMiddleware = peer => store => next => action => {
                 action.payload,
                 store.dispatch,
                 peer,
+                store
             )));
             break;
         case BROADCAST_ACTIONS:

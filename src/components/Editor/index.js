@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
+
 import { atomsToString } from '../../utilities/Helpers.js';
-import { insertEvent, removeEvent, setIsTransferAllowed, moveCursor } from '../../actions/index';
+import { insertEvent, removeEvent, setIsTransferAllowed, moveCursor, stepBackAction, stepForwardAction} from '../../actions/index';
 import Editor from './Editor';
 
 const mapStateToProps = state => ({
@@ -17,6 +18,8 @@ const mapDispatchToProps = dispatch => ({
     allowEventTransfer: flag => dispatch(setIsTransferAllowed(flag)),
     onInsert: e => dispatch(insertEvent(e)),
     onRemove: e => dispatch(removeEvent(e)),
+    stepBackShortcut: () => dispatch(stepBackAction()),
+    stepForwardShortcut: () => dispatch(stepForwardAction()),
     moveCursor: (id, name) => pos => dispatch(moveCursor(id, pos, name)),
 });
 
