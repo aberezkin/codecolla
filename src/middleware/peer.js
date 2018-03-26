@@ -47,6 +47,25 @@ function eventifyConnection(connection, dispatch, peer, store) {
                 dispatch(firstEvent);
                 break;
             }
+            case DELETE_CURSOR:
+            {
+                dispatch(eventArray);
+                break;
+            }
+            case MOVE_CURSOR:
+            {
+                dispatch(eventArray);
+                break;
+            }
+            case SET_CURSOR:
+            {
+                dispatch(eventArray);
+                break;
+            }
+            case ADD_CURSOR: {
+                dispatch(eventArray);
+                break;
+            }
             default: {
                 if (eventArray[0].isDirectAction)
                     store.getState().stepBack.history.otherUsersActionCnt += 1;

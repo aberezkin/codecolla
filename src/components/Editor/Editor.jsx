@@ -91,12 +91,12 @@ class Editor extends Component {
                     {
                         name: 'commandCtrlZ',
                         bindKey: { win: 'Ctrl-z', mac: 'Command-z', linux: 'Ctrl-z' },
-                        exec: () => { console.log('Ctrl-z'); },
+                        exec: this.ctrlZShortcut,
                     }, 
                     {
                         name: 'commandCtrlShiftZ',
                         bindKey: { win: 'Ctrl-Shift-z', mac: 'Command-Shift-z', linux: 'Ctrl-Shift-z' },
-                        exec:() => { console.log('Ctrl-Shift-z'); },
+                        exec: this.ctrlShiftZShortcut,
                     },
                     {
                         name: "unfind",
