@@ -172,7 +172,10 @@ function modifyActHistory (actions, store)
 {
     actions.actions[0].isDirectAction = true;
     actions.actionHistory[0].isDirectAction = false;
+    actions.actions[0].moveFromHistory = false;
+    actions.actionHistory[0].moveFromHistory = true;
     actions.howMuchActMustBeCanceled = store.getState().stepBack.history.otherUsersActionCnt;
+    actions.NeedStepForwar = 0;
     store.getState().stepBack.history.otherUsersActionCnt = 0;
 }
 
@@ -192,6 +195,7 @@ const textMiddleware = store => next => action => {
             store.dispatch(stepBackAddAction(actions));
 
             next(actions.actions);
+            actions.actions[0].moveFromHistory = true;
             break;
         }
         case REMOVE_EVENT: {
@@ -201,6 +205,7 @@ const textMiddleware = store => next => action => {
             ClearStackHead();
             store.dispatch(stepBackAddAction(actions));
             next(generateRemoveActions(store.getState().text, action.payload).actions);
+            actions.actions[0].moveFromHistory = true;
             break;
         }
         case SET_LINE: {
