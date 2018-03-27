@@ -1,5 +1,5 @@
 import {broadcastActions, APPY_STEP_BACK_ACTION, STEP_BACK_ACTION,
-    stepBackDeleteAction, stepBackClearAction, STEP_BACK_CHECK_ACTION, stepBackPrepaerStack, STEP_FORWARD_ACTION, stepForwardReturnAction} from "../actions/index";
+    stepBackDeleteAction, stepBackClearAction, STEP_BACK_CHECK_ACTION, stepBackPrepareStack, STEP_FORWARD_ACTION, stepForwardReturnAction} from "../actions/index";
 import {generateLineId} from "../utilities/Helpers";
 
 const stepBackShortcutMiddleware = store => next => action => {
@@ -27,21 +27,16 @@ const stepBackShortcutMiddleware = store => next => action => {
             let ActCnt = store.getState().stepBack.history.otherUsersActionCnt;
             let howMuchActMustBeCanceled = store.getState().stepBack.history.st.get(position - 1).howMuchActMustBeCanceled;
             let ActFH = store.getState().stepBack.history.actionsOfOtherUsersFromHistoryCnt;
-            if (position > 0 && ActCnt == howMuchActMustBeCanceled)
+            if (position > 0 && ActFH == 0)
             {  
                 next(stepForwardReturnAction(action));
                 position = store.getState().stepBack.history.pointer;
- 
+                store.getState().stepBack.history.actionsOfOtherUsersFromHistoryCnt = store.getState().stepBack.history.st.get(position).NeedStepForwar;
                 if (position - 1 < 0)
-                {
                     store.getState().stepBack.history.otherUsersActionCnt = 0;
-                    store.getState().stepBack.history.actionsOfOtherUsersFromHistoryCnt = 0
-                }
                 else
-                {
-                    store.getState().stepBack.history.otherUsersActionCnt = store.getState().stepBack.history.st.get(position - 1).howMuchActMustBeCanceled;
-                    store.getState().stepBack.history.actionsOfOtherUsersFromHistoryCnt = store.getState().stepBack.history.st.get(position - 1).NeedStepForwar;
-                }
+                    store.getState().stepBack.history.otherUsersActionCnt = -store.getState().stepBack.history.st.get(position - 1).howMuchActMustBeCanceled;
+
                 returnData = store.getState().stepBack.history.st.get(position).actions;
                 if (returnData === undefined) break;
                 console.log('DEBUG::',returnData);

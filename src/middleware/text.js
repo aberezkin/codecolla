@@ -2,7 +2,7 @@ import { broadcastActions, broadcastActionsToPeer, SAVE_AS, setLanguage,
     INSERT_EVENT, insertLine, REMOVE_EVENT, removeLine, setLine,
 
     SET_LINE, SEND_ALL_TEXT, SET_TEXT, OPEN_FILE, SET_FILE,
-    setText, OPEN_URL, stepBackAddAction, stepBackPrepaerStack} from '../actions/index';
+    setText, OPEN_URL, stepBackAddAction, stepBackPrepareStack} from '../actions/index';
 import { generateLineId } from '../utilities/Helpers';
 
 const EXTENSION_LANGS = new Map([
@@ -291,7 +291,7 @@ const textMiddleware = store => next => action => {
     function ClearStackHead ()
     {
         while (store.getState().stepBack.history.pointer > 0)
-            store.dispatch(stepBackPrepaerStack());
+            store.dispatch(stepBackPrepareStack());
     }
 };
 
