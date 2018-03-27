@@ -40,9 +40,9 @@ export function stepBackDeleteAction(stepBack) {
     return createAction(STEP_BACK_DELETE_ACTION, stepBack)
 }
 
-export const STEP_BACK_PREPAER_STACK = 'STEP BACK PREPAER STACK';
-export function stepBackPrepaerStack() {
-    return createAction(STEP_BACK_PREPAER_STACK, true)
+export const STEP_BACK_PREPARE_STACK = 'STEP BACK PREPARE STACK';
+export function stepBackPrepareStack() {
+    return createAction(STEP_BACK_PREPARE_STACK, true)
 }
 
 export const STEP_BACK_ADD_ACTION = 'STEP BACK ADD ACTION';
