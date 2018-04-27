@@ -17,10 +17,6 @@
     height 100%
     outline none
     user-select none
-    .container
-      padding 1px 4px
-      outline none
-      user-select none
   .MenuItem, .Checkable
     list-style none
     background inherit
@@ -32,19 +28,17 @@
     > *
       outline none
       user-select none
-    .MenuItem .container, .Checkable .container
-      display block
-  .Separator
-    margin 0 auto
-    width 95%
-    height 0
-    border-bottom 1px rgba(80, 80, 80, 0.3) solid
+.Separator
+  margin 4px auto
+  width 95%
+  height 0
+  border-bottom 1px rgba(80, 80, 80, 0.3) solid
 .Checkable input[type="checkbox"]
   -webkit-appearance none
   -moz-appearance none
   -ms-progress-appearance none
-  width 12px
-  height 12px
+  width 14px
+  height 14px
   display inline-block
   position relative
   color inherit
@@ -52,7 +46,7 @@
   &:checked:after
     position absolute
     content '\2714'
-    font-size 12px
+    font-size 14px
     top 0
     left 0
   &:after
@@ -68,12 +62,18 @@
   position relative
   color inherit
   .container
+    display flex
     color inherit
     white-space nowrap
     justify-content space-between
+    padding 3px 7px
+    outline none
+    user-select none
+    label
+      margin-right auto
     .hotkey
-      display inline-block
       margin-left 20px
+      display inline-block
       opacity 0.5
 .SubMenu .SubMenu
   top -1px
@@ -81,17 +81,18 @@
 .MenuItem, .SubMenu, .Checkable, .Separator
   list-style none
 .SubMenu > .MenuItem.submenu > span label
-    padding-right 10px
+    padding-right 12px
     &:after
       content: '';
       position: absolute;
-      //float right
       left 100%
       top: 25%;
       bottom: 25%;
       width: 0;
       height: 0;
-      border-top: 5px solid transparent;
-      border-bottom: 5px solid transparent;
-      border-left: 5px solid #cccccc;
-      margin-left -10px
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-left: 6px solid #cccccc;
+      margin-left -12px
+.disabled
+  opacity 0.7

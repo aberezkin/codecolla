@@ -29,11 +29,11 @@ export default class App extends Component {
         this.state = {
             wrapper: {
                 width: `${getPageWidth()}px`,
-                height: `${getPageHeight() - 35}px`,
+                height: `${getPageHeight() - 43}px`,
             },
             editor: {
                 width: `${getPageWidth()}px`,
-                height: `${getPageHeight() - 35}px`,
+                height: `${getPageHeight() - 43}px`,
             },
         };
 

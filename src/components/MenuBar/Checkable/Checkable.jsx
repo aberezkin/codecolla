@@ -4,10 +4,6 @@ import PropTypes from 'prop-types';
 class Checkable extends Component {
     constructor(props) {
         super(props);
-        this.onClick = this.onClick.bind(this);
-        this.onSelect = this.onSelect.bind(this);
-        this.onMouseOver = this.onMouseOver.bind(this);
-        this.onMouseOut = this.onMouseOut.bind(this);
         this.state = { containerStyle: {} };
     }
 
@@ -19,20 +15,17 @@ class Checkable extends Component {
     }
 
     onMouseOver() {
-        this.setState({
-            containerStyle: {
-                backgroundColor: 'lightblue',
-                color: 'white',
-            },
-        });
+        if (!this.props.disabled)
+            this.setState({
+                containerStyle: {
+                    backgroundColor: 'lightblue',
+                    color: 'white',
+                },
+            });
     }
 
     onMouseOut() {
         this.setState({ containerStyle: {} });
-    }
-
-    onSelect(command) {
-        this.props.onSelect(command);
     }
 
     render() {
@@ -42,9 +35,9 @@ class Checkable extends Component {
                     tabIndex="0"
                     role="button"
                     className="container"
-                    onClick={this.onClick}
-                    onMouseOver={this.onMouseOver}
-                    onMouseOut={this.onMouseOut}
+                    onClick={event => this.onClick(event)}
+                    onMouseOver={event => this.onMouseOver(event)}
+                    onMouseOut={event => this.onMouseOut(event)}
                     style={this.state.containerStyle}
                 >
                     <input
@@ -52,8 +45,9 @@ class Checkable extends Component {
                         checked={this.props.checked}
                         readOnly
                     />
-                    <label>{this.props.label}</label>
-                    <div className="hotkey" style={{display: (this.props.hotkey === '' ? 'none' : '')}}>
+                    <label className={`${this.props.disabled ? 'disabled' : ''}`}>{this.props.label}</label>
+                    <div className="hotkey"
+                         style={{display: (this.props.hotkey === '' ? 'none' : '')}}>
                         {this.props.hotkey.replace(/\b[a-z]/g,function(c){return c.toUpperCase();})}
                     </div>
                 </span>
@@ -68,6 +62,7 @@ Checkable.propTypes = {
     onSelect: PropTypes.func,
     checked: PropTypes.bool,
     hotkey: PropTypes.string,
+    disabled: PropTypes.bool,
 };
 
 Checkable.defaultProps = {
@@ -75,6 +70,7 @@ Checkable.defaultProps = {
     command: '',
     checked: false,
     hotkey: '',
+    disabled: false,
 };
 
 export default Checkable;

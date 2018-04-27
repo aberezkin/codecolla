@@ -11,6 +11,7 @@ exports[`menu component render MenuBar 1`] = `
   >
     <MenuItem
       command="test"
+      disabled={false}
       hotkey=""
       isMenuBarActive={false}
       isTopLevel={true}
@@ -41,7 +42,9 @@ exports[`menu component render MenuBar 1`] = `
               }
             }
           />
-          <label>
+          <label
+            className=""
+          >
             Test
           </label>
           <div
